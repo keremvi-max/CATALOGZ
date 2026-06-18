@@ -153,231 +153,8 @@ input,select,textarea{font-family:inherit;-webkit-appearance:none;appearance:non
 .checkbox.checked{background:var(--brown);border-color:var(--brown)}
 </style>
 </head>
-<body>
-<div id="app">
-
-<!-- LIST SCREEN -->
-<div id="screen-list" class="screen">
-  <div class="list-header">
-    <div class="list-header-row">
-      <h1 class="list-title">קטלוג האוסף</h1>
-      <button class="list-count" id="btn-backup" onclick="showBackup()">0 פריטים · גיבוי</button>
-    </div>
-    <div class="search-row">
-      <div class="search-wrap">
-        <svg class="search-icon" width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><circle cx="11" cy="11" r="7"/><path d="M21 21l-4.3-4.3"/></svg>
-        <input type="search" id="search-input" placeholder="חפש כותרת, מחבר, מיקום, נושא..." oninput="renderList()"/>
-      </div>
-      <button class="filter-btn" id="filter-toggle-btn" onclick="toggleFilters()">
-        <svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M4 5h16l-6 8v6l-4-2v-4z"/></svg>
-      </button>
-    </div>
-    <div id="filter-row" class="filter-row" style="display:none">
-      <select id="filter-cat" onchange="renderList()">
-        <option value="">כל הקטגוריות</option>
-        <option value="קודש">קודש</option>
-        <option value="חול">חול</option>
-      </select>
-      <select id="filter-status" onchange="renderList()">
-        <option value="">כל הסטטוסים</option>
-        <option value="באוסף">באוסף</option>
-        <option value="הוצע למכירה">הוצע למכירה</option>
-        <option value="נמכר">נמכר</option>
-      </select>
-    </div>
-  </div>
-  <div id="items-list" class="items-list"></div>
-  <div class="bottom-bar">
-    <button class="btn-outline" onclick="showExport()">📋 בניית קטלוג</button>
-    <button class="btn-primary" onclick="showForm(null)">+ פריט חדש</button>
-  </div>
-</div>
-
-<!-- FORM SCREEN -->
-<div id="screen-form" class="screen hidden">
-  <div class="topbar">
-    <button class="topbar-back" onclick="closeForm()">‹</button>
-    <h1 id="form-title">פריט חדש</h1>
-    <button class="topbar-action" id="form-save-btn" onclick="saveItem()">שמור</button>
-  </div>
-  <div class="form-body">
-    <!-- Category / Type -->
-    <div class="grid2">
-      <div class="field">
-        <label>קטגוריה</label>
-        <div class="seg" id="seg-cat">
-          <button onclick="setSegment('cat','קודש')" class="active">קודש</button>
-          <button onclick="setSegment('cat','חול')">חול</button>
-        </div>
-      </div>
-      <div class="field">
-        <label>סוג</label>
-        <div class="seg" id="seg-type">
-          <button onclick="setSegment('type','ספר')" class="active">ספר</button>
-          <button onclick="setSegment('type','כתב יד')">כ"י</button>
-          <button onclick="setSegment('type','חפץ')">חפץ</button>
-        </div>
-      </div>
-    </div>
-
-    <!-- Photos -->
-    <div class="field">
-      <label>תמונות</label>
-      <div class="grid4" id="photo-grid"></div>
-    </div>
-
-    <!-- Basic fields -->
-    <div class="field"><label>כותרת *</label><input id="f-title" type="text" placeholder="שם הספר / החפץ" oninput="updateSaveBtn()"/></div>
-    <div class="grid2">
-      <div class="field"><label>מחבר/יוצר</label><input id="f-author" type="text"/></div>
-      <div class="field"><label>שנה</label><input id="f-year" type="text" placeholder='תרצ"ח / 1938'/></div>
-    </div>
-    <div class="field"><label>מקום הדפסה/ייצור</label><input id="f-place" type="text"/></div>
-    <div class="field"><label>תיאור / הערות ביבליוגרפיות</label><textarea id="f-desc" rows="3"></textarea></div>
-    <div class="field"><label>מצב הפריט</label><input id="f-condition" type="text" placeholder="שלם, כריכה רעועה, חסר עמוד..."/></div>
-
-    <!-- Topics -->
-    <div>
-      <div class="sect-label">🏷 נושאים</div>
-      <div class="topics-wrap" id="topics-wrap"></div>
-    </div>
-
-    <!-- Location -->
-    <div>
-      <div class="sect-label">📍 מיקום פיזי</div>
-      <div class="grid3">
-        <div class="field compact"><input id="f-loc-area" type="text" placeholder="מחסן/חדר"/></div>
-        <div class="field compact"><input id="f-loc-box" type="text" placeholder="ארגז"/></div>
-        <div class="field compact"><input id="f-loc-shelf" type="text" placeholder="מדף"/></div>
-      </div>
-    </div>
-
-    <!-- Acquisition -->
-    <div>
-      <div class="sect-label">מקור רכישה</div>
-      <div class="field compact" style="margin-bottom:8px"><input id="f-acq-src" type="text" placeholder="ממי / היכן נרכש"/></div>
-      <div class="grid2">
-        <div class="field compact"><input id="f-acq-date" type="date"/></div>
-        <div class="field compact"><input id="f-acq-price" type="number" placeholder="מחיר רכישה (₪)"/></div>
-      </div>
-    </div>
-
-    <!-- Min price -->
-    <div>
-      <div class="sect-label">📈 מחיר מינימום למכירה</div>
-      <div class="field compact"><input id="f-minprice" type="number" placeholder="₪" oninput="updatePriceInfo()"/></div>
-      <div id="price-info" class="info"></div>
-    </div>
-
-    <!-- Status -->
-    <div>
-      <div class="sect-label">סטטוס</div>
-      <div class="seg" id="seg-status">
-        <button onclick="setSegment('status','באוסף')" class="active" style="font-size:12px">באוסף</button>
-        <button onclick="setSegment('status','הוצע למכירה')" style="font-size:12px">הוצע</button>
-        <button onclick="setSegment('status','נמכר')" style="font-size:12px">נמכר</button>
-      </div>
-      <div id="sold-price-wrap" style="display:none;margin-top:8px">
-        <div class="field compact"><input id="f-sold-price" type="number" placeholder="מחיר מכירה סופי (₪)" oninput="checkSoldWarn()"/></div>
-        <div id="sold-warn" class="warn" style="display:none"></div>
-      </div>
-    </div>
-
-    <!-- Sale history -->
-    <div>
-      <div style="display:flex;align-items:center;justify-content:space-between;margin-bottom:8px">
-        <div class="sect-label" style="margin:0">📦 היסטוריית הצעות מכירה</div>
-        <button style="font-size:12px;color:var(--brown);font-weight:600" onclick="addSaleAttempt()">+ הוסף ניסיון</button>
-      </div>
-      <div id="sale-history-wrap"></div>
-    </div>
-  </div>
-</div>
-
-<!-- DETAIL SCREEN -->
-<div id="screen-detail" class="screen hidden">
-  <div class="topbar">
-    <button class="topbar-back" onclick="closeDetail()">‹</button>
-    <span id="detail-status-badge" class="status-badge">באוסף</span>
-    <div style="display:flex;gap:12px">
-      <button onclick="editCurrentItem()" style="color:var(--brown)">✏️</button>
-      <button onclick="deleteCurrentItem()" style="color:var(--red)">🗑</button>
-    </div>
-  </div>
-  <div class="form-body" id="detail-body"></div>
-</div>
-
-<!-- EXPORT SCREEN -->
-<div id="screen-export" class="screen hidden">
-  <div class="topbar">
-    <button class="topbar-back" onclick="showScreen('list')">‹</button>
-    <h1>בניית קטלוג מכירה</h1>
-    <div style="width:22px"></div>
-  </div>
-  <div class="export-filters">
-    <div class="field compact">
-      <label>סנן לפי נושא</label>
-      <select id="export-topic" onchange="renderExportList()">
-        <option value="">כל הנושאים</option>
-      </select>
-    </div>
-    <div class="export-filter-row">
-      <button onclick="exportSelectAll()">בחר הכל</button>
-      <button onclick="exportClearAll()">נקה בחירה</button>
-    </div>
-  </div>
-  <div id="export-list" class="export-list"></div>
-  <div class="bottom-bar">
-    <button class="btn-full" id="export-btn" onclick="doExportHTML()" disabled>ייצא קטלוג (0 נבחרו)</button>
-  </div>
-</div>
-
-<!-- BACKUP SCREEN -->
-<div id="screen-backup" class="screen hidden">
-  <div class="topbar">
-    <button class="topbar-back" onclick="showScreen('list')">‹</button>
-    <h1>גיבוי ושחזור</h1>
-    <div style="width:22px"></div>
-  </div>
-  <div class="backup-body">
-    <div>
-      <p class="backup-text">המידע שלך נשמר בדפדפן של המכשיר הזה. מומלץ לייצא גיבוי מדי פעם ולשמור ב-Google Drive.</p>
-      <button class="btn-full" id="backup-export-btn" onclick="doBackupExport()">⬇ ייצא קובץ גיבוי</button>
-    </div>
-    <div class="backup-divider">
-      <p class="backup-text">שחזור מקובץ גיבוי ימחק ויחליף את כל הנתונים הקיימים.</p>
-      <input type="file" id="backup-import-input" accept="application/json" style="display:none" onchange="doBackupImport(this)"/>
-      <button class="btn-full-outline" onclick="document.getElementById('backup-import-input').click()">⬆ ייבא קובץ גיבוי</button>
-      <div id="import-msg" class="msg"></div>
-    </div>
-  </div>
-</div>
-
-<!-- IMAGE EDITOR -->
-<div id="editor-screen" class="editor-screen hidden">
-  <div class="editor-topbar">
-    <button style="color:#d9cdb8;font-size:14px" onclick="cancelEditor()">ביטול</button>
-    <span>ערוך תמונה</span>
-    <button style="color:#c9a961;font-size:14px;font-weight:600" onclick="saveEditor()">✓ שמור</button>
-  </div>
-  <div class="editor-canvas-wrap" id="editor-canvas-wrap">
-    <canvas id="editor-canvas"></canvas>
-  </div>
-  <div class="editor-tools">
-    <button class="editor-tool" onclick="editorRotate()">
-      <svg width="22" height="22" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.8"><path d="M21 12a9 9 0 1 1-2.6-6.3"/><path d="M21 4v5h-5"/></svg>
-      סבב
-    </button>
-    <button class="editor-tool" onclick="editorClearCrop()">
-      <svg width="22" height="22" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.8"><path d="M6 2v14a2 2 0 0 0 2 2h14"/><path d="M18 22V8a2 2 0 0 0-2-2H2"/></svg>
-      נקה חיתוך
-    </button>
-  </div>
-  <p class="editor-hint">גרור על התמונה כדי לסמן חיתוך</p>
-</div>
-
-</div>
 <script>
+
 // ========== STATE ==========
 let items = [];
 let topics = ["חסידות","ש\"ס","סידורים","קבלה","תנ\"ך ומפרשים","הלכה","דרשות","מוסר","כתבי יד","תשמישי קדושה","מפות","אמנות יהודית"];
@@ -903,6 +680,231 @@ async function loadDataSafe(){
   renderList(); 
   showScreen("list");
 })();
+
 </script>
-</body>
+<body>
+<div id="app">
+
+<!-- LIST SCREEN -->
+<div id="screen-list" class="screen">
+  <div class="list-header">
+    <div class="list-header-row">
+      <h1 class="list-title">קטלוג האוסף</h1>
+      <button class="list-count" id="btn-backup" onclick="showBackup()">0 פריטים · גיבוי</button>
+    </div>
+    <div class="search-row">
+      <div class="search-wrap">
+        <svg class="search-icon" width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><circle cx="11" cy="11" r="7"/><path d="M21 21l-4.3-4.3"/></svg>
+        <input type="search" id="search-input" placeholder="חפש כותרת, מחבר, מיקום, נושא..." oninput="renderList()"/>
+      </div>
+      <button class="filter-btn" id="filter-toggle-btn" onclick="toggleFilters()">
+        <svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M4 5h16l-6 8v6l-4-2v-4z"/></svg>
+      </button>
+    </div>
+    <div id="filter-row" class="filter-row" style="display:none">
+      <select id="filter-cat" onchange="renderList()">
+        <option value="">כל הקטגוריות</option>
+        <option value="קודש">קודש</option>
+        <option value="חול">חול</option>
+      </select>
+      <select id="filter-status" onchange="renderList()">
+        <option value="">כל הסטטוסים</option>
+        <option value="באוסף">באוסף</option>
+        <option value="הוצע למכירה">הוצע למכירה</option>
+        <option value="נמכר">נמכר</option>
+      </select>
+    </div>
+  </div>
+  <div id="items-list" class="items-list"></div>
+  <div class="bottom-bar">
+    <button class="btn-outline" onclick="showExport()">📋 בניית קטלוג</button>
+    <button class="btn-primary" onclick="showForm(null)">+ פריט חדש</button>
+  </div>
+</div>
+
+<!-- FORM SCREEN -->
+<div id="screen-form" class="screen hidden">
+  <div class="topbar">
+    <button class="topbar-back" onclick="closeForm()">‹</button>
+    <h1 id="form-title">פריט חדש</h1>
+    <button class="topbar-action" id="form-save-btn" onclick="saveItem()">שמור</button>
+  </div>
+  <div class="form-body">
+    <!-- Category / Type -->
+    <div class="grid2">
+      <div class="field">
+        <label>קטגוריה</label>
+        <div class="seg" id="seg-cat">
+          <button onclick="setSegment('cat','קודש')" class="active">קודש</button>
+          <button onclick="setSegment('cat','חול')">חול</button>
+        </div>
+      </div>
+      <div class="field">
+        <label>סוג</label>
+        <div class="seg" id="seg-type">
+          <button onclick="setSegment('type','ספר')" class="active">ספר</button>
+          <button onclick="setSegment('type','כתב יד')">כ"י</button>
+          <button onclick="setSegment('type','חפץ')">חפץ</button>
+        </div>
+      </div>
+    </div>
+
+    <!-- Photos -->
+    <div class="field">
+      <label>תמונות</label>
+      <div class="grid4" id="photo-grid"></div>
+    </div>
+
+    <!-- Basic fields -->
+    <div class="field"><label>כותרת *</label><input id="f-title" type="text" placeholder="שם הספר / החפץ" oninput="updateSaveBtn()"/></div>
+    <div class="grid2">
+      <div class="field"><label>מחבר/יוצר</label><input id="f-author" type="text"/></div>
+      <div class="field"><label>שנה</label><input id="f-year" type="text" placeholder='תרצ"ח / 1938'/></div>
+    </div>
+    <div class="field"><label>מקום הדפסה/ייצור</label><input id="f-place" type="text"/></div>
+    <div class="field"><label>תיאור / הערות ביבליוגרפיות</label><textarea id="f-desc" rows="3"></textarea></div>
+    <div class="field"><label>מצב הפריט</label><input id="f-condition" type="text" placeholder="שלם, כריכה רעועה, חסר עמוד..."/></div>
+
+    <!-- Topics -->
+    <div>
+      <div class="sect-label">🏷 נושאים</div>
+      <div class="topics-wrap" id="topics-wrap"></div>
+    </div>
+
+    <!-- Location -->
+    <div>
+      <div class="sect-label">📍 מיקום פיזי</div>
+      <div class="grid3">
+        <div class="field compact"><input id="f-loc-area" type="text" placeholder="מחסן/חדר"/></div>
+        <div class="field compact"><input id="f-loc-box" type="text" placeholder="ארגז"/></div>
+        <div class="field compact"><input id="f-loc-shelf" type="text" placeholder="מדף"/></div>
+      </div>
+    </div>
+
+    <!-- Acquisition -->
+    <div>
+      <div class="sect-label">מקור רכישה</div>
+      <div class="field compact" style="margin-bottom:8px"><input id="f-acq-src" type="text" placeholder="ממי / היכן נרכש"/></div>
+      <div class="grid2">
+        <div class="field compact"><input id="f-acq-date" type="date"/></div>
+        <div class="field compact"><input id="f-acq-price" type="number" placeholder="מחיר רכישה (₪)"/></div>
+      </div>
+    </div>
+
+    <!-- Min price -->
+    <div>
+      <div class="sect-label">📈 מחיר מינימום למכירה</div>
+      <div class="field compact"><input id="f-minprice" type="number" placeholder="₪" oninput="updatePriceInfo()"/></div>
+      <div id="price-info" class="info"></div>
+    </div>
+
+    <!-- Status -->
+    <div>
+      <div class="sect-label">סטטוס</div>
+      <div class="seg" id="seg-status">
+        <button onclick="setSegment('status','באוסף')" class="active" style="font-size:12px">באוסף</button>
+        <button onclick="setSegment('status','הוצע למכירה')" style="font-size:12px">הוצע</button>
+        <button onclick="setSegment('status','נמכר')" style="font-size:12px">נמכר</button>
+      </div>
+      <div id="sold-price-wrap" style="display:none;margin-top:8px">
+        <div class="field compact"><input id="f-sold-price" type="number" placeholder="מחיר מכירה סופי (₪)" oninput="checkSoldWarn()"/></div>
+        <div id="sold-warn" class="warn" style="display:none"></div>
+      </div>
+    </div>
+
+    <!-- Sale history -->
+    <div>
+      <div style="display:flex;align-items:center;justify-content:space-between;margin-bottom:8px">
+        <div class="sect-label" style="margin:0">📦 היסטוריית הצעות מכירה</div>
+        <button style="font-size:12px;color:var(--brown);font-weight:600" onclick="addSaleAttempt()">+ הוסף ניסיון</button>
+      </div>
+      <div id="sale-history-wrap"></div>
+    </div>
+  </div>
+</div>
+
+<!-- DETAIL SCREEN -->
+<div id="screen-detail" class="screen hidden">
+  <div class="topbar">
+    <button class="topbar-back" onclick="closeDetail()">‹</button>
+    <span id="detail-status-badge" class="status-badge">באוסף</span>
+    <div style="display:flex;gap:12px">
+      <button onclick="editCurrentItem()" style="color:var(--brown)">✏️</button>
+      <button onclick="deleteCurrentItem()" style="color:var(--red)">🗑</button>
+    </div>
+  </div>
+  <div class="form-body" id="detail-body"></div>
+</div>
+
+<!-- EXPORT SCREEN -->
+<div id="screen-export" class="screen hidden">
+  <div class="topbar">
+    <button class="topbar-back" onclick="showScreen('list')">‹</button>
+    <h1>בניית קטלוג מכירה</h1>
+    <div style="width:22px"></div>
+  </div>
+  <div class="export-filters">
+    <div class="field compact">
+      <label>סנן לפי נושא</label>
+      <select id="export-topic" onchange="renderExportList()">
+        <option value="">כל הנושאים</option>
+      </select>
+    </div>
+    <div class="export-filter-row">
+      <button onclick="exportSelectAll()">בחר הכל</button>
+      <button onclick="exportClearAll()">נקה בחירה</button>
+    </div>
+  </div>
+  <div id="export-list" class="export-list"></div>
+  <div class="bottom-bar">
+    <button class="btn-full" id="export-btn" onclick="doExportHTML()" disabled>ייצא קטלוג (0 נבחרו)</button>
+  </div>
+</div>
+
+<!-- BACKUP SCREEN -->
+<div id="screen-backup" class="screen hidden">
+  <div class="topbar">
+    <button class="topbar-back" onclick="showScreen('list')">‹</button>
+    <h1>גיבוי ושחזור</h1>
+    <div style="width:22px"></div>
+  </div>
+  <div class="backup-body">
+    <div>
+      <p class="backup-text">המידע שלך נשמר בדפדפן של המכשיר הזה. מומלץ לייצא גיבוי מדי פעם ולשמור ב-Google Drive.</p>
+      <button class="btn-full" id="backup-export-btn" onclick="doBackupExport()">⬇ ייצא קובץ גיבוי</button>
+    </div>
+    <div class="backup-divider">
+      <p class="backup-text">שחזור מקובץ גיבוי ימחק ויחליף את כל הנתונים הקיימים.</p>
+      <input type="file" id="backup-import-input" accept="application/json" style="display:none" onchange="doBackupImport(this)"/>
+      <button class="btn-full-outline" onclick="document.getElementById('backup-import-input').click()">⬆ ייבא קובץ גיבוי</button>
+      <div id="import-msg" class="msg"></div>
+    </div>
+  </div>
+</div>
+
+<!-- IMAGE EDITOR -->
+<div id="editor-screen" class="editor-screen hidden">
+  <div class="editor-topbar">
+    <button style="color:#d9cdb8;font-size:14px" onclick="cancelEditor()">ביטול</button>
+    <span>ערוך תמונה</span>
+    <button style="color:#c9a961;font-size:14px;font-weight:600" onclick="saveEditor()">✓ שמור</button>
+  </div>
+  <div class="editor-canvas-wrap" id="editor-canvas-wrap">
+    <canvas id="editor-canvas"></canvas>
+  </div>
+  <div class="editor-tools">
+    <button class="editor-tool" onclick="editorRotate()">
+      <svg width="22" height="22" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.8"><path d="M21 12a9 9 0 1 1-2.6-6.3"/><path d="M21 4v5h-5"/></svg>
+      סבב
+    </button>
+    <button class="editor-tool" onclick="editorClearCrop()">
+      <svg width="22" height="22" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.8"><path d="M6 2v14a2 2 0 0 0 2 2h14"/><path d="M18 22V8a2 2 0 0 0-2-2H2"/></svg>
+      נקה חיתוך
+    </button>
+  </div>
+  <p class="editor-hint">גרור על התמונה כדי לסמן חיתוך</p>
+</div>
+
+</div>
+
 </html>
