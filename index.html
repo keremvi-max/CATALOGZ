@@ -406,8 +406,6 @@ async function loadData(){
   try{ const v=await kvGet("items"); if(v) items=JSON.parse(v); }catch(e){}
   try{ const v=await kvGet("topics"); if(v) topics=JSON.parse(v); }catch(e){}
 }
-async function saveItems(){ try{ await kvSet("items",JSON.stringify(items)); }catch(e){ alert("שגיאה בשמירה: "+e); } }
-async function saveTopics(){ try{ await kvSet("topics",JSON.stringify(topics)); }catch(e){} }
 
 // ========== UID ==========
 function uid(){ return Date.now().toString(36)+Math.random().toString(36).slice(2,8); }
@@ -873,8 +871,38 @@ async function doBackupImport(input){
   reader.readAsText(file);
 }
 
+// ========== LOCALSTORAGE FALLBACK ==========
+let useLS = false;
+async function kvGetSafe(k){ 
+  if(useLS){ try{ const v=localStorage.getItem(k); return v; }catch(e){ return null; } }
+  try{ return await kvGet(k); }catch(e){ return null; } 
+}
+async function kvSetSafe(k,v){ 
+  if(useLS){ try{ localStorage.setItem(k,v); }catch(e){} return; }
+  try{ await kvSet(k,v); }catch(e){ try{ localStorage.setItem(k,v); }catch(e2){} } 
+}
+
+// Override saveItems/saveTopics/loadData to use safe versions
+async function saveItems(){ try{ await kvSetSafe("items",JSON.stringify(items)); }catch(e){} }
+async function saveTopics(){ try{ await kvSetSafe("topics",JSON.stringify(topics)); }catch(e){} }
+async function loadDataSafe(){
+  try{ const v=await kvGetSafe("items"); if(v) items=JSON.parse(v); }catch(e){}
+  try{ const v=await kvGetSafe("topics"); if(v) topics=JSON.parse(v); }catch(e){}
+}
+
 // ========== INIT ==========
-openDB().then(loadData).then(()=>{ renderList(); showScreen("list"); });
+(async()=>{
+  try{ 
+    await openDB(); 
+    await loadDataSafe();
+  } catch(e){ 
+    useLS=true;
+    try{ const v=localStorage.getItem("items"); if(v) items=JSON.parse(v); }catch(e2){}
+    try{ const v=localStorage.getItem("topics"); if(v) topics=JSON.parse(v); }catch(e2){}
+  }
+  renderList(); 
+  showScreen("list");
+})();
 </script>
 </body>
 </html>
