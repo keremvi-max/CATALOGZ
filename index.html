@@ -83,6 +83,30 @@ input,select,textarea{font-family:inherit;font-size:14px}
 .dtags{display:flex;flex-wrap:wrap;gap:6px}
 .dtag{font-size:12px;padding:4px 8px;border-radius:999px;background:#f0e9d8;color:#5b4a2f}
 .shist{background:#f0e9d8;border-radius:6px;padding:10px;margin-bottom:8px}
+
+/* LIGHTBOX */
+#lightbox{position:fixed;inset:0;z-index:100;background:rgba(0,0,0,.95);display:flex;flex-direction:column;align-items:center;justify-content:center}
+#lightbox.hidden{display:none!important}
+#lightbox img{max-width:100%;max-height:80vh;object-fit:contain}
+.lbbar{display:flex;gap:12px;padding:16px;justify-content:center}
+.lbbtn{padding:10px 20px;border-radius:8px;font-size:14px;font-weight:600;cursor:pointer;border:none}
+.lbbtn-dl{background:#c9a961;color:#1c1812}
+.lbbtn-cl{background:#3a3226;color:#d9cdb8}
+.lbbtn:active{opacity:.7}
+
+/* IMAGE EDITOR */
+#img-editor{position:fixed;inset:0;z-index:101;background:#1c1812;display:flex;flex-direction:column}
+#img-editor.hidden{display:none!important}
+.ied-top{display:flex;align-items:center;justify-content:space-between;padding:12px 16px;border-bottom:1px solid #3a3226;flex-shrink:0}
+.ied-top button{font-size:14px;font-weight:600;cursor:pointer;border:none;background:none;padding:6px 12px;border-radius:6px}
+.ied-cancel{color:#d9cdb8}
+.ied-save{color:#1c1812;background:#c9a961}
+.ied-canvas-wrap{flex:1;display:flex;align-items:center;justify-content:center;padding:12px;overflow:hidden;touch-action:none}
+#ied-canvas{touch-action:none;max-width:100%;max-height:100%}
+.ied-tools{display:flex;justify-content:center;gap:24px;padding:16px;border-top:1px solid #3a3226;flex-shrink:0}
+.ied-tool{display:flex;flex-direction:column;align-items:center;gap:4px;color:#d9cdb8;font-size:11px;background:none;border:none;cursor:pointer;padding:8px 16px;border-radius:8px}
+.ied-tool:active{background:#3a3226}
+.ied-hint{text-align:center;color:#8a7d68;font-size:11px;padding-bottom:10px;flex-shrink:0}
 </style>
 </head>
 <body>
@@ -333,7 +357,7 @@ function renderPhotoGrid(){
   wrap.innerHTML=SLOTS.map(function(s){
     var p=formPhotos[s.k];
     return p
-      ?'<div class="pslot"><img src="'+p+'"/><div class="pov"><button class="povb" data-key="'+s.k+'" data-action="remove">🗑</button></div></div>'
+      ?'<div class="pslot"><img src="'+p+'" data-viewsrc="'+p+'"/><div class="pov"><button class="povb" data-key="'+s.k+'" data-action="edit">✏</button><button class="povb" data-key="'+s.k+'" data-action="remove">🗑</button></div></div>'
       :'<label class="pslot"><div class="pempty">📷<span>'+s.l+'</span><input type="file" accept="image/*" capture="environment" data-key="'+s.k+'" style="display:none"/></div></label>';
   }).join("");
   
@@ -345,6 +369,13 @@ function renderPhotoGrid(){
   });
   wrap.querySelectorAll('[data-action="remove"]').forEach(function(b){
     b.addEventListener("click", function(e){ e.preventDefault(); delete formPhotos[this.dataset.key]; renderPhotoGrid(); });
+  });
+  wrap.querySelectorAll('[data-action="edit"]').forEach(function(b){
+    b.addEventListener("click", function(e){ e.preventDefault(); openEditor(this.dataset.key); });
+  });
+  wrap.querySelectorAll('img[data-viewsrc]').forEach(function(img){
+    img.addEventListener("click", function(){ openLightbox(this.dataset.viewsrc); });
+    img.style.cursor = "pointer";
   });
 }
 
@@ -441,7 +472,7 @@ function showDetail(id){
   
   var photos=Object.values(item.photos||{});
   var h="";
-  if(photos.length) h+='<div class="dphotos">'+photos.map(function(p){return'<img src="'+p+'"/>';}).join("")+'</div>';
+  if(photos.length) h+='<div class="dphotos">'+photos.map(function(p){return'<img src="'+p+'" style="cursor:pointer" onclick="openLightbox(this.src)"/>';}).join("")+'</div>';
   h+='<div><div style="font-size:12px;color:#8a7d68">'+esc(item.category)+' · '+esc(item.itemType)+'</div>'
     +'<div class="dname">'+esc(item.title)+'</div>'
     +(item.author?'<div class="dsub">'+esc(item.author)+'</div>':"")
@@ -486,7 +517,64 @@ function doExport(){
       +(it.condition?'<p style="color:#7a3b3b;font-size:13px">מצב: '+esc(it.condition)+'</p>':"")
       +'</div></div>';
   }).join("");
-  var html='<!DOCTYPE html><html dir="rtl"><head><meta charset="UTF-8"/><title>קטלוג</title><style>body{font-family:Georgia,serif;background:#fbf7ee;padding:40px;max-width:800px;margin:0 auto}.lot{display:flex;gap:20px;margin-bottom:32px;border-bottom:1px solid #d8cdb4;padding-bottom:24px}.lot-img{width:150px;height:150px;object-fit:cover}.meta{color:#8a7d68;font-size:14px}</style></head><body><h1>קטלוג מכירה</h1>'+rows+'</body></html>';
+  var html='<!DOCTYPE html><html dir="rtl"><head><meta charset="UTF-8"/><title>קטלוג</title><style>body{font-family:Georgia,serif;background:#fbf7ee;padding:40px;max-width:800px;margin:0 auto}.lot{display:flex;gap:20px;margin-bottom:32px;border-bottom:1px solid #d8cdb4;padding-bottom:24px}.lot-img{width:150px;height:150px;object-fit:cover}.meta{color:#8a7d68;font-size:14px}
+/* LIGHTBOX */
+#lightbox{position:fixed;inset:0;z-index:100;background:rgba(0,0,0,.95);display:flex;flex-direction:column;align-items:center;justify-content:center}
+#lightbox.hidden{display:none!important}
+#lightbox img{max-width:100%;max-height:80vh;object-fit:contain}
+.lbbar{display:flex;gap:12px;padding:16px;justify-content:center}
+.lbbtn{padding:10px 20px;border-radius:8px;font-size:14px;font-weight:600;cursor:pointer;border:none}
+.lbbtn-dl{background:#c9a961;color:#1c1812}
+.lbbtn-cl{background:#3a3226;color:#d9cdb8}
+.lbbtn:active{opacity:.7}
+
+/* IMAGE EDITOR */
+#img-editor{position:fixed;inset:0;z-index:101;background:#1c1812;display:flex;flex-direction:column}
+#img-editor.hidden{display:none!important}
+.ied-top{display:flex;align-items:center;justify-content:space-between;padding:12px 16px;border-bottom:1px solid #3a3226;flex-shrink:0}
+.ied-top button{font-size:14px;font-weight:600;cursor:pointer;border:none;background:none;padding:6px 12px;border-radius:6px}
+.ied-cancel{color:#d9cdb8}
+.ied-save{color:#1c1812;background:#c9a961}
+.ied-canvas-wrap{flex:1;display:flex;align-items:center;justify-content:center;padding:12px;overflow:hidden;touch-action:none}
+#ied-canvas{touch-action:none;max-width:100%;max-height:100%}
+.ied-tools{display:flex;justify-content:center;gap:24px;padding:16px;border-top:1px solid #3a3226;flex-shrink:0}
+.ied-tool{display:flex;flex-direction:column;align-items:center;gap:4px;color:#d9cdb8;font-size:11px;background:none;border:none;cursor:pointer;padding:8px 16px;border-radius:8px}
+.ied-tool:active{background:#3a3226}
+.ied-hint{text-align:center;color:#8a7d68;font-size:11px;padding-bottom:10px;flex-shrink:0}
+</style></head><body><h1>קטלוג מכירה</h1>'+rows+'
+<!-- LIGHTBOX -->
+<div id="lightbox" class="hidden">
+  <img id="lb-img" src="" alt=""/>
+  <div class="lbbar">
+    <button class="lbbtn lbbtn-dl" id="lb-download">⬇ הורד תמונה</button>
+    <button class="lbbtn lbbtn-cl" id="lb-close">✕ סגור</button>
+  </div>
+</div>
+
+<!-- IMAGE EDITOR -->
+<div id="img-editor" class="hidden">
+  <div class="ied-top">
+    <button class="ied-cancel" id="ied-cancel">ביטול</button>
+    <span style="color:#d9cdb8;font-size:14px;font-weight:500">ערוך תמונה</span>
+    <button class="ied-save" id="ied-save">✓ שמור</button>
+  </div>
+  <div class="ied-canvas-wrap" id="ied-wrap">
+    <canvas id="ied-canvas"></canvas>
+  </div>
+  <div class="ied-tools">
+    <button class="ied-tool" id="ied-rotate">
+      <span style="font-size:22px">↻</span>
+      סבב
+    </button>
+    <button class="ied-tool" id="ied-clearcrop">
+      <span style="font-size:22px">⊡</span>
+      נקה חיתוך
+    </button>
+  </div>
+  <div class="ied-hint">גרור על התמונה כדי לסמן חיתוך</div>
+</div>
+
+</body></html>';
   var blob=new Blob([html],{type:"text/html"});
   var a=document.createElement("a"); a.href=URL.createObjectURL(blob); a.download="קטלוג.html"; a.click();
 }
@@ -494,6 +582,91 @@ function doExport(){
 function doBackup(){
   var blob=new Blob([JSON.stringify({items:items,topics:topics},null,2)],{type:"application/json"});
   var a=document.createElement("a"); a.href=URL.createObjectURL(blob); a.download="גיבוי-קטלוג.json"; a.click();
+}
+
+
+// ===== LIGHTBOX =====
+var lbSrc = "";
+function openLightbox(src){
+  lbSrc = src;
+  document.getElementById("lb-img").src = src;
+  document.getElementById("lightbox").classList.remove("hidden");
+}
+function closeLightbox(){
+  document.getElementById("lightbox").classList.add("hidden");
+  document.getElementById("lb-img").src = "";
+  lbSrc = "";
+}
+function downloadImg(){
+  if(!lbSrc) return;
+  var a = document.createElement("a");
+  a.href = lbSrc;
+  a.download = "תמונה-" + Date.now() + ".jpg";
+  a.click();
+}
+
+// ===== IMAGE EDITOR =====
+var iedImg = null, iedKey = null, iedRot = 0, iedCrop = null, iedDrag = null, iedDispW = 0, iedDispH = 0;
+
+function openEditor(key){
+  var src = formPhotos[key]; if(!src) return;
+  iedKey = key; iedRot = 0; iedCrop = null; iedDrag = null;
+  var img = new Image();
+  img.onload = function(){ iedImg = img; document.getElementById("img-editor").classList.remove("hidden"); drawIed(); };
+  img.src = src;
+}
+
+function drawIed(){
+  if(!iedImg) return;
+  var canvas = document.getElementById("ied-canvas");
+  var wrap = document.getElementById("ied-wrap");
+  var rad = iedRot * Math.PI / 180;
+  var sw = iedRot % 180 !== 0;
+  var w = sw ? iedImg.height : iedImg.width;
+  var h = sw ? iedImg.width : iedImg.height;
+  var maxW = wrap.clientWidth || 360;
+  var maxH = wrap.clientHeight || 400;
+  var scale = Math.min(1, maxW / w, maxH / h);
+  canvas.width = w * scale; canvas.height = h * scale;
+  iedDispW = canvas.width; iedDispH = canvas.height;
+  var ctx = canvas.getContext("2d");
+  ctx.save(); ctx.translate(canvas.width/2, canvas.height/2); ctx.rotate(rad); ctx.scale(scale, scale);
+  ctx.drawImage(iedImg, -iedImg.width/2, -iedImg.height/2); ctx.restore();
+  if(iedCrop && iedCrop.w > 4 && iedCrop.h > 4){
+    ctx.fillStyle = "rgba(0,0,0,.55)"; ctx.fillRect(0,0,canvas.width,canvas.height);
+    ctx.save(); ctx.beginPath(); ctx.rect(iedCrop.x,iedCrop.y,iedCrop.w,iedCrop.h); ctx.clip();
+    ctx.translate(canvas.width/2,canvas.height/2); ctx.rotate(rad); ctx.scale(scale,scale);
+    ctx.drawImage(iedImg,-iedImg.width/2,-iedImg.height/2); ctx.restore();
+    ctx.strokeStyle="#c9a961"; ctx.lineWidth=2; ctx.strokeRect(iedCrop.x,iedCrop.y,iedCrop.w,iedCrop.h);
+  }
+}
+
+function iedPos(e){
+  var r = document.getElementById("ied-canvas").getBoundingClientRect();
+  var cx = e.touches ? e.touches[0].clientX : e.clientX;
+  var cy = e.touches ? e.touches[0].clientY : e.clientY;
+  return {x: cx - r.left, y: cy - r.top};
+}
+
+function saveIed(){
+  var rad = iedRot * Math.PI / 180;
+  var sw = iedRot % 180 !== 0;
+  var w = sw ? iedImg.height : iedImg.width;
+  var h = sw ? iedImg.width : iedImg.height;
+  var full = document.createElement("canvas"); full.width = w; full.height = h;
+  var fctx = full.getContext("2d");
+  fctx.translate(w/2, h/2); fctx.rotate(rad); fctx.drawImage(iedImg, -iedImg.width/2, -iedImg.height/2);
+  var final = full;
+  if(iedCrop && iedCrop.w > 4 && iedCrop.h > 4){
+    var scale = iedDispW / w;
+    var cr = document.createElement("canvas");
+    cr.width = iedCrop.w / scale; cr.height = iedCrop.h / scale;
+    cr.getContext("2d").drawImage(full, iedCrop.x/scale, iedCrop.y/scale, iedCrop.w/scale, iedCrop.h/scale, 0, 0, cr.width, cr.height);
+    final = cr;
+  }
+  formPhotos[iedKey] = final.toDataURL("image/jpeg", 0.85);
+  document.getElementById("img-editor").classList.add("hidden");
+  renderPhotoGrid();
 }
 
 // ===== INIT & EVENTS =====
@@ -543,6 +716,24 @@ window.addEventListener("load", function(){
   document.getElementById("btn-edit").addEventListener("click", function(){
     var item=items.find(function(i){return i.id===currentId;}); if(item) showForm(item);
   });
+  // Lightbox
+  document.getElementById("lb-close").addEventListener("click", closeLightbox);
+  document.getElementById("lb-download").addEventListener("click", downloadImg);
+  document.getElementById("lightbox").addEventListener("click", function(e){ if(e.target===this) closeLightbox(); });
+  
+  // Editor
+  document.getElementById("ied-cancel").addEventListener("click", function(){ document.getElementById("img-editor").classList.add("hidden"); });
+  document.getElementById("ied-save").addEventListener("click", saveIed);
+  document.getElementById("ied-rotate").addEventListener("click", function(){ iedRot=(iedRot+90)%360; iedCrop=null; drawIed(); });
+  document.getElementById("ied-clearcrop").addEventListener("click", function(){ iedCrop=null; drawIed(); });
+  var iedCanvas = document.getElementById("ied-canvas");
+  iedCanvas.addEventListener("mousedown", function(e){ var p=iedPos(e); iedDrag=p; iedCrop={x:p.x,y:p.y,w:0,h:0}; });
+  iedCanvas.addEventListener("mousemove", function(e){ if(!iedDrag)return; var p=iedPos(e); iedCrop={x:Math.min(iedDrag.x,p.x),y:Math.min(iedDrag.y,p.y),w:Math.abs(p.x-iedDrag.x),h:Math.abs(p.y-iedDrag.y)}; drawIed(); });
+  iedCanvas.addEventListener("mouseup", function(){ iedDrag=null; });
+  iedCanvas.addEventListener("touchstart", function(e){ e.preventDefault(); var p=iedPos(e); iedDrag=p; iedCrop={x:p.x,y:p.y,w:0,h:0}; }, {passive:false});
+  iedCanvas.addEventListener("touchmove", function(e){ e.preventDefault(); if(!iedDrag)return; var p=iedPos(e); iedCrop={x:Math.min(iedDrag.x,p.x),y:Math.min(iedDrag.y,p.y),w:Math.abs(p.x-iedDrag.x),h:Math.abs(p.y-iedDrag.y)}; drawIed(); }, {passive:false});
+  iedCanvas.addEventListener("touchend", function(){ iedDrag=null; });
+
   document.getElementById("btn-delete").addEventListener("click", function(){
     if(!currentId||!confirm("למחוק את הפריט?")) return;
     items=items.filter(function(i){return i.id!==currentId;});
@@ -550,5 +741,38 @@ window.addEventListener("load", function(){
   });
 });
 </script>
+
+<!-- LIGHTBOX -->
+<div id="lightbox" class="hidden">
+  <img id="lb-img" src="" alt=""/>
+  <div class="lbbar">
+    <button class="lbbtn lbbtn-dl" id="lb-download">⬇ הורד תמונה</button>
+    <button class="lbbtn lbbtn-cl" id="lb-close">✕ סגור</button>
+  </div>
+</div>
+
+<!-- IMAGE EDITOR -->
+<div id="img-editor" class="hidden">
+  <div class="ied-top">
+    <button class="ied-cancel" id="ied-cancel">ביטול</button>
+    <span style="color:#d9cdb8;font-size:14px;font-weight:500">ערוך תמונה</span>
+    <button class="ied-save" id="ied-save">✓ שמור</button>
+  </div>
+  <div class="ied-canvas-wrap" id="ied-wrap">
+    <canvas id="ied-canvas"></canvas>
+  </div>
+  <div class="ied-tools">
+    <button class="ied-tool" id="ied-rotate">
+      <span style="font-size:22px">↻</span>
+      סבב
+    </button>
+    <button class="ied-tool" id="ied-clearcrop">
+      <span style="font-size:22px">⊡</span>
+      נקה חיתוך
+    </button>
+  </div>
+  <div class="ied-hint">גרור על התמונה כדי לסמן חיתוך</div>
+</div>
+
 </body>
 </html>
