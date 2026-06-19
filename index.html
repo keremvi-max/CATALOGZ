@@ -610,20 +610,30 @@ window.addEventListener("load",function(){
 
   // Photo picker
   document.getElementById("picker-cam").addEventListener("click",function(){
-    closePicker(); document.getElementById("inp-camera").click();
+    var key=pickerKey; closePicker();
+    var inp=document.getElementById("inp-camera");
+    inp.dataset.pendingKey=key;
+    inp.click();
   });
   document.getElementById("picker-gal").addEventListener("click",function(){
-    closePicker(); document.getElementById("inp-gallery").click();
+    var key=pickerKey; closePicker();
+    var inp=document.getElementById("inp-gallery");
+    inp.dataset.pendingKey=key;
+    inp.click();
   });
   document.getElementById("picker-cancel").addEventListener("click",closePicker);
   document.getElementById("photo-picker").addEventListener("click",function(e){ if(e.target===this) closePicker(); });
   document.getElementById("inp-camera").addEventListener("change",function(){
-    var f=this.files[0]; if(!f||!pickerKey) return;
-    compressFile(f,function(d){ formPhotos[pickerKey]=d; renderPhotoGrid(); }); this.value="";
+    var f=this.files[0], key=this.dataset.pendingKey; 
+    if(!f||!key) return;
+    this.value=""; this.dataset.pendingKey="";
+    compressFile(f,function(d){ formPhotos[key]=d; renderPhotoGrid(); });
   });
   document.getElementById("inp-gallery").addEventListener("change",function(){
-    var f=this.files[0]; if(!f||!pickerKey) return;
-    compressFile(f,function(d){ formPhotos[pickerKey]=d; renderPhotoGrid(); }); this.value="";
+    var f=this.files[0], key=this.dataset.pendingKey;
+    if(!f||!key) return;
+    this.value=""; this.dataset.pendingKey="";
+    compressFile(f,function(d){ formPhotos[key]=d; renderPhotoGrid(); });
   });
 
   // Lightbox
