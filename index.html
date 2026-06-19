@@ -111,6 +111,11 @@ input,select,textarea{font-family:inherit;font-size:14px}
 .ied-tool{display:flex;flex-direction:column;align-items:center;gap:4px;color:#d9cdb8;font-size:11px;background:none;border:none;cursor:pointer;padding:8px 16px}
 .ied-tool .ti{font-size:24px}
 .ied-hint{text-align:center;color:#8a7d68;font-size:11px;padding-bottom:10px;flex-shrink:0}
+.ied-sliders{padding:0 16px 8px;display:flex;flex-direction:column;gap:8px;flex-shrink:0}
+.ied-slider-row{display:flex;align-items:center;gap:10px}
+.ied-slider-lbl{font-size:11px;color:#8a7d68;width:52px;flex-shrink:0;text-align:right}
+.ied-slider-row input[type=range]{flex:1;accent-color:#c9a961;height:4px}
+.ied-slider-val{font-size:11px;color:#d9cdb8;width:32px;text-align:left}
 </style>
 </head>
 <body>
@@ -263,6 +268,18 @@ input,select,textarea{font-family:inherit;font-size:14px}
     <button class="ied-tool" id="ied-rot"><span class="ti">↻</span>סבב</button>
     <button class="ied-tool" id="ied-clr"><span class="ti">⊡</span>נקה חיתוך</button>
   </div>
+  <div class="ied-sliders">
+    <div class="ied-slider-row">
+      <span class="ied-slider-lbl">בהירות</span>
+      <input type="range" id="ied-bright" min="0" max="200" value="100"/>
+      <span class="ied-slider-val" id="ied-bright-val">100%</span>
+    </div>
+    <div class="ied-slider-row">
+      <span class="ied-slider-lbl">ניגודיות</span>
+      <input type="range" id="ied-contrast" min="0" max="200" value="100"/>
+      <span class="ied-slider-val" id="ied-contrast-val">100%</span>
+    </div>
+  </div>
   <div class="ied-hint">גרור על התמונה כדי לסמן חיתוך</div>
 </div>
 
@@ -280,7 +297,7 @@ var formTopics = [];
 var segVals = {cat:"קודש", type:"ספר", status:"באוסף"};
 var pickerKey = null;
 var lbSrc = "";
-var iedImg = null, iedKey = null, iedRot = 0, iedCrop = null, iedDrag = null, iedDW = 0;
+var iedImg = null, iedKey = null, iedRot = 0, iedCrop = null, iedDrag = null, iedDW = 0, iedBright = 100, iedContrast = 100;
 
 function uid(){ return Date.now().toString(36)+Math.random().toString(36).slice(2,7); }
 function sc(s){ return s==="באוסף"?"#5b6b4f":s==="הוצע למכירה"?"#9c6b2e":"#7a3b3b"; }
@@ -425,7 +442,7 @@ function closeLightbox(){ document.getElementById("lightbox").classList.add("hid
 
 function openEditor(key){
   var src=formPhotos[key]; if(!src) return;
-  iedKey=key; iedRot=0; iedCrop=null; iedDrag=null;
+  iedKey=key; iedRot=0; iedCrop=null; iedDrag=null; iedBright=100; iedContrast=100;
   var img=new Image();
   img.onload=function(){ iedImg=img; document.getElementById("img-editor").classList.remove("hidden"); drawIed(); };
   img.src=src;
@@ -438,13 +455,17 @@ function drawIed(){
   var s=Math.min(1,(wrap.clientWidth||360)/w,(wrap.clientHeight||400)/h);
   c.width=w*s; c.height=h*s; iedDW=c.width;
   var ctx=c.getContext("2d");
+  ctx.filter="brightness("+iedBright+"%) contrast("+iedContrast+"%)";
   ctx.save(); ctx.translate(c.width/2,c.height/2); ctx.rotate(rad); ctx.scale(s,s);
   ctx.drawImage(iedImg,-iedImg.width/2,-iedImg.height/2); ctx.restore();
+  ctx.filter="none";
   if(iedCrop&&iedCrop.w>4&&iedCrop.h>4){
     ctx.fillStyle="rgba(0,0,0,.55)"; ctx.fillRect(0,0,c.width,c.height);
     ctx.save(); ctx.beginPath(); ctx.rect(iedCrop.x,iedCrop.y,iedCrop.w,iedCrop.h); ctx.clip();
+    ctx.filter="brightness("+iedBright+"%) contrast("+iedContrast+"%)";
     ctx.translate(c.width/2,c.height/2); ctx.rotate(rad); ctx.scale(s,s);
     ctx.drawImage(iedImg,-iedImg.width/2,-iedImg.height/2); ctx.restore();
+    ctx.filter="none";
     ctx.strokeStyle="#c9a961"; ctx.lineWidth=2; ctx.strokeRect(iedCrop.x,iedCrop.y,iedCrop.w,iedCrop.h);
   }
 }
@@ -456,7 +477,10 @@ function saveIed(){
   var rad=iedRot*Math.PI/180, sw=iedRot%180!==0;
   var w=sw?iedImg.height:iedImg.width, h=sw?iedImg.width:iedImg.height;
   var full=document.createElement("canvas"); full.width=w; full.height=h;
-  var fctx=full.getContext("2d"); fctx.translate(w/2,h/2); fctx.rotate(rad); fctx.drawImage(iedImg,-iedImg.width/2,-iedImg.height/2);
+  var fctx=full.getContext("2d");
+  fctx.filter="brightness("+iedBright+"%) contrast("+iedContrast+"%)";
+  fctx.translate(w/2,h/2); fctx.rotate(rad); fctx.drawImage(iedImg,-iedImg.width/2,-iedImg.height/2);
+  fctx.filter="none";
   var final=full;
   if(iedCrop&&iedCrop.w>4&&iedCrop.h>4){
     var sc2=iedDW/w, cr=document.createElement("canvas");
@@ -648,14 +672,25 @@ window.addEventListener("load",function(){
   document.getElementById("ied-save").addEventListener("click",saveIed);
   document.getElementById("ied-rot").addEventListener("click",function(){ iedRot=(iedRot+90)%360; iedCrop=null; drawIed(); });
   document.getElementById("ied-clr").addEventListener("click",function(){ iedCrop=null; drawIed(); });
+  document.getElementById("ied-bright").addEventListener("input",function(){ iedBright=parseInt(this.value); document.getElementById("ied-bright-val").textContent=iedBright+"%"; drawIed(); });
+  document.getElementById("ied-contrast").addEventListener("input",function(){ iedContrast=parseInt(this.value); document.getElementById("ied-contrast-val").textContent=iedContrast+"%"; drawIed(); });
   var ic=document.getElementById("ied-canvas");
-  function onS(e){ var p=iedPos(e); iedDrag=p; iedCrop={x:p.x,y:p.y,w:0,h:0}; }
-  function onM(e){ if(!iedDrag)return; var p=iedPos(e); iedCrop={x:Math.min(iedDrag.x,p.x),y:Math.min(iedDrag.y,p.y),w:Math.abs(p.x-iedDrag.x),h:Math.abs(p.y-iedDrag.y)}; drawIed(); }
-  function onE(){ iedDrag=null; }
+  function onS(e){
+    e.preventDefault();
+    var p=iedPos(e); iedDrag=p; iedCrop={x:p.x,y:p.y,w:0,h:0};
+  }
+  function onM(e){
+    e.preventDefault();
+    if(!iedDrag)return;
+    var p=iedPos(e);
+    iedCrop={x:Math.min(iedDrag.x,p.x),y:Math.min(iedDrag.y,p.y),w:Math.abs(p.x-iedDrag.x),h:Math.abs(p.y-iedDrag.y)};
+    drawIed();
+  }
+  function onE(e){ e.preventDefault(); iedDrag=null; }
   ic.addEventListener("mousedown",onS); ic.addEventListener("mousemove",onM); ic.addEventListener("mouseup",onE);
-  ic.addEventListener("touchstart",function(e){e.preventDefault();onS(e);},{passive:false});
-  ic.addEventListener("touchmove",function(e){e.preventDefault();onM(e);},{passive:false});
-  ic.addEventListener("touchend",onE);
+  ic.addEventListener("touchstart",onS,{passive:false});
+  ic.addEventListener("touchmove",onM,{passive:false});
+  ic.addEventListener("touchend",onE,{passive:false});
 
   // Detail
   document.getElementById("btn-detail-back").addEventListener("click",function(){ show("screen-list"); currentId=null; });
