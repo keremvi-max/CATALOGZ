@@ -436,7 +436,9 @@ function load(k,d){ try{var v=localStorage.getItem(k);return v?JSON.parse(v):d;}
 // SCREENS
 // ═══════════════════════════════════════════════
 var SCREENS = ["screen-list","screen-form","screen-detail","screen-backup","screen-catalog"];
+var _filePicking = false;
 function show(id){
+  if(_filePicking) return; // don't navigate while file picker is open
   SCREENS.forEach(function(s){ $(s).classList.toggle("hidden",s!==id); });
   window.scrollTo(0,0);
 }
@@ -775,12 +777,13 @@ function saveIed(){
 // ═══════════════════════════════════════════════
 function renderChips(){
   var wrap=$("chips-wrap");
-  wrap.innerHTML=topics.map(function(t){
-    return '<button class="chip'+(formTopics.indexOf(t)>=0?" on":"")+'" data-topic="'+esc(t)+'">'+esc(t)+'</button>';
+  wrap.innerHTML=topics.map(function(t,i){
+    return '<button class="chip'+(formTopics.indexOf(t)>=0?" on":"")+'" data-idx="'+i+'">'+esc(t)+'</button>';
   }).join("")+'<button class="chip-add" id="btn-add-topic">+ נושא</button>';
   wrap.querySelectorAll(".chip").forEach(function(b){
     b.addEventListener("click",function(){
-      var t=this.dataset.topic, i=formTopics.indexOf(t);
+      var t=topics[parseInt(this.dataset.idx)];
+      var i=formTopics.indexOf(t);
       if(i>=0) formTopics.splice(i,1); else formTopics.push(t);
       renderChips();
     });
@@ -1077,23 +1080,32 @@ window.addEventListener("load", function(){
   // ── PICKER ──
   $("picker-cam").addEventListener("click",function(){
     var k=pickerKey; closePicker();
-    $("inp-cam").dataset.pendingKey=k; $("inp-cam").click();
+    var inp=$("inp-cam");
+    inp.dataset.pendingKey=k;
+    setTimeout(function(){ inp.click(); }, 50);
   });
   $("picker-gal").addEventListener("click",function(){
     var k=pickerKey; closePicker();
-    $("inp-gal").dataset.pendingKey=k; $("inp-gal").click();
+    var inp=$("inp-gal");
+    inp.dataset.pendingKey=k;
+    // Small delay prevents form from losing focus on some Android browsers
+    setTimeout(function(){ inp.click(); }, 50);
   });
   $("picker-cancel").addEventListener("click",closePicker);
   $("picker").addEventListener("click",function(e){if(e.target===this)closePicker();});
-  $("inp-cam").addEventListener("change",function(){
-    var f=this.files[0],k=this.dataset.pendingKey; if(!f||!k) return;
-    this.value=""; this.dataset.pendingKey="";
-    compressFile(f,function(d){formPhotos[k]=d;renderPhotoGrid();});
-  });
-  $("inp-gal").addEventListener("change",function(){
-    var f=this.files[0],k=this.dataset.pendingKey; if(!f||!k) return;
-    this.value=""; this.dataset.pendingKey="";
-    compressFile(f,function(d){formPhotos[k]=d;renderPhotoGrid();});
+  ["inp-cam","inp-gal"].forEach(function(id){
+    var inp=$(id);
+    // Set flag when picker opens
+    inp.addEventListener("click",function(){ _filePicking=true; });
+    inp.addEventListener("change",function(){
+      _filePicking=false;
+      var f=this.files[0],k=this.dataset.pendingKey; if(!f||!k) return;
+      this.value=""; this.dataset.pendingKey="";
+      compressFile(f,function(d){formPhotos[k]=d;renderPhotoGrid();});
+    });
+    // Reset flag if user cancels (focus returns to page)
+    inp.addEventListener("cancel",function(){ _filePicking=false; });
+    window.addEventListener("focus",function(){ setTimeout(function(){ _filePicking=false; },500); },{once:false});
   });
 
   // ── LIGHTBOX ──
