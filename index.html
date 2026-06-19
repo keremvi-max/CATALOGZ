@@ -2,258 +2,357 @@
 <html lang="he" dir="rtl">
 <head>
 <meta charset="UTF-8"/>
-<meta name="viewport" content="width=device-width,initial-scale=1,maximum-scale=1"/>
+<meta name="viewport" content="width=device-width,initial-scale=1,maximum-scale=1,user-scalable=no,viewport-fit=cover"/>
+<meta name="theme-color" content="#2b2418"/>
+<meta name="mobile-web-app-capable" content="yes"/>
+<meta name="apple-mobile-web-app-capable" content="yes"/>
+<meta name="apple-mobile-web-app-status-bar-style" content="black-translucent"/>
+<meta name="apple-mobile-web-app-title" content="קטלוג"/>
 <title>קטלוג האוסף</title>
 <style>
-*{box-sizing:border-box;margin:0;padding:0}
-body{font-family:-apple-system,Arial,sans-serif;background:#fbf7ee;color:#2b2418;min-height:100vh}
-button{font-family:inherit;cursor:pointer;border:none;background:none}
-input,select,textarea{font-family:inherit;font-size:14px}
+*{box-sizing:border-box;margin:0;padding:0;-webkit-tap-highlight-color:transparent}
+:root{
+  --paper:#fbf7ee;--paper2:#f0e9d8;--ink:#2b2418;--soft:#5a4f3e;
+  --faint:#8a7d68;--pale:#a89a7d;--line:#d8cdb4;--brown:#5b4a2f;
+  --gold:#c9a961;--green:#5b6b4f;--amber:#9c6b2e;--red:#7a3b3b;
+  --dark:#1c1812;--darkline:#3a3226;
+  --safe-top:env(safe-area-inset-top,0px);
+  --safe-bot:env(safe-area-inset-bottom,0px);
+}
+html,body{height:100%;background:var(--paper);color:var(--ink);font-family:-apple-system,"Segoe UI","Noto Sans Hebrew",Arial,sans-serif;overscroll-behavior:none}
+button{font-family:inherit;cursor:pointer;border:none;background:none;-webkit-appearance:none}
+input,select,textarea{font-family:inherit;-webkit-appearance:none;appearance:none;border-radius:6px}
+::-webkit-scrollbar{display:none}
 .hidden{display:none!important}
 
-.header{padding:20px 16px 12px;border-bottom:1px solid #d8cdb4;background:#fbf7ee;position:sticky;top:0;z-index:5}
-.hrow{display:flex;align-items:center;justify-content:space-between;margin-bottom:12px}
-.htitle{font-size:22px;font-family:Georgia,serif}
-.hcount{font-size:12px;color:#8a7d68;padding:4px 8px;border-radius:4px;border:1px solid #d8cdb4;cursor:pointer}
-.sbox{width:100%;padding:10px 12px;border:1px solid #d8cdb4;border-radius:8px;background:white;font-size:14px}
-.items{padding:12px 16px;display:flex;flex-direction:column;gap:8px;padding-bottom:100px}
-.icard{display:flex;align-items:center;gap:12px;padding:12px;border-radius:8px;border:1px solid #d8cdb4;background:white;width:100%;text-align:right;cursor:pointer}
-.icard:active{background:#f0e9d8}
-.ithumb{width:56px;height:56px;border-radius:4px;border:1px solid #d8cdb4;object-fit:cover;flex-shrink:0}
-.ithumb-empty{width:56px;height:56px;border-radius:4px;border:1px solid #d8cdb4;background:#f0e9d8;display:flex;align-items:center;justify-content:center;flex-shrink:0;font-size:24px}
-.iinfo{flex:1;min-width:0;text-align:right}
-.ititle{font-size:14px;font-weight:600;color:#2b2418;white-space:nowrap;overflow:hidden;text-overflow:ellipsis}
-.isub{font-size:12px;color:#8a7d68;margin-top:2px}
-.ibadge{font-size:10px;padding:4px 8px;border-radius:999px;color:white;flex-shrink:0}
-.empty{text-align:center;padding:60px 0;color:#8a7d68;font-size:14px}
-.botbar{position:fixed;bottom:0;left:0;right:0;display:flex;gap:8px;padding:16px;background:#fbf7ee;border-top:1px solid #d8cdb4;z-index:5}
-.bbtn{flex:1;padding:14px 0;border-radius:8px;font-size:14px;font-weight:600;cursor:pointer}
-.bbtn-pri{background:#5b4a2f;color:#fbf7ee;border:none}
-.bbtn-sec{background:white;color:#5b4a2f;border:1px solid #5b4a2f}
-.bbtn-pri:active{background:#4a3a22}
-.bbtn-sec:active{background:#f0e9d8}
+/* ── SCREENS ── */
+.screen{position:fixed;inset:0;background:var(--paper);display:flex;flex-direction:column;overflow:hidden;
+  padding-top:var(--safe-top);padding-bottom:var(--safe-bot)}
+.scroll{flex:1;overflow-y:auto;-webkit-overflow-scrolling:touch}
 
-.topbar{display:flex;align-items:center;justify-content:space-between;padding:12px 16px;border-bottom:1px solid #d8cdb4;background:#fbf7ee;position:sticky;top:0;z-index:5}
-.tbback{font-size:26px;color:#5a4f3e;padding:4px 8px;cursor:pointer;line-height:1}
-.tbtitle{font-size:16px;font-family:Georgia,serif}
-.tbsave{font-size:13px;font-weight:600;padding:8px 16px;border-radius:6px;background:#5b4a2f;color:#fbf7ee;border:none;cursor:pointer}
-.tbsave:active{background:#4a3a22}
-.tbsave:disabled{background:#d8cdb4;color:#a89a7d}
-.fbody{padding:16px;display:flex;flex-direction:column;gap:20px;padding-bottom:40px}
-.flabel{font-size:12px;color:#8a7d68;display:block;margin-bottom:5px}
-.finput{width:100%;border:1px solid #d8cdb4;border-radius:6px;background:white;color:#2b2418;padding:10px 12px;font-size:14px}
-.finput:focus{outline:2px solid #c9a961}
-.fta{width:100%;border:1px solid #d8cdb4;border-radius:6px;background:white;color:#2b2418;padding:10px 12px;font-size:14px;resize:none}
+/* ── TOP BAR ── */
+.topbar{display:flex;align-items:center;justify-content:space-between;
+  padding:12px 16px;border-bottom:1px solid var(--line);background:var(--paper);flex-shrink:0}
+.tb-back{font-size:28px;color:var(--soft);padding:2px 8px;line-height:1;cursor:pointer}
+.tb-title{font-size:16px;font-family:Georgia,serif;color:var(--ink)}
+.tb-save{font-size:13px;font-weight:700;padding:8px 18px;border-radius:8px;
+  background:var(--brown);color:var(--paper);border:none;cursor:pointer}
+.tb-save:disabled{background:var(--line);color:var(--pale)}
+.tb-save:active{opacity:.8}
+
+/* ── LIST SCREEN ── */
+.list-header{padding:20px 16px 12px;border-bottom:1px solid var(--line);background:var(--paper);flex-shrink:0}
+.list-top{display:flex;align-items:center;justify-content:space-between;margin-bottom:12px}
+.list-title{font-size:24px;font-family:Georgia,serif;color:var(--ink)}
+.list-count{font-size:12px;color:var(--faint);padding:5px 10px;border:1px solid var(--line);border-radius:6px;cursor:pointer;background:white}
+.list-count:active{background:var(--paper2)}
+.search-input{width:100%;padding:11px 14px;border:1px solid var(--line);border-radius:10px;
+  background:white;font-size:14px;color:var(--ink)}
+.items-list{padding:12px 16px;display:flex;flex-direction:column;gap:8px;padding-bottom:96px}
+.item-card{display:flex;align-items:center;gap:12px;padding:12px;border-radius:10px;
+  border:1px solid var(--line);background:white;width:100%;text-align:right;cursor:pointer}
+.item-card:active{background:var(--paper2)}
+.item-thumb{width:58px;height:58px;border-radius:6px;object-fit:cover;border:1px solid var(--line);flex-shrink:0}
+.item-thumb-empty{width:58px;height:58px;border-radius:6px;background:var(--paper2);
+  display:flex;align-items:center;justify-content:center;flex-shrink:0;font-size:26px;border:1px solid var(--line)}
+.item-info{flex:1;min-width:0;text-align:right}
+.item-title{font-size:14px;font-weight:600;color:var(--ink);white-space:nowrap;overflow:hidden;text-overflow:ellipsis}
+.item-sub{font-size:12px;color:var(--faint);margin-top:2px;white-space:nowrap;overflow:hidden;text-overflow:ellipsis}
+.item-loc{font-size:11px;color:var(--pale);margin-top:2px}
+.badge{font-size:10px;padding:4px 9px;border-radius:999px;color:white;flex-shrink:0;font-weight:600}
+.empty-state{text-align:center;padding:64px 0;color:var(--faint)}
+.empty-icon{font-size:44px;margin-bottom:12px}
+.bottom-bar{position:absolute;bottom:0;left:0;right:0;display:flex;gap:8px;
+  padding:12px 16px;padding-bottom:calc(12px + var(--safe-bot));
+  background:var(--paper);border-top:1px solid var(--line)}
+.btn-pri{flex:1;padding:14px 0;border-radius:10px;font-size:14px;font-weight:700;
+  background:var(--brown);color:var(--paper);border:none;cursor:pointer}
+.btn-sec{flex:1;padding:14px 0;border-radius:10px;font-size:14px;font-weight:700;
+  background:white;color:var(--brown);border:1px solid var(--brown);cursor:pointer}
+.btn-pri:active{opacity:.85}
+.btn-sec:active{background:var(--paper2)}
+
+/* ── FORM ── */
+.form-body{padding:16px;display:flex;flex-direction:column;gap:20px;padding-bottom:32px}
+.field-label{font-size:12px;color:var(--faint);display:block;margin-bottom:5px}
+.field-input{width:100%;border:1px solid var(--line);background:white;color:var(--ink);padding:10px 12px;font-size:14px;border-radius:8px}
+.field-input:focus{outline:2px solid var(--gold);border-color:var(--gold)}
+.field-ta{width:100%;border:1px solid var(--line);background:white;color:var(--ink);
+  padding:10px 12px;font-size:14px;border-radius:8px;resize:none}
 .g2{display:grid;grid-template-columns:1fr 1fr;gap:10px}
 .g3{display:grid;grid-template-columns:1fr 1fr 1fr;gap:8px}
 .g4{display:grid;grid-template-columns:1fr 1fr 1fr 1fr;gap:8px}
-.seg{display:flex;border-radius:6px;border:1px solid #d8cdb4;overflow:hidden}
-.segb{flex:1;padding:9px 0;font-size:13px;background:white;color:#5a4f3e;border:none;cursor:pointer}
-.segb.on{background:#5b4a2f;color:#fbf7ee}
+.seg{display:flex;border-radius:8px;border:1px solid var(--line);overflow:hidden}
+.seg-btn{flex:1;padding:10px 0;font-size:13px;background:white;color:var(--soft);border:none;cursor:pointer}
+.seg-btn.on{background:var(--brown);color:var(--paper);font-weight:600}
+.seg-btn:active{opacity:.8}
 .chips{display:flex;flex-wrap:wrap;gap:8px}
-.chip{font-size:12px;padding:6px 10px;border-radius:999px;border:1px solid #d8cdb4;background:white;color:#5a4f3e;cursor:pointer}
-.chip.on{background:#5b4a2f;color:#fbf7ee;border-color:#5b4a2f}
-.addchip{font-size:12px;padding:6px 10px;border-radius:999px;border:1px dashed #a89a7d;color:#8a7d68;background:none;cursor:pointer}
-.pslot{position:relative;aspect-ratio:1}
-.pslot img{width:100%;height:100%;object-fit:cover;border-radius:6px;border:1px solid #d8cdb4;display:block;cursor:pointer}
-.pempty{width:100%;aspect-ratio:1;border-radius:6px;border:2px dashed #5a4f3e;background:#1c1812;display:flex;flex-direction:column;align-items:center;justify-content:center;gap:4px;color:#8a7d68;font-size:10px;cursor:pointer}
-.pov{position:absolute;inset:0;display:flex;align-items:flex-end;justify-content:space-between;padding:5px;border-radius:6px;pointer-events:none}
-.povb{background:rgba(0,0,0,.75);border-radius:4px;padding:5px 7px;font-size:12px;color:white;border:none;cursor:pointer;pointer-events:all}
-.povb:active{opacity:.7}
-.salec{border:1px solid #d8cdb4;border-radius:6px;padding:10px;background:white;display:flex;flex-direction:column;gap:8px;margin-bottom:8px}
-.warn{font-size:12px;margin-top:6px;color:#7a3b3b;font-weight:500}
-.info{font-size:12px;margin-top:6px;color:#8a7d68}
-.secttitle{font-size:12px;color:#8a7d68;margin-bottom:8px}
+.chip{font-size:12px;padding:6px 12px;border-radius:999px;border:1px solid var(--line);
+  background:white;color:var(--soft);cursor:pointer}
+.chip.on{background:var(--brown);color:var(--paper);border-color:var(--brown);font-weight:600}
+.chip-add{font-size:12px;padding:6px 12px;border-radius:999px;border:1px dashed var(--pale);
+  color:var(--faint);background:none;cursor:pointer}
+.sect-title{font-size:12px;color:var(--faint);margin-bottom:8px;font-weight:600}
+.warn-text{font-size:12px;margin-top:6px;color:var(--red);font-weight:600}
+.info-text{font-size:12px;margin-top:6px;color:var(--faint)}
 
-.dbody{padding:16px;display:flex;flex-direction:column;gap:16px;padding-bottom:40px}
-.dphotos{display:grid;grid-template-columns:1fr 1fr;gap:8px}
-.dphotos img{width:100%;aspect-ratio:1;object-fit:cover;border-radius:6px;border:1px solid #d8cdb4;cursor:pointer}
-.dname{font-size:20px;font-family:Georgia,serif;margin-top:4px}
-.dsub{font-size:14px;color:#8a7d68;margin-top:2px}
-.dsect{border-top:1px solid #d8cdb4;padding-top:12px}
-.dlbl{font-size:12px;color:#8a7d68;margin-bottom:4px}
-.dval{font-size:14px}
-.dtags{display:flex;flex-wrap:wrap;gap:6px}
-.dtag{font-size:12px;padding:4px 8px;border-radius:999px;background:#f0e9d8;color:#5b4a2f}
-.shist{background:#f0e9d8;border-radius:6px;padding:10px;margin-bottom:8px}
+/* ── PHOTO SLOTS ── */
+.photo-slot{position:relative;aspect-ratio:1;border-radius:8px;overflow:hidden}
+.photo-slot img{width:100%;height:100%;object-fit:cover;display:block;cursor:pointer}
+.photo-empty{width:100%;aspect-ratio:1;border-radius:8px;border:2px dashed #5a4f3e;
+  background:#1c1812;display:flex;flex-direction:column;align-items:center;
+  justify-content:center;gap:4px;color:#8a7d68;font-size:10px;cursor:pointer}
+.photo-overlay{position:absolute;bottom:0;left:0;right:0;display:flex;
+  justify-content:space-between;padding:5px;background:linear-gradient(transparent,rgba(0,0,0,.6))}
+.photo-btn{background:rgba(0,0,0,.7);border:none;border-radius:4px;padding:5px 7px;
+  font-size:12px;color:white;cursor:pointer}
+.photo-btn:active{opacity:.7}
 
-/* PHOTO SOURCE PICKER */
-#photo-picker{position:fixed;inset:0;z-index:200;background:rgba(0,0,0,.6);display:flex;align-items:flex-end;justify-content:center}
-#photo-picker.hidden{display:none!important}
-.picker-box{background:#fbf7ee;border-radius:16px 16px 0 0;padding:20px 16px 32px;width:100%;max-width:480px}
-.picker-title{font-size:14px;color:#8a7d68;text-align:center;margin-bottom:16px}
-.picker-btns{display:flex;gap:12px}
-.picker-btn{flex:1;padding:16px 0;border-radius:10px;font-size:15px;font-weight:600;cursor:pointer;border:none;display:flex;flex-direction:column;align-items:center;gap:6px}
-.picker-btn span{font-size:28px}
-.picker-cam{background:#5b4a2f;color:#fbf7ee}
-.picker-gal{background:#f0e9d8;color:#5b4a2f}
-.picker-cancel{width:100%;padding:14px 0;border-radius:10px;font-size:14px;font-weight:600;cursor:pointer;border:1px solid #d8cdb4;background:white;color:#8a7d68;margin-top:10px}
+/* ── SALE HISTORY ── */
+.sale-card{border:1px solid var(--line);border-radius:8px;padding:12px;background:white;
+  display:flex;flex-direction:column;gap:8px;margin-bottom:8px}
+.sale-row{display:flex;align-items:center;gap:8px}
 
-/* LIGHTBOX */
-#lightbox{position:fixed;inset:0;z-index:300;background:rgba(0,0,0,.95);display:flex;flex-direction:column;align-items:center;justify-content:center}
-#lightbox.hidden{display:none!important}
-#lb-img{max-width:100%;max-height:78vh;object-fit:contain;display:block}
-.lbbar{display:flex;gap:12px;padding:16px;justify-content:center}
-.lbbtn{padding:10px 22px;border-radius:8px;font-size:14px;font-weight:600;cursor:pointer;border:none}
-.lbbtn-dl{background:#c9a961;color:#1c1812}
-.lbbtn-cl{background:#3a3226;color:#d9cdb8}
+/* ── DETAIL ── */
+.detail-body{padding:16px;display:flex;flex-direction:column;gap:16px;padding-bottom:32px}
+.detail-photos{display:grid;grid-template-columns:1fr 1fr;gap:8px}
+.detail-photos img{width:100%;aspect-ratio:1;object-fit:cover;border-radius:8px;
+  border:1px solid var(--line);cursor:pointer}
+.detail-title{font-size:21px;font-family:Georgia,serif;margin-top:4px}
+.detail-sub{font-size:14px;color:var(--faint);margin-top:2px}
+.detail-sect{border-top:1px solid var(--line);padding-top:12px}
+.detail-lbl{font-size:12px;color:var(--faint);margin-bottom:4px}
+.detail-val{font-size:14px;color:var(--ink)}
+.tag-list{display:flex;flex-wrap:wrap;gap:6px}
+.tag{font-size:12px;padding:4px 10px;border-radius:999px;background:var(--paper2);color:var(--brown)}
+.hist-item{background:var(--paper2);border-radius:8px;padding:10px;margin-bottom:8px}
+.hist-row{display:flex;justify-content:space-between;font-size:14px}
+.hist-sub{display:flex;justify-content:space-between;font-size:12px;color:var(--soft);margin-top:4px}
 
-/* IMAGE EDITOR */
-#img-editor{position:fixed;inset:0;z-index:400;background:#1c1812;display:flex;flex-direction:column}
-#img-editor.hidden{display:none!important}
-.ied-top{display:flex;align-items:center;justify-content:space-between;padding:12px 16px;border-bottom:1px solid #3a3226;flex-shrink:0}
-.ied-lbl{color:#d9cdb8;font-size:14px;font-weight:500}
-.ied-cancel{color:#d9cdb8;font-size:14px;cursor:pointer;padding:6px 12px;border-radius:6px;background:none;border:none}
-.ied-save{color:#1c1812;background:#c9a961;font-size:14px;font-weight:600;cursor:pointer;padding:8px 16px;border-radius:6px;border:none}
-.ied-wrap{flex:1;display:flex;align-items:center;justify-content:center;padding:12px;overflow:hidden;touch-action:none}
-#ied-canvas{touch-action:none;max-width:100%;max-height:100%}
-.ied-tools{display:flex;justify-content:center;gap:32px;padding:14px;border-top:1px solid #3a3226;flex-shrink:0}
-.ied-tool{display:flex;flex-direction:column;align-items:center;gap:4px;color:#d9cdb8;font-size:11px;background:none;border:none;cursor:pointer;padding:8px 16px}
-.ied-tool .ti{font-size:24px}
-.ied-hint{text-align:center;color:#8a7d68;font-size:11px;padding-bottom:10px;flex-shrink:0}
-.ied-sliders{padding:0 16px 8px;display:flex;flex-direction:column;gap:8px;flex-shrink:0}
+/* ── BACKUP ── */
+.backup-body{padding:20px 16px;display:flex;flex-direction:column;gap:20px}
+.backup-text{font-size:14px;color:var(--soft);line-height:1.7;margin-bottom:12px}
+.backup-divider{border-top:1px solid var(--line);padding-top:20px}
+.btn-full{width:100%;padding:14px 0;border-radius:10px;font-size:14px;font-weight:700;cursor:pointer;border:none}
+.btn-full-pri{background:var(--brown);color:var(--paper)}
+.btn-full-sec{background:white;color:var(--brown);border:1px solid var(--brown)!important;border:none}
+.btn-full:active{opacity:.8}
+.msg-ok{font-size:13px;margin-top:10px;color:var(--green);font-weight:600}
+.msg-err{font-size:13px;margin-top:10px;color:var(--red);font-weight:600}
+
+/* ── PICKER ── */
+#picker{position:fixed;inset:0;z-index:200;background:rgba(0,0,0,.55);
+  display:flex;align-items:flex-end;justify-content:center}
+.picker-box{background:var(--paper);border-radius:20px 20px 0 0;
+  padding:20px 16px calc(20px + var(--safe-bot));width:100%;max-width:480px}
+.picker-title{font-size:13px;color:var(--faint);text-align:center;margin-bottom:16px}
+.picker-btns{display:flex;gap:12px;margin-bottom:10px}
+.picker-btn{flex:1;padding:18px 0;border-radius:12px;font-size:15px;font-weight:700;
+  cursor:pointer;border:none;display:flex;flex-direction:column;align-items:center;gap:8px}
+.picker-btn span{font-size:30px}
+.picker-btn:active{opacity:.8}
+.picker-cam{background:var(--brown);color:var(--paper)}
+.picker-gal{background:var(--paper2);color:var(--brown)}
+.picker-cancel{width:100%;padding:14px 0;border-radius:12px;font-size:14px;font-weight:600;
+  cursor:pointer;border:1px solid var(--line);background:white;color:var(--faint)}
+
+/* ── LIGHTBOX ── */
+#lightbox{position:fixed;inset:0;z-index:300;background:rgba(0,0,0,.96);
+  display:flex;flex-direction:column;align-items:center;justify-content:center}
+#lb-img{max-width:100%;max-height:80vh;object-fit:contain;display:block;border-radius:4px}
+.lb-bar{display:flex;gap:12px;padding:20px;justify-content:center;flex-shrink:0}
+.lb-btn{padding:12px 24px;border-radius:10px;font-size:14px;font-weight:700;cursor:pointer;border:none}
+.lb-dl{background:var(--gold);color:var(--dark)}
+.lb-cl{background:#3a3226;color:#d9cdb8}
+.lb-btn:active{opacity:.8}
+
+/* ── IMAGE EDITOR ── */
+#img-editor{position:fixed;inset:0;z-index:400;background:var(--dark);
+  display:flex;flex-direction:column;padding-top:var(--safe-top);padding-bottom:var(--safe-bot)}
+.ied-top{display:flex;align-items:center;justify-content:space-between;
+  padding:12px 16px;border-bottom:1px solid var(--darkline);flex-shrink:0}
+.ied-cancel{color:#d9cdb8;font-size:14px;cursor:pointer;padding:6px 12px;
+  border-radius:8px;background:none;border:none}
+.ied-label{color:#d9cdb8;font-size:14px;font-weight:600}
+.ied-save{color:var(--dark);background:var(--gold);font-size:14px;font-weight:700;
+  cursor:pointer;padding:9px 18px;border-radius:8px;border:none}
+.ied-canvas-wrap{flex:1;display:flex;align-items:center;justify-content:center;
+  padding:8px;overflow:hidden;touch-action:none;position:relative}
+#ied-canvas{touch-action:none;max-width:100%;max-height:100%;display:block}
+.ied-tools{display:flex;justify-content:center;gap:20px;
+  padding:10px 16px;border-top:1px solid var(--darkline);flex-shrink:0}
+.ied-tool{display:flex;flex-direction:column;align-items:center;gap:3px;
+  color:#d9cdb8;font-size:10px;background:none;border:none;cursor:pointer;
+  padding:8px 14px;border-radius:8px}
+.ied-tool:active{background:var(--darkline)}
+.ied-tool-icon{font-size:22px}
+.ied-sliders{padding:8px 16px 4px;display:flex;flex-direction:column;gap:8px;flex-shrink:0}
 .ied-slider-row{display:flex;align-items:center;gap:10px}
-.ied-slider-lbl{font-size:11px;color:#8a7d68;width:52px;flex-shrink:0;text-align:right}
-.ied-slider-row input[type=range]{flex:1;accent-color:#c9a961;height:4px}
-.ied-slider-val{font-size:11px;color:#d9cdb8;width:32px;text-align:left}
+.ied-slider-lbl{font-size:11px;color:#8a7d68;width:54px;text-align:right;flex-shrink:0}
+.ied-slider-row input[type=range]{flex:1;accent-color:var(--gold)}
+.ied-slider-val{font-size:11px;color:#d9cdb8;width:34px;text-align:left;flex-shrink:0}
+.ied-hint{text-align:center;color:#8a7d68;font-size:11px;padding:4px 0 8px;flex-shrink:0}
 </style>
 </head>
 <body>
 
-<!-- LIST -->
-<div id="screen-list">
-  <div class="header">
-    <div class="hrow">
-      <div class="htitle">קטלוג האוסף</div>
-      <button class="hcount" id="btn-count">0 פריטים · גיבוי</button>
+<!-- ══ LIST ══ -->
+<div id="screen-list" class="screen">
+  <div class="list-header">
+    <div class="list-top">
+      <div class="list-title">קטלוג האוסף</div>
+      <button class="list-count" id="btn-count">0 פריטים</button>
     </div>
-    <input class="sbox" id="search" type="search" placeholder="חפש כותרת, מחבר, מיקום..."/>
+    <input class="search-input" id="search" type="search" placeholder="חפש כותרת, מחבר, מיקום, נושא..."/>
   </div>
-  <div class="items" id="items-list"></div>
-  <div class="botbar">
-    <button class="bbtn bbtn-sec" id="btn-catalog">📋 קטלוג מכירה</button>
-    <button class="bbtn bbtn-pri" id="btn-new">+ פריט חדש</button>
+  <div class="scroll"><div class="items-list" id="items-list"></div></div>
+  <div class="bottom-bar">
+    <button class="btn-sec" id="btn-catalog">📋 קטלוג מכירה</button>
+    <button class="btn-pri" id="btn-new">+ פריט חדש</button>
   </div>
 </div>
 
-<!-- FORM -->
-<div id="screen-form" class="hidden">
+<!-- ══ FORM ══ -->
+<div id="screen-form" class="screen hidden">
   <div class="topbar">
-    <button class="tbback" id="btn-form-back">‹</button>
-    <div class="tbtitle" id="form-title-el">פריט חדש</div>
-    <button class="tbsave" id="btn-save" disabled>שמור</button>
+    <button class="tb-back" id="btn-form-back">‹</button>
+    <div class="tb-title" id="form-title-el">פריט חדש</div>
+    <button class="tb-save" id="btn-save" disabled>שמור</button>
   </div>
-  <div class="fbody">
+  <div class="scroll"><div class="form-body">
     <div class="g2">
       <div>
-        <div class="flabel">קטגוריה</div>
+        <div class="field-label">קטגוריה</div>
         <div class="seg" id="seg-cat">
-          <button class="segb on" data-val="קודש">קודש</button>
-          <button class="segb" data-val="חול">חול</button>
+          <button class="seg-btn on" data-val="קודש">קודש</button>
+          <button class="seg-btn" data-val="חול">חול</button>
         </div>
       </div>
       <div>
-        <div class="flabel">סוג</div>
+        <div class="field-label">סוג</div>
         <div class="seg" id="seg-type">
-          <button class="segb on" data-val="ספר">ספר</button>
-          <button class="segb" data-val="כתב יד">כ"י</button>
-          <button class="segb" data-val="חפץ">חפץ</button>
+          <button class="seg-btn on" data-val="ספר">ספר</button>
+          <button class="seg-btn" data-val="כתב יד">כ"י</button>
+          <button class="seg-btn" data-val="חפץ">חפץ</button>
         </div>
       </div>
     </div>
     <div>
-      <div class="flabel">תמונות</div>
+      <div class="field-label">תמונות</div>
       <div class="g4" id="photo-grid"></div>
     </div>
-    <div><label class="flabel">כותרת *</label><input class="finput" id="f-title" type="text" placeholder="שם הספר / החפץ"/></div>
+    <div><label class="field-label">כותרת *</label><input class="field-input" id="f-title" type="text" placeholder="שם הספר / החפץ"/></div>
     <div class="g2">
-      <div><label class="flabel">מחבר/יוצר</label><input class="finput" id="f-author" type="text"/></div>
-      <div><label class="flabel">שנה</label><input class="finput" id="f-year" type="text" placeholder='תרצ"ח'/></div>
+      <div><label class="field-label">מחבר/יוצר</label><input class="field-input" id="f-author" type="text"/></div>
+      <div><label class="field-label">שנה</label><input class="field-input" id="f-year" type="text" placeholder='תרצ"ח'/></div>
     </div>
-    <div><label class="flabel">מקום הדפסה/ייצור</label><input class="finput" id="f-place" type="text"/></div>
-    <div><label class="flabel">תיאור / הערות</label><textarea class="fta" id="f-desc" rows="3"></textarea></div>
-    <div><label class="flabel">מצב הפריט</label><input class="finput" id="f-condition" type="text" placeholder="שלם, כריכה רעועה..."/></div>
+    <div><label class="field-label">מקום הדפסה/ייצור</label><input class="field-input" id="f-place" type="text"/></div>
+    <div><label class="field-label">תיאור / הערות ביבליוגרפיות</label><textarea class="field-ta" id="f-desc" rows="3"></textarea></div>
+    <div><label class="field-label">מצב הפריט</label><input class="field-input" id="f-condition" type="text" placeholder="שלם, כריכה רעועה, חסר עמוד..."/></div>
     <div>
-      <div class="secttitle">🏷 נושאים</div>
+      <div class="sect-title">🏷 נושאים</div>
       <div class="chips" id="chips-wrap"></div>
     </div>
     <div>
-      <div class="secttitle">📍 מיקום פיזי</div>
+      <div class="sect-title">📍 מיקום פיזי</div>
       <div class="g3">
-        <input class="finput" id="f-loc-area" type="text" placeholder="מחסן/חדר"/>
-        <input class="finput" id="f-loc-box" type="text" placeholder="ארגז"/>
-        <input class="finput" id="f-loc-shelf" type="text" placeholder="מדף"/>
+        <input class="field-input" id="f-loc-area" type="text" placeholder="מחסן/חדר"/>
+        <input class="field-input" id="f-loc-box" type="text" placeholder="ארגז"/>
+        <input class="field-input" id="f-loc-shelf" type="text" placeholder="מדף"/>
       </div>
     </div>
     <div>
-      <div class="secttitle">מקור רכישה</div>
-      <input class="finput" id="f-acq-src" type="text" placeholder="ממי / היכן נרכש" style="margin-bottom:8px"/>
+      <div class="sect-title">מקור רכישה</div>
+      <input class="field-input" id="f-acq-src" type="text" placeholder="ממי / היכן נרכש" style="margin-bottom:8px"/>
       <div class="g2">
-        <input class="finput" id="f-acq-date" type="date"/>
-        <input class="finput" id="f-acq-price" type="number" placeholder="מחיר רכישה (₪)"/>
+        <input class="field-input" id="f-acq-date" type="date"/>
+        <input class="field-input" id="f-acq-price" type="number" placeholder="מחיר רכישה (₪)"/>
       </div>
     </div>
     <div>
-      <div class="secttitle">📈 מחיר מינימום למכירה</div>
-      <input class="finput" id="f-minprice" type="number" placeholder="₪"/>
-      <div class="info" id="price-info"></div>
+      <div class="sect-title">📈 מחיר מינימום למכירה</div>
+      <input class="field-input" id="f-minprice" type="number" placeholder="₪"/>
+      <div class="info-text" id="price-info"></div>
     </div>
     <div>
-      <div class="secttitle">סטטוס</div>
+      <div class="sect-title">סטטוס</div>
       <div class="seg" id="seg-status">
-        <button class="segb on" data-val="באוסף" style="font-size:12px">באוסף</button>
-        <button class="segb" data-val="הוצע למכירה" style="font-size:12px">הוצע</button>
-        <button class="segb" data-val="נמכר" style="font-size:12px">נמכר</button>
+        <button class="seg-btn on" data-val="באוסף" style="font-size:12px">באוסף</button>
+        <button class="seg-btn" data-val="הוצע למכירה" style="font-size:12px">הוצע</button>
+        <button class="seg-btn" data-val="נמכר" style="font-size:12px">נמכר</button>
       </div>
       <div id="sold-wrap" class="hidden" style="margin-top:8px">
-        <input class="finput" id="f-sold" type="number" placeholder="מחיר מכירה סופי (₪)"/>
-        <div class="warn hidden" id="sold-warn"></div>
+        <input class="field-input" id="f-sold" type="number" placeholder="מחיר מכירה סופי (₪)"/>
+        <div class="warn-text hidden" id="sold-warn"></div>
       </div>
     </div>
     <div>
       <div style="display:flex;align-items:center;justify-content:space-between;margin-bottom:8px">
-        <div class="secttitle" style="margin:0">📦 היסטוריית מכירות</div>
-        <button id="btn-add-sale" style="font-size:12px;color:#5b4a2f;font-weight:600;padding:4px 8px;cursor:pointer">+ הוסף</button>
+        <div class="sect-title" style="margin:0">📦 היסטוריית מכירות</div>
+        <button id="btn-add-sale" style="font-size:12px;color:var(--brown);font-weight:700;padding:4px 8px;cursor:pointer">+ הוסף</button>
       </div>
       <div id="sale-list"></div>
     </div>
-  </div>
+  </div></div>
 </div>
 
-<!-- DETAIL -->
-<div id="screen-detail" class="hidden">
+<!-- ══ DETAIL ══ -->
+<div id="screen-detail" class="screen hidden">
   <div class="topbar">
-    <button class="tbback" id="btn-detail-back">‹</button>
-    <span class="ibadge" id="detail-badge">באוסף</span>
-    <div style="display:flex;gap:12px">
-      <button id="btn-edit" style="font-size:18px;cursor:pointer">✏️</button>
-      <button id="btn-delete" style="font-size:18px;cursor:pointer">🗑️</button>
+    <button class="tb-back" id="btn-detail-back">‹</button>
+    <span class="badge" id="detail-badge">באוסף</span>
+    <div style="display:flex;gap:14px">
+      <button id="btn-edit" style="font-size:20px;cursor:pointer">✏️</button>
+      <button id="btn-delete" style="font-size:20px;cursor:pointer">🗑️</button>
     </div>
   </div>
-  <div class="dbody" id="detail-body"></div>
+  <div class="scroll"><div class="detail-body" id="detail-body"></div></div>
 </div>
 
-<!-- BACKUP SCREEN -->
-<div id="screen-backup" class="hidden">
+<!-- ══ BACKUP ══ -->
+<div id="screen-backup" class="screen hidden">
   <div class="topbar">
-    <button class="tbback" id="btn-backup-back">‹</button>
-    <div class="tbtitle">גיבוי ושחזור</div>
+    <button class="tb-back" id="btn-backup-back">‹</button>
+    <div class="tb-title">גיבוי ושחזור</div>
     <div style="width:44px"></div>
   </div>
-  <div style="padding:20px 16px;display:flex;flex-direction:column;gap:20px">
-    <p style="font-size:14px;color:#5a4f3e;line-height:1.7">המידע שלך נשמר בדפדפן של המכשיר הזה. מומלץ לייצא גיבוי מדי פעם ולשמור ב-Google Drive, כדי לא לאבד מידע אם תחליף מכשיר.</p>
-    <button class="bbtn bbtn-pri" id="btn-do-export" style="padding:14px 0;border-radius:8px;font-size:14px;font-weight:600">⬇ ייצא קובץ גיבוי</button>
-    <div style="border-top:1px solid #d8cdb4;padding-top:20px">
-      <p style="font-size:14px;color:#5a4f3e;line-height:1.7;margin-bottom:12px">שחזור מקובץ גיבוי <strong>ימחק ויחליף</strong> את כל הנתונים הקיימים.</p>
-      <button class="bbtn bbtn-sec" id="btn-do-import" style="padding:14px 0;border-radius:8px;font-size:14px;font-weight:600;width:100%">⬆ ייבא קובץ גיבוי</button>
-      <input type="file" id="inp-backup" accept="application/json" style="display:none"/>
-      <div id="import-msg" style="font-size:13px;margin-top:10px;display:none"></div>
+  <div class="scroll"><div class="backup-body">
+    <div>
+      <p class="backup-text">המידע שלך נשמר בדפדפן של המכשיר הזה. מומלץ לייצא גיבוי מדי פעם ולשמור ב-Google Drive כדי לא לאבד מידע אם תחליף מכשיר.</p>
+      <button class="btn-full btn-full-pri" id="btn-do-export">⬇ ייצא קובץ גיבוי</button>
     </div>
+    <div class="backup-divider">
+      <p class="backup-text">שחזור מקובץ גיבוי <strong>ימחק ויחליף</strong> את כל הנתונים הקיימים.</p>
+      <button class="btn-full btn-full-sec" id="btn-do-import" style="border:1px solid var(--brown)">⬆ ייבא קובץ גיבוי</button>
+      <input type="file" id="inp-backup" accept="application/json" style="display:none"/>
+      <div id="import-msg" style="display:none"></div>
+    </div>
+  </div></div>
+</div>
+
+<!-- ══ CATALOG EXPORT ══ -->
+<div id="screen-catalog" class="screen hidden">
+  <div class="topbar">
+    <button class="tb-back" id="btn-catalog-back">‹</button>
+    <div class="tb-title">בניית קטלוג מכירה</div>
+    <div style="width:44px"></div>
+  </div>
+  <div style="padding:12px 16px;border-bottom:1px solid var(--line);flex-shrink:0">
+    <label class="field-label">סנן לפי נושא</label>
+    <select class="field-input" id="catalog-topic" style="margin-bottom:8px"></select>
+    <div style="display:flex;justify-content:space-between;font-size:12px;color:var(--brown)">
+      <button id="cat-sel-all" style="cursor:pointer;color:var(--brown);font-weight:600">בחר הכל</button>
+      <button id="cat-clr-all" style="cursor:pointer;color:var(--faint)">נקה בחירה</button>
+    </div>
+  </div>
+  <div class="scroll"><div id="catalog-list" style="padding:12px 16px;display:flex;flex-direction:column;gap:8px;padding-bottom:96px"></div></div>
+  <div class="bottom-bar">
+    <button class="btn-pri" id="btn-do-catalog" disabled>ייצא קטלוג (0 נבחרו)</button>
   </div>
 </div>
 
-<!-- PHOTO SOURCE PICKER -->
-<div id="photo-picker" class="hidden">
+<!-- ══ OVERLAYS ══ -->
+<div id="picker" class="hidden">
   <div class="picker-box">
     <div class="picker-title">בחר מקור תמונה</div>
     <div class="picker-btns">
@@ -264,121 +363,146 @@ input,select,textarea{font-family:inherit;font-size:14px}
   </div>
 </div>
 
-<!-- LIGHTBOX -->
 <div id="lightbox" class="hidden">
   <img id="lb-img" src="" alt=""/>
-  <div class="lbbar">
-    <button class="lbbtn lbbtn-dl" id="lb-dl">⬇ הורד</button>
-    <button class="lbbtn lbbtn-cl" id="lb-cl">✕ סגור</button>
+  <div class="lb-bar">
+    <button class="lb-btn lb-dl" id="lb-dl">⬇ הורד</button>
+    <button class="lb-btn lb-cl" id="lb-cl">✕ סגור</button>
   </div>
 </div>
 
-<!-- IMAGE EDITOR -->
 <div id="img-editor" class="hidden">
   <div class="ied-top">
     <button class="ied-cancel" id="ied-cancel">ביטול</button>
-    <span class="ied-lbl">ערוך תמונה</span>
+    <span class="ied-label">ערוך תמונה</span>
     <button class="ied-save" id="ied-save">✓ שמור</button>
   </div>
-  <div class="ied-wrap" id="ied-wrap">
-    <canvas id="ied-canvas"></canvas>
-  </div>
+  <div class="ied-canvas-wrap" id="ied-wrap"><canvas id="ied-canvas"></canvas></div>
   <div class="ied-tools">
-    <button class="ied-tool" id="ied-rot"><span class="ti">↻</span>סבב</button>
-    <button class="ied-tool" id="ied-clr"><span class="ti">⊡</span>נקה חיתוך</button>
+    <button class="ied-tool" id="ied-rot"><span class="ied-tool-icon">↻</span>סבב</button>
+    <button class="ied-tool" id="ied-clr-crop"><span class="ied-tool-icon">⊡</span>נקה חיתוך</button>
+    <button class="ied-tool" id="ied-reset"><span class="ied-tool-icon">↺</span>אפס</button>
   </div>
   <div class="ied-sliders">
     <div class="ied-slider-row">
       <span class="ied-slider-lbl">בהירות</span>
-      <input type="range" id="ied-bright" min="0" max="200" value="100"/>
-      <span class="ied-slider-val" id="ied-bright-val">100%</span>
+      <input type="range" id="sl-bright" min="0" max="200" value="100"/>
+      <span class="ied-slider-val" id="sl-bright-val">100%</span>
     </div>
     <div class="ied-slider-row">
       <span class="ied-slider-lbl">ניגודיות</span>
-      <input type="range" id="ied-contrast" min="0" max="200" value="100"/>
-      <span class="ied-slider-val" id="ied-contrast-val">100%</span>
+      <input type="range" id="sl-contrast" min="0" max="200" value="100"/>
+      <span class="ied-slider-val" id="sl-contrast-val">100%</span>
     </div>
   </div>
   <div class="ied-hint">גרור על התמונה כדי לסמן חיתוך</div>
 </div>
 
-<!-- hidden file inputs -->
-<input type="file" id="inp-camera" accept="image/*" capture="environment" style="display:none"/>
-<input type="file" id="inp-gallery" accept="image/*" style="display:none"/>
+<!-- hidden inputs -->
+<input type="file" id="inp-cam" accept="image/*" capture="environment" style="display:none"/>
+<input type="file" id="inp-gal" accept="image/*" style="display:none"/>
 
 <script>
+// ═══════════════════════════════════════════════
+// STATE
+// ═══════════════════════════════════════════════
 var items = [];
 var topics = ["חסידות","ש\"ס","סידורים","קבלה","תנ\"ך ומפרשים","הלכה","דרשות","מוסר","כתבי יד","תשמישי קדושה","מפות","אמנות יהודית"];
 var currentId = null;
 var formPhotos = {};
 var formSales = [];
 var formTopics = [];
-var segVals = {cat:"קודש", type:"ספר", status:"באוסף"};
+var segVals = {cat:"קודש",type:"ספר",status:"באוסף"};
 var pickerKey = null;
 var lbSrc = "";
-var iedImg = null, iedKey = null, iedRot = 0, iedCrop = null, iedDrag = null, iedDW = 0, iedBright = 100, iedContrast = 100;
+var catSelected = new Set();
 
+// Editor state
+var ied = {img:null,key:null,rot:0,bright:100,contrast:100,
+           crop:null,drag:null,dw:0,dh:0,cropActive:false};
+
+// ═══════════════════════════════════════════════
+// UTILS
+// ═══════════════════════════════════════════════
 function uid(){ return Date.now().toString(36)+Math.random().toString(36).slice(2,7); }
 function sc(s){ return s==="באוסף"?"#5b6b4f":s==="הוצע למכירה"?"#9c6b2e":"#7a3b3b"; }
 function esc(s){ return String(s||"").replace(/&/g,"&amp;").replace(/</g,"&lt;").replace(/>/g,"&gt;"); }
-function save(k,v){ try{ localStorage.setItem(k,JSON.stringify(v)); }catch(e){} }
-function load(k,d){ try{ var v=localStorage.getItem(k); return v?JSON.parse(v):d; }catch(e){ return d; } }
+function $$(s){ return document.querySelectorAll(s); }
+function $(s){ return document.getElementById(s); }
+function save(k,v){ try{localStorage.setItem(k,JSON.stringify(v));}catch(e){} }
+function load(k,d){ try{var v=localStorage.getItem(k);return v?JSON.parse(v):d;}catch(e){return d;} }
 
+// ═══════════════════════════════════════════════
+// SCREENS
+// ═══════════════════════════════════════════════
+var SCREENS = ["screen-list","screen-form","screen-detail","screen-backup","screen-catalog"];
 function show(id){
-  ["screen-list","screen-form","screen-detail","screen-backup"].forEach(function(s){
-    document.getElementById(s).classList.toggle("hidden",s!==id);
-  });
+  SCREENS.forEach(function(s){ $(s).classList.toggle("hidden",s!==id); });
   window.scrollTo(0,0);
 }
 
+// ═══════════════════════════════════════════════
+// LIST
+// ═══════════════════════════════════════════════
 function renderList(){
-  var q=(document.getElementById("search").value||"").toLowerCase().trim();
+  var q=($("search").value||"").toLowerCase().trim();
   var list=items.filter(function(it){
     if(!q) return true;
-    return [it.title,it.author,it.place,it.description,it.location.area,it.location.box].concat(it.topics||[]).join(" ").toLowerCase().indexOf(q)>=0;
-  }).sort(function(a,b){ return new Date(b.createdAt)-new Date(a.createdAt); });
-  document.getElementById("btn-count").textContent=items.length+" פריטים · גיבוי";
-  var el=document.getElementById("items-list");
+    return [it.title,it.author,it.place,it.description,
+            it.location.area,it.location.box].concat(it.topics||[])
+      .join(" ").toLowerCase().indexOf(q)>=0;
+  }).sort(function(a,b){return new Date(b.createdAt)-new Date(a.createdAt);});
+
+  $("btn-count").textContent=items.length+" פריטים · גיבוי";
+  var el=$("items-list");
   if(!list.length){
-    el.innerHTML='<div class="empty"><div style="font-size:40px;margin-bottom:12px">📚</div>'+(items.length?"לא נמצאו":"עדיין לא הוספת פריטים")+'</div>';
+    el.innerHTML='<div class="empty-state"><div class="empty-icon">📚</div>'
+      +(items.length?"לא נמצאו פריטים מתאימים":"עדיין לא הוספת פריטים לקטלוג")+'</div>';
     return;
   }
   el.innerHTML=list.map(function(it){
     var p=it.photos.cover||it.photos.titlePage||Object.values(it.photos||{})[0];
     var loc=[it.location.area,it.location.box?"ארגז "+it.location.box:""].filter(Boolean).join(" · ");
-    return '<button class="icard" data-id="'+it.id+'">'
-      +(p?'<img class="ithumb" src="'+p+'"/>':"<div class='ithumb-empty'>📄</div>")
-      +'<div class="iinfo"><div class="ititle">'+esc(it.title)+'</div>'
-      +'<div class="isub">'+esc([it.category,it.itemType,it.place].filter(Boolean).join(" · "))+'</div>'
-      +(loc?'<div class="isub" style="font-size:11px;color:#a89a7d">📍 '+esc(loc)+'</div>':"")
-      +'</div><span class="ibadge" style="background:'+sc(it.status)+'">'+it.status+'</span></button>';
+    return '<button class="item-card" data-id="'+it.id+'">'
+      +(p?'<img class="item-thumb" src="'+p+'"/>'
+         :'<div class="item-thumb-empty">📄</div>')
+      +'<div class="item-info">'
+      +'<div class="item-title">'+esc(it.title)+'</div>'
+      +'<div class="item-sub">'+esc([it.category,it.itemType,it.place].filter(Boolean).join(" · "))+'</div>'
+      +(loc?'<div class="item-loc">📍 '+esc(loc)+'</div>':"")
+      +'</div>'
+      +'<span class="badge" style="background:'+sc(it.status)+'">'+it.status+'</span>'
+      +'</button>';
   }).join("");
-  el.querySelectorAll(".icard").forEach(function(b){
-    b.addEventListener("click",function(){ showDetail(this.dataset.id); });
+  $$(".item-card").forEach(function(b){
+    b.addEventListener("click",function(){showDetail(this.dataset.id);});
   });
 }
 
+// ═══════════════════════════════════════════════
+// FORM
+// ═══════════════════════════════════════════════
 var SLOTS=[{k:"cover",l:"שער"},{k:"titlePage",l:"עמוד שער"},{k:"colophon",l:"קולופון"},{k:"condition",l:"מצב/פגם"}];
 
 function showForm(item){
   currentId=item?item.id:null;
-  document.getElementById("form-title-el").textContent=item?"ערוך פריט":"פריט חדש";
+  $("form-title-el").textContent=item?"ערוך פריט":"פריט חדש";
   segVals={cat:item?item.category:"קודש",type:item?item.itemType:"ספר",status:item?item.status:"באוסף"};
   ["cat","type","status"].forEach(renderSeg);
-  document.getElementById("f-title").value=item?item.title:"";
-  document.getElementById("f-author").value=item?item.author:"";
-  document.getElementById("f-year").value=item?item.year:"";
-  document.getElementById("f-place").value=item?item.place:"";
-  document.getElementById("f-desc").value=item?item.description:"";
-  document.getElementById("f-condition").value=item?item.condition:"";
-  document.getElementById("f-loc-area").value=item?item.location.area:"";
-  document.getElementById("f-loc-box").value=item?item.location.box:"";
-  document.getElementById("f-loc-shelf").value=item?item.location.shelf:"";
-  document.getElementById("f-acq-src").value=item?item.acquisition.source:"";
-  document.getElementById("f-acq-date").value=item?item.acquisition.date:"";
-  document.getElementById("f-acq-price").value=item?item.acquisition.price:"";
-  document.getElementById("f-minprice").value=item?item.minPrice:"";
-  document.getElementById("f-sold").value=item?item.soldPrice:"";
+  $("f-title").value=item?item.title:"";
+  $("f-author").value=item?item.author:"";
+  $("f-year").value=item?item.year:"";
+  $("f-place").value=item?item.place:"";
+  $("f-desc").value=item?item.description:"";
+  $("f-condition").value=item?item.condition:"";
+  $("f-loc-area").value=item?item.location.area:"";
+  $("f-loc-box").value=item?item.location.box:"";
+  $("f-loc-shelf").value=item?item.location.shelf:"";
+  $("f-acq-src").value=item?item.acquisition.source:"";
+  $("f-acq-date").value=item?item.acquisition.date:"";
+  $("f-acq-price").value=item?item.acquisition.price:"";
+  $("f-minprice").value=item?item.minPrice:"";
+  $("f-sold").value=item?item.soldPrice:"";
   formPhotos=item?Object.assign({},item.photos):{};
   formSales=item?JSON.parse(JSON.stringify(item.saleHistory||[])):[];
   formTopics=item?[].concat(item.topics||[]):[];
@@ -392,41 +516,53 @@ function showForm(item){
 }
 
 function renderSeg(seg){
-  document.getElementById("seg-"+seg).querySelectorAll(".segb").forEach(function(b){
+  $$(".seg-btn","#seg-"+seg);
+  $("seg-"+seg).querySelectorAll(".seg-btn").forEach(function(b){
     b.classList.toggle("on",b.dataset.val===segVals[seg]);
   });
 }
-function updateSaveBtn(){ document.getElementById("btn-save").disabled=!document.getElementById("f-title").value.trim(); }
+
+function updateSaveBtn(){ $("btn-save").disabled=!$("f-title").value.trim(); }
 function updatePriceInfo(){
-  var min=document.getElementById("f-minprice").value, cost=document.getElementById("f-acq-price").value;
-  document.getElementById("price-info").textContent=(min&&cost)?"עלות: ₪"+cost+" · מינימום: ₪"+min:"";
+  var min=$("f-minprice").value,cost=$("f-acq-price").value;
+  $("price-info").textContent=(min&&cost)?"עלות: ₪"+cost+" · מינימום: ₪"+min:"";
 }
-function toggleSoldWrap(){ document.getElementById("sold-wrap").classList.toggle("hidden",segVals.status!=="נמכר"); }
+function toggleSoldWrap(){ $("sold-wrap").classList.toggle("hidden",segVals.status!=="נמכר"); }
 function checkSoldWarn(){
-  var min=parseFloat(document.getElementById("f-minprice").value), sold=parseFloat(document.getElementById("f-sold").value), w=document.getElementById("sold-warn");
-  if(min&&sold&&sold<min){ w.textContent="⚠ מחיר נמוך מהמינימום (₪"+min+")"; w.classList.remove("hidden"); }
+  var min=parseFloat($("f-minprice").value),sold=parseFloat($("f-sold").value),w=$("sold-warn");
+  if(min&&sold&&sold<min){w.textContent="⚠ מחיר נמוך מהמינימום (₪"+min+")";w.classList.remove("hidden");}
   else w.classList.add("hidden");
 }
 
+// ═══════════════════════════════════════════════
+// PHOTOS
+// ═══════════════════════════════════════════════
 function renderPhotoGrid(){
-  var wrap=document.getElementById("photo-grid");
+  var wrap=$("photo-grid");
   wrap.innerHTML=SLOTS.map(function(s){
     var p=formPhotos[s.k];
     return p
-      ?'<div class="pslot"><img src="'+p+'" data-key="'+s.k+'"/><div class="pov"><button class="povb" data-key="'+s.k+'" data-act="edit">✏</button><button class="povb" data-key="'+s.k+'" data-act="del">🗑</button></div></div>'
-      :'<div class="pslot"><div class="pempty" data-key="'+s.k+'"><span style="font-size:22px">📷</span><span>'+s.l+'</span></div></div>';
+      ?'<div class="photo-slot"><img src="'+p+'" data-key="'+s.k+'"/>'
+       +'<div class="photo-overlay">'
+       +'<button class="photo-btn" data-key="'+s.k+'" data-act="edit">✏</button>'
+       +'<button class="photo-btn" data-key="'+s.k+'" data-act="del">🗑</button>'
+       +'</div></div>'
+      :'<div class="photo-slot">'
+       +'<div class="photo-empty" data-key="'+s.k+'">'
+       +'<span style="font-size:22px">📷</span><span>'+s.l+'</span>'
+       +'</div></div>';
   }).join("");
   wrap.querySelectorAll("img").forEach(function(img){
-    img.addEventListener("click",function(){ openLightbox(formPhotos[this.dataset.key]); });
+    img.addEventListener("click",function(){openLightbox(formPhotos[this.dataset.key]);});
   });
-  wrap.querySelectorAll(".pempty").forEach(function(d){
-    d.addEventListener("click",function(){ openPicker(this.dataset.key); });
+  wrap.querySelectorAll(".photo-empty").forEach(function(d){
+    d.addEventListener("click",function(){openPicker(this.dataset.key);});
   });
   wrap.querySelectorAll("[data-act='edit']").forEach(function(b){
-    b.addEventListener("click",function(e){ e.stopPropagation(); openEditor(this.dataset.key); });
+    b.addEventListener("click",function(e){e.stopPropagation();openEditor(this.dataset.key);});
   });
   wrap.querySelectorAll("[data-act='del']").forEach(function(b){
-    b.addEventListener("click",function(e){ e.stopPropagation(); delete formPhotos[this.dataset.key]; renderPhotoGrid(); });
+    b.addEventListener("click",function(e){e.stopPropagation();delete formPhotos[this.dataset.key];renderPhotoGrid();});
   });
 }
 
@@ -436,8 +572,9 @@ function compressFile(file,cb){
     var img=new Image();
     img.onload=function(){
       var maxD=1400,q=0.82,w=img.width,h=img.height;
-      if(w>h&&w>maxD){h=Math.round(h*maxD/w);w=maxD;}else if(h>maxD){w=Math.round(w*maxD/h);h=maxD;}
-      var c=document.createElement("canvas"); c.width=w; c.height=h;
+      if(w>h&&w>maxD){h=Math.round(h*maxD/w);w=maxD;}
+      else if(h>maxD){w=Math.round(w*maxD/h);h=maxD;}
+      var c=document.createElement("canvas");c.width=w;c.height=h;
       c.getContext("2d").drawImage(img,0,0,w,h);
       cb(c.toDataURL("image/jpeg",q));
     };
@@ -446,77 +583,201 @@ function compressFile(file,cb){
   reader.readAsDataURL(file);
 }
 
-function openPicker(key){
-  pickerKey=key;
-  document.getElementById("photo-picker").classList.remove("hidden");
-}
-function closePicker(){ document.getElementById("photo-picker").classList.add("hidden"); pickerKey=null; }
+function openPicker(key){ pickerKey=key; $("picker").classList.remove("hidden"); }
+function closePicker(){ $("picker").classList.add("hidden"); pickerKey=null; }
 
-function openLightbox(src){
-  lbSrc=src;
-  document.getElementById("lb-img").src=src;
-  document.getElementById("lightbox").classList.remove("hidden");
-}
-function closeLightbox(){ document.getElementById("lightbox").classList.add("hidden"); lbSrc=""; }
+// ═══════════════════════════════════════════════
+// LIGHTBOX
+// ═══════════════════════════════════════════════
+function openLightbox(src){ lbSrc=src; $("lb-img").src=src; $("lightbox").classList.remove("hidden"); }
+function closeLightbox(){ $("lightbox").classList.add("hidden"); lbSrc=""; }
 
+// ═══════════════════════════════════════════════
+// IMAGE EDITOR
+// ═══════════════════════════════════════════════
 function openEditor(key){
   var src=formPhotos[key]; if(!src) return;
-  iedKey=key; iedRot=0; iedCrop=null; iedDrag=null; iedBright=100; iedContrast=100;
+  ied.key=key; ied.rot=0; ied.bright=100; ied.contrast=100;
+  ied.crop=null; ied.drag=null; ied.cropActive=false;
+  $("sl-bright").value=100; $("sl-bright-val").textContent="100%";
+  $("sl-contrast").value=100; $("sl-contrast-val").textContent="100%";
   var img=new Image();
-  img.onload=function(){ iedImg=img; document.getElementById("img-editor").classList.remove("hidden"); drawIed(); };
+  img.onload=function(){ ied.img=img; $("img-editor").classList.remove("hidden"); drawIed(); };
   img.src=src;
 }
+
 function drawIed(){
-  if(!iedImg) return;
-  var c=document.getElementById("ied-canvas"), wrap=document.getElementById("ied-wrap");
-  var rad=iedRot*Math.PI/180, sw=iedRot%180!==0;
-  var w=sw?iedImg.height:iedImg.width, h=sw?iedImg.width:iedImg.height;
-  var s=Math.min(1,(wrap.clientWidth||360)/w,(wrap.clientHeight||400)/h);
-  c.width=w*s; c.height=h*s; iedDW=c.width;
+  if(!ied.img) return;
+  var c=$("ied-canvas"), wrap=$("ied-wrap");
+  var rad=ied.rot*Math.PI/180, sw=ied.rot%180!==0;
+  var iw=ied.img.width, ih=ied.img.height;
+  var fw=sw?ih:iw, fh=sw?iw:ih;
+  var maxW=wrap.clientWidth-16, maxH=wrap.clientHeight-16;
+  var s=Math.min(1,maxW/fw,maxH/fh);
+  c.width=fw*s; c.height=fh*s;
+  ied.dw=c.width; ied.dh=c.height;
   var ctx=c.getContext("2d");
-  ctx.filter="brightness("+iedBright+"%) contrast("+iedContrast+"%)";
-  ctx.save(); ctx.translate(c.width/2,c.height/2); ctx.rotate(rad); ctx.scale(s,s);
-  ctx.drawImage(iedImg,-iedImg.width/2,-iedImg.height/2); ctx.restore();
+  ctx.clearRect(0,0,c.width,c.height);
+  ctx.filter="brightness("+ied.bright+"%) contrast("+ied.contrast+"%)";
+  ctx.save();
+  ctx.translate(c.width/2,c.height/2);
+  ctx.rotate(rad);
+  ctx.scale(s,s);
+  ctx.drawImage(ied.img,-iw/2,-ih/2);
+  ctx.restore();
   ctx.filter="none";
-  if(iedCrop&&iedCrop.w>4&&iedCrop.h>4){
-    ctx.fillStyle="rgba(0,0,0,.55)"; ctx.fillRect(0,0,c.width,c.height);
-    ctx.save(); ctx.beginPath(); ctx.rect(iedCrop.x,iedCrop.y,iedCrop.w,iedCrop.h); ctx.clip();
-    ctx.filter="brightness("+iedBright+"%) contrast("+iedContrast+"%)";
-    ctx.translate(c.width/2,c.height/2); ctx.rotate(rad); ctx.scale(s,s);
-    ctx.drawImage(iedImg,-iedImg.width/2,-iedImg.height/2); ctx.restore();
+
+  // Draw crop overlay
+  if(ied.crop){
+    var cr=ied.crop;
+    // Dark overlay
+    ctx.fillStyle="rgba(0,0,0,0.5)";
+    ctx.fillRect(0,0,c.width,c.height);
+    // Clear crop area and redraw image through it
+    ctx.save();
+    ctx.beginPath();
+    ctx.rect(cr.x,cr.y,cr.w,cr.h);
+    ctx.clip();
+    ctx.filter="brightness("+ied.bright+"%) contrast("+ied.contrast+"%)";
+    ctx.translate(c.width/2,c.height/2);
+    ctx.rotate(rad);
+    ctx.scale(s,s);
+    ctx.drawImage(ied.img,-iw/2,-ih/2);
     ctx.filter="none";
-    ctx.strokeStyle="#c9a961"; ctx.lineWidth=2; ctx.strokeRect(iedCrop.x,iedCrop.y,iedCrop.w,iedCrop.h);
+    ctx.restore();
+    // Border
+    ctx.strokeStyle=ied.cropActive?"#c9a961":"rgba(201,169,97,0.7)";
+    ctx.lineWidth=2;
+    ctx.strokeRect(cr.x,cr.y,cr.w,cr.h);
+    // Thirds grid
+    ctx.strokeStyle="rgba(255,255,255,0.3)";
+    ctx.lineWidth=1;
+    for(var i=1;i<3;i++){
+      ctx.beginPath(); ctx.moveTo(cr.x+cr.w*i/3,cr.y); ctx.lineTo(cr.x+cr.w*i/3,cr.y+cr.h); ctx.stroke();
+      ctx.beginPath(); ctx.moveTo(cr.x,cr.y+cr.h*i/3); ctx.lineTo(cr.x+cr.w,cr.y+cr.h*i/3); ctx.stroke();
+    }
+    // 8 handles
+    var hs=10;
+    var hpts=[
+      [cr.x,cr.y],[cr.x+cr.w/2,cr.y],[cr.x+cr.w,cr.y],
+      [cr.x+cr.w,cr.y+cr.h/2],[cr.x+cr.w,cr.y+cr.h],
+      [cr.x+cr.w/2,cr.y+cr.h],[cr.x,cr.y+cr.h],[cr.x,cr.y+cr.h/2]
+    ];
+    ctx.fillStyle="#c9a961";
+    hpts.forEach(function(h){
+      ctx.fillRect(h[0]-hs/2,h[1]-hs/2,hs,hs);
+    });
   }
 }
+
 function iedPos(e){
-  var r=document.getElementById("ied-canvas").getBoundingClientRect(), t=e.touches?e.touches[0]:e;
-  return {x:t.clientX-r.left,y:t.clientY-r.top};
+  var r=$("ied-canvas").getBoundingClientRect();
+  var t=e.touches?e.touches[0]:e;
+  return {x:t.clientX-r.left, y:t.clientY-r.top};
 }
+
+// Determine which handle is being dragged (returns "move","tl","tc","tr","mr","br","bc","bl","ml" or "new")
+function getHandle(p,cr){
+  if(!cr) return "new";
+  var hs=18;
+  var hpts={
+    tl:[cr.x,cr.y],tc:[cr.x+cr.w/2,cr.y],tr:[cr.x+cr.w,cr.y],
+    mr:[cr.x+cr.w,cr.y+cr.h/2],br:[cr.x+cr.w,cr.y+cr.h],
+    bc:[cr.x+cr.w/2,cr.y+cr.h],bl:[cr.x,cr.y+cr.h],ml:[cr.x,cr.y+cr.h/2]
+  };
+  for(var k in hpts){
+    var h=hpts[k];
+    if(Math.abs(p.x-h[0])<hs&&Math.abs(p.y-h[1])<hs) return k;
+  }
+  if(p.x>cr.x&&p.x<cr.x+cr.w&&p.y>cr.y&&p.y<cr.y+cr.h) return "move";
+  return "new";
+}
+
+var dragHandle="new", dragStart=null, dragCropStart=null;
+
+function iedStart(e){
+  e.preventDefault();
+  var p=iedPos(e);
+  dragHandle=getHandle(p,ied.crop);
+  dragStart=p;
+  dragCropStart=ied.crop?{x:ied.crop.x,y:ied.crop.y,w:ied.crop.w,h:ied.crop.h}:null;
+  if(dragHandle==="new"){
+    ied.crop={x:p.x,y:p.y,w:0,h:0};
+    ied.cropActive=true;
+  }
+  ied.drag=true;
+}
+
+function iedMove(e){
+  e.preventDefault();
+  if(!ied.drag) return;
+  var p=iedPos(e);
+  var dx=p.x-dragStart.x, dy=p.y-dragStart.y;
+  var W=ied.dw, H=ied.dh;
+  if(dragHandle==="new"){
+    var x0=dragStart.x, y0=dragStart.y;
+    ied.crop={
+      x:Math.max(0,Math.min(x0,p.x)),
+      y:Math.max(0,Math.min(y0,p.y)),
+      w:Math.abs(p.x-x0),
+      h:Math.abs(p.y-y0)
+    };
+  } else if(dragHandle==="move"&&dragCropStart){
+    ied.crop={
+      x:Math.max(0,Math.min(W-dragCropStart.w,dragCropStart.x+dx)),
+      y:Math.max(0,Math.min(H-dragCropStart.h,dragCropStart.y+dy)),
+      w:dragCropStart.w, h:dragCropStart.h
+    };
+  } else if(dragCropStart){
+    var c=Object.assign({},dragCropStart);
+    if(dragHandle.indexOf("l")>=0){ c.x=Math.max(0,dragCropStart.x+dx); c.w=Math.max(10,dragCropStart.w-dx); }
+    if(dragHandle.indexOf("r")>=0){ c.w=Math.max(10,dragCropStart.w+dx); }
+    if(dragHandle.indexOf("t")>=0){ c.y=Math.max(0,dragCropStart.y+dy); c.h=Math.max(10,dragCropStart.h-dy); }
+    if(dragHandle.indexOf("b")>=0){ c.h=Math.max(10,dragCropStart.h+dy); }
+    ied.crop=c;
+  }
+  drawIed();
+}
+
+function iedEnd(e){
+  if(e) e.preventDefault();
+  ied.drag=false;
+  ied.cropActive=false;
+  if(ied.crop&&(ied.crop.w<4||ied.crop.h<4)) ied.crop=null;
+  drawIed();
+}
+
 function saveIed(){
-  var rad=iedRot*Math.PI/180, sw=iedRot%180!==0;
-  var w=sw?iedImg.height:iedImg.width, h=sw?iedImg.width:iedImg.height;
-  var full=document.createElement("canvas"); full.width=w; full.height=h;
+  var rad=ied.rot*Math.PI/180, sw=ied.rot%180!==0;
+  var iw=ied.img.width, ih=ied.img.height;
+  var fw=sw?ih:iw, fh=sw?iw:ih;
+  var full=document.createElement("canvas"); full.width=fw; full.height=fh;
   var fctx=full.getContext("2d");
-  fctx.filter="brightness("+iedBright+"%) contrast("+iedContrast+"%)";
-  fctx.translate(w/2,h/2); fctx.rotate(rad); fctx.drawImage(iedImg,-iedImg.width/2,-iedImg.height/2);
+  fctx.filter="brightness("+ied.bright+"%) contrast("+ied.contrast+"%)";
+  fctx.translate(fw/2,fh/2); fctx.rotate(rad); fctx.drawImage(ied.img,-iw/2,-ih/2);
   fctx.filter="none";
   var final=full;
-  if(iedCrop&&iedCrop.w>4&&iedCrop.h>4){
-    var sc2=iedDW/w, cr=document.createElement("canvas");
-    cr.width=iedCrop.w/sc2; cr.height=iedCrop.h/sc2;
-    cr.getContext("2d").drawImage(full,iedCrop.x/sc2,iedCrop.y/sc2,iedCrop.w/sc2,iedCrop.h/sc2,0,0,cr.width,cr.height);
+  if(ied.crop&&ied.crop.w>4&&ied.crop.h>4){
+    var scale=ied.dw/fw;
+    var cr=document.createElement("canvas");
+    cr.width=Math.round(ied.crop.w/scale); cr.height=Math.round(ied.crop.h/scale);
+    cr.getContext("2d").drawImage(full,ied.crop.x/scale,ied.crop.y/scale,
+      ied.crop.w/scale,ied.crop.h/scale,0,0,cr.width,cr.height);
     final=cr;
   }
-  formPhotos[iedKey]=final.toDataURL("image/jpeg",0.85);
-  document.getElementById("img-editor").classList.add("hidden");
+  formPhotos[ied.key]=final.toDataURL("image/jpeg",0.88);
+  $("img-editor").classList.add("hidden");
   renderPhotoGrid();
 }
 
+// ═══════════════════════════════════════════════
+// CHIPS
+// ═══════════════════════════════════════════════
 function renderChips(){
-  var wrap=document.getElementById("chips-wrap");
+  var wrap=$("chips-wrap");
   wrap.innerHTML=topics.map(function(t){
     return '<button class="chip'+(formTopics.indexOf(t)>=0?" on":"")+'" data-topic="'+esc(t)+'">'+esc(t)+'</button>';
-  }).join("")+'<button class="addchip" id="btn-add-topic">+ נושא</button>';
+  }).join("")+'<button class="chip-add" id="btn-add-topic">+ נושא</button>';
   wrap.querySelectorAll(".chip").forEach(function(b){
     b.addEventListener("click",function(){
       var t=this.dataset.topic, i=formTopics.indexOf(t);
@@ -524,233 +785,387 @@ function renderChips(){
       renderChips();
     });
   });
-  document.getElementById("btn-add-topic").addEventListener("click",function(){
-    var t=prompt("שם הנושא החדש:");
-    if(t&&t.trim()){ t=t.trim(); if(topics.indexOf(t)<0) topics.push(t); if(formTopics.indexOf(t)<0) formTopics.push(t); renderChips(); }
+  $("btn-add-topic").addEventListener("click",function(){
+    var t=prompt("שם הנושא החדש:"); if(!t||!t.trim()) return;
+    t=t.trim();
+    if(topics.indexOf(t)<0){ topics.push(t); save("topics",topics); }
+    if(formTopics.indexOf(t)<0) formTopics.push(t);
+    renderChips();
   });
 }
 
+// ═══════════════════════════════════════════════
+// SALE HISTORY
+// ═══════════════════════════════════════════════
 function renderSales(){
-  var wrap=document.getElementById("sale-list");
-  if(!formSales.length){ wrap.innerHTML='<div style="font-size:12px;color:#a89a7d">אין ניסיונות מכירה מתועדים</div>'; return; }
+  var wrap=$("sale-list");
+  if(!formSales.length){
+    wrap.innerHTML='<div style="font-size:12px;color:var(--pale)">אין ניסיונות מכירה מתועדים</div>';
+    return;
+  }
   wrap.innerHTML=formSales.map(function(s,i){
-    return '<div class="salec">'
-      +'<div class="g2"><input class="finput" type="date" value="'+esc(s.date)+'" data-i="'+i+'" data-f="date"/>'
-      +'<input class="finput" type="text" placeholder="מקום" value="'+esc(s.venue)+'" data-i="'+i+'" data-f="venue"/></div>'
-      +'<div class="g2"><input class="finput" type="number" placeholder="מחיר (₪)" value="'+esc(s.offeredPrice)+'" data-i="'+i+'" data-f="offeredPrice"/>'
-      +'<select class="finput" data-i="'+i+'" data-f="outcome"><option'+(s.outcome==="לא נמכר"?" selected":"")+'>לא נמכר</option><option'+(s.outcome==="נמכר"?" selected":"")+'>נמכר</option><option'+(s.outcome==="הוסר מהמכירה"?" selected":"")+'>הוסר מהמכירה</option></select></div>'
-      +'<div style="display:flex;gap:8px"><input class="finput" style="flex:1" type="text" placeholder="הערות" value="'+esc(s.notes||"")+'" data-i="'+i+'" data-f="notes"/>'
-      +'<button data-del="'+i+'" style="color:#c98a8a;font-size:18px;padding:4px;cursor:pointer">✕</button></div></div>';
+    return '<div class="sale-card">'
+      +'<div class="g2">'
+      +'<input class="field-input" type="date" value="'+esc(s.date)+'" data-i="'+i+'" data-f="date"/>'
+      +'<input class="field-input" type="text" placeholder="מקום" value="'+esc(s.venue)+'" data-i="'+i+'" data-f="venue"/>'
+      +'</div>'
+      +'<div class="g2">'
+      +'<input class="field-input" type="number" placeholder="מחיר (₪)" value="'+esc(s.offeredPrice)+'" data-i="'+i+'" data-f="offeredPrice"/>'
+      +'<select class="field-input" data-i="'+i+'" data-f="outcome">'
+      +'<option'+(s.outcome==="לא נמכר"?" selected":"")+'>לא נמכר</option>'
+      +'<option'+(s.outcome==="נמכר"?" selected":"")+'>נמכר</option>'
+      +'<option'+(s.outcome==="הוסר מהמכירה"?" selected":"")+'>הוסר מהמכירה</option>'
+      +'</select></div>'
+      +'<div class="sale-row">'
+      +'<input class="field-input" style="flex:1" type="text" placeholder="הערות" value="'+esc(s.notes||"")+'" data-i="'+i+'" data-f="notes"/>'
+      +'<button data-del="'+i+'" style="color:#c98a8a;font-size:20px;padding:4px 8px;cursor:pointer;flex-shrink:0">✕</button>'
+      +'</div></div>';
   }).join("");
   wrap.querySelectorAll("input,select").forEach(function(el){
-    el.addEventListener("change",function(){ formSales[this.dataset.i][this.dataset.f]=this.value; });
+    el.addEventListener("change",function(){formSales[this.dataset.i][this.dataset.f]=this.value;});
   });
   wrap.querySelectorAll("[data-del]").forEach(function(b){
-    b.addEventListener("click",function(){ formSales.splice(parseInt(this.dataset.del),1); renderSales(); });
+    b.addEventListener("click",function(){formSales.splice(parseInt(this.dataset.del),1);renderSales();});
   });
 }
 
+// ═══════════════════════════════════════════════
+// SAVE ITEM
+// ═══════════════════════════════════════════════
 function saveItem(){
-  var title=document.getElementById("f-title").value.trim(); if(!title) return;
+  var title=$("f-title").value.trim(); if(!title) return;
+  var existing=currentId?items.find(function(i){return i.id===currentId;}):null;
   var item={
-    id:currentId||uid(), category:segVals.cat, itemType:segVals.type, title:title,
-    author:document.getElementById("f-author").value, year:document.getElementById("f-year").value,
-    place:document.getElementById("f-place").value, description:document.getElementById("f-desc").value,
-    condition:document.getElementById("f-condition").value, topics:[].concat(formTopics),
-    location:{area:document.getElementById("f-loc-area").value,box:document.getElementById("f-loc-box").value,shelf:document.getElementById("f-loc-shelf").value},
-    acquisition:{source:document.getElementById("f-acq-src").value,date:document.getElementById("f-acq-date").value,price:document.getElementById("f-acq-price").value},
-    minPrice:document.getElementById("f-minprice").value, status:segVals.status,
-    soldPrice:document.getElementById("f-sold").value, saleHistory:JSON.parse(JSON.stringify(formSales)),
+    id:currentId||uid(),
+    category:segVals.cat, itemType:segVals.type, title:title,
+    author:$("f-author").value, year:$("f-year").value,
+    place:$("f-place").value, description:$("f-desc").value,
+    condition:$("f-condition").value, topics:[].concat(formTopics),
+    location:{area:$("f-loc-area").value,box:$("f-loc-box").value,shelf:$("f-loc-shelf").value},
+    acquisition:{source:$("f-acq-src").value,date:$("f-acq-date").value,price:$("f-acq-price").value},
+    minPrice:$("f-minprice").value, status:segVals.status,
+    soldPrice:$("f-sold").value,
+    saleHistory:JSON.parse(JSON.stringify(formSales)),
     photos:Object.assign({},formPhotos),
-    createdAt:currentId?(items.find(function(i){return i.id===currentId;})||{createdAt:new Date().toISOString()}).createdAt:new Date().toISOString()
+    createdAt:existing?existing.createdAt:new Date().toISOString()
   };
-  if(currentId){ items=items.map(function(i){return i.id===item.id?item:i;}); } else items.push(item);
-  save("items",items); renderList(); showDetail(item.id);
+  if(currentId){ items=items.map(function(i){return i.id===item.id?item:i;}); }
+  else items.push(item);
+  save("items",items);
+  renderList();
+  showDetail(item.id);
 }
 
+// ═══════════════════════════════════════════════
+// DETAIL
+// ═══════════════════════════════════════════════
 function showDetail(id){
   var item=items.find(function(i){return i.id===id;}); if(!item) return;
   currentId=id;
-  var badge=document.getElementById("detail-badge");
+  var badge=$("detail-badge");
   badge.textContent=item.status; badge.style.background=sc(item.status);
   var photos=Object.values(item.photos||{});
   var h="";
-  if(photos.length) h+='<div class="dphotos">'+photos.map(function(p){return'<img src="'+p+'" data-src="'+p+'"/>';}).join("")+'</div>';
-  h+='<div><div style="font-size:12px;color:#8a7d68">'+esc(item.category)+' · '+esc(item.itemType)+'</div>'
-    +'<div class="dname">'+esc(item.title)+'</div>'
-    +(item.author?'<div class="dsub">'+esc(item.author)+'</div>':"")
-    +'<div class="dsub">'+esc([item.place,item.year].filter(Boolean).join(" · "))+'</div></div>';
-  if(item.description) h+='<div style="font-size:14px;line-height:1.6">'+esc(item.description)+'</div>';
-  if(item.condition) h+='<div class="dsect"><div class="dlbl">מצב</div><div class="dval">'+esc(item.condition)+'</div></div>';
-  if(item.topics&&item.topics.length) h+='<div class="dtags">'+item.topics.map(function(t){return'<span class="dtag">'+esc(t)+'</span>';}).join("")+'</div>';
-  var loc=[item.location.area,item.location.box?"ארגז "+item.location.box:"",item.location.shelf?"מדף "+item.location.shelf:""].filter(Boolean).join(" · ");
-  h+='<div class="dsect"><div class="dlbl">📍 מיקום פיזי</div><div class="dval">'+(loc||"לא צוין")+'</div></div>';
+  if(photos.length)
+    h+='<div class="detail-photos">'+photos.map(function(p){
+      return '<img src="'+p+'" data-src="'+p+'"/>';
+    }).join("")+'</div>';
+  h+='<div>'
+    +'<div style="font-size:12px;color:var(--faint)">'+esc(item.category)+' · '+esc(item.itemType)+'</div>'
+    +'<div class="detail-title">'+esc(item.title)+'</div>'
+    +(item.author?'<div class="detail-sub">'+esc(item.author)+'</div>':"")
+    +'<div class="detail-sub">'+esc([item.place,item.year].filter(Boolean).join(" · "))+'</div>'
+    +'</div>';
+  if(item.description)
+    h+='<div style="font-size:14px;line-height:1.7;color:var(--ink)">'+esc(item.description)+'</div>';
+  if(item.condition)
+    h+='<div class="detail-sect"><div class="detail-lbl">מצב</div><div class="detail-val">'+esc(item.condition)+'</div></div>';
+  if(item.topics&&item.topics.length)
+    h+='<div class="tag-list">'+item.topics.map(function(t){return'<span class="tag">'+esc(t)+'</span>';}).join("")+'</div>';
+  var loc=[item.location.area,item.location.box?"ארגז "+item.location.box:"",
+           item.location.shelf?"מדף "+item.location.shelf:""].filter(Boolean).join(" · ");
+  h+='<div class="detail-sect"><div class="detail-lbl">📍 מיקום פיזי</div><div class="detail-val">'+(loc||"לא צוין")+'</div></div>';
   if(item.acquisition.source||item.acquisition.price)
-    h+='<div class="dsect"><div class="dlbl">מקור רכישה</div><div class="dval">'+esc(item.acquisition.source)+'</div>'
-      +'<div style="font-size:12px;color:#8a7d68">'+esc([item.acquisition.date,item.acquisition.price?"₪"+item.acquisition.price:""].filter(Boolean).join(" · "))+'</div></div>';
-  if(item.minPrice) h+='<div class="dsect"><div class="dlbl">📈 מחיר מינימום</div><div class="dval" style="font-weight:600">₪'+esc(item.minPrice)+'</div></div>';
-  if(item.status==="נמכר"&&item.soldPrice) h+='<div class="dsect"><div class="dlbl">נמכר עבור</div><div class="dval" style="font-weight:600">₪'+esc(item.soldPrice)+'</div></div>';
+    h+='<div class="detail-sect"><div class="detail-lbl">מקור רכישה</div>'
+      +'<div class="detail-val">'+esc(item.acquisition.source)+'</div>'
+      +'<div style="font-size:12px;color:var(--faint)">'+esc([item.acquisition.date,item.acquisition.price?"₪"+item.acquisition.price:""].filter(Boolean).join(" · "))+'</div></div>';
+  if(item.minPrice)
+    h+='<div class="detail-sect"><div class="detail-lbl">📈 מחיר מינימום</div><div class="detail-val" style="font-weight:700">₪'+esc(item.minPrice)+'</div></div>';
+  if(item.status==="נמכר"&&item.soldPrice)
+    h+='<div class="detail-sect"><div class="detail-lbl">נמכר עבור</div><div class="detail-val" style="font-weight:700">₪'+esc(item.soldPrice)+'</div></div>';
   if(item.saleHistory&&item.saleHistory.length){
-    h+='<div class="dsect"><div class="dlbl">📦 היסטוריית מכירות</div>'
+    h+='<div class="detail-sect"><div class="detail-lbl">📦 היסטוריית מכירות</div>'
       +item.saleHistory.map(function(s){
-        return '<div class="shist"><div style="display:flex;justify-content:space-between;font-size:14px"><span>'+esc(s.venue||"—")+'</span><span style="color:#8a7d68">'+esc(s.date)+'</span></div>'
-          +'<div style="display:flex;justify-content:space-between;font-size:12px;margin-top:4px"><span>'+esc(s.outcome)+'</span>'+(s.offeredPrice?'<span>₪'+esc(s.offeredPrice)+'</span>':"")+'</div>'
-          +(s.notes?'<div style="font-size:12px;color:#8a7d68;margin-top:4px">'+esc(s.notes)+'</div>':"")+'</div>';
+        return '<div class="hist-item">'
+          +'<div class="hist-row"><span>'+esc(s.venue||"—")+'</span><span style="color:var(--faint)">'+esc(s.date)+'</span></div>'
+          +'<div class="hist-sub"><span>'+esc(s.outcome)+'</span>'+(s.offeredPrice?'<span>₪'+esc(s.offeredPrice)+'</span>':"")+'</div>'
+          +(s.notes?'<div style="font-size:12px;color:var(--faint);margin-top:4px">'+esc(s.notes)+'</div>':"")
+          +'</div>';
       }).join("")+'</div>';
   }
-  document.getElementById("detail-body").innerHTML=h;
-  document.getElementById("detail-body").querySelectorAll("img[data-src]").forEach(function(img){
-    img.addEventListener("click",function(){ openLightbox(this.dataset.src); });
+  $("detail-body").innerHTML=h;
+  $("detail-body").querySelectorAll("img[data-src]").forEach(function(img){
+    img.addEventListener("click",function(){openLightbox(this.dataset.src);});
   });
   show("screen-detail");
 }
 
-function doExport(){
-  if(!items.length){ alert("אין פריטים לייצא"); return; }
-  var rows=items.map(function(it){
+// ═══════════════════════════════════════════════
+// CATALOG EXPORT
+// ═══════════════════════════════════════════════
+function showCatalog(){
+  var sel=$("catalog-topic");
+  sel.innerHTML='<option value="">כל הנושאים</option>'
+    +topics.map(function(t){return'<option value="'+esc(t)+'">'+esc(t)+'</option>';}).join("");
+  catSelected=new Set();
+  renderCatalogList();
+  show("screen-catalog");
+}
+function renderCatalogList(){
+  var topic=$("catalog-topic").value;
+  var filtered=items.filter(function(it){return !topic||(it.topics||[]).indexOf(topic)>=0;});
+  var el=$("catalog-list");
+  el.innerHTML=filtered.map(function(it){
+    var p=it.photos.cover||it.photos.titlePage||Object.values(it.photos||{})[0];
+    var on=catSelected.has(it.id);
+    return '<button class="item-card" data-id="'+it.id+'" style="'+(on?"border-color:var(--brown);background:var(--paper2)":"")+'"> '
+      +'<div style="width:22px;height:22px;border-radius:5px;border:2px solid '+(on?"var(--brown)":"var(--pale)")
+      +';background:'+(on?"var(--brown)":"transparent")+';display:flex;align-items:center;justify-content:center;flex-shrink:0;color:white;font-size:13px">'
+      +(on?"✓":"")+'</div>'
+      +(p?'<img class="item-thumb" src="'+p+'"/>':"<div class='item-thumb-empty'>📄</div>")
+      +'<div class="item-info"><div class="item-title">'+esc(it.title)+'</div>'
+      +'<div class="item-sub">'+it.status+'</div></div></button>';
+  }).join("")||(filtered.length===0?'<div class="empty-state"><div class="empty-icon">📭</div>אין פריטים בנושא זה</div>':"");
+  el.querySelectorAll(".item-card").forEach(function(b){
+    b.addEventListener("click",function(){
+      var id=this.dataset.id;
+      catSelected.has(id)?catSelected.delete(id):catSelected.add(id);
+      renderCatalogList();
+    });
+  });
+  $("btn-do-catalog").disabled=catSelected.size===0;
+  $("btn-do-catalog").textContent="ייצא קטלוג ("+catSelected.size+" נבחרו)";
+}
+function doExportCatalog(){
+  var chosen=items.filter(function(i){return catSelected.has(i.id);});
+  var rows=chosen.map(function(it){
     var p=it.photos.cover||it.photos.titlePage||Object.values(it.photos||{})[0];
     return '<div class="lot">'+(p?'<img src="'+p+'" class="li"/>':"")
       +'<div class="lb"><h3>'+esc(it.title)+(it.author?" / "+esc(it.author):"")+'</h3>'
       +'<p class="m">'+esc([it.place,it.year].filter(Boolean).join(" · "))+'</p>'
-      +'<p>'+esc(it.description||"")+'</p>'
-      +(it.condition?'<p style="color:#7a3b3b;font-size:13px">מצב: '+esc(it.condition)+'</p>':"")
+      +'<p class="d">'+esc(it.description||"")+'</p>'
+      +(it.condition?'<p class="c">מצב: '+esc(it.condition)+'</p>':"")
       +'</div></div>';
   }).join("");
-  var html='<!DOCTYPE html><html dir="rtl"><head><meta charset="UTF-8"/><title>קטלוג</title><style>body{font-family:Georgia,serif;background:#fbf7ee;padding:40px;max-width:800px;margin:0 auto}.lot{display:flex;gap:20px;margin-bottom:32px;border-bottom:1px solid #d8cdb4;padding-bottom:24px}.li{width:150px;height:150px;object-fit:cover}.m{color:#8a7d68;font-size:14px}</style></head><body><h1>קטלוג מכירה</h1>'+rows+'</body></html>';
-  var a=document.createElement("a"); a.href=URL.createObjectURL(new Blob([html],{type:"text/html"})); a.download="קטלוג.html"; a.click();
-}
-function doBackup(){
-  var a=document.createElement("a"); a.href=URL.createObjectURL(new Blob([JSON.stringify({items:items,topics:topics},null,2)],{type:"application/json"})); a.download="גיבוי-קטלוג.json"; a.click();
+  var html='<!DOCTYPE html><html dir="rtl" lang="he"><head><meta charset="UTF-8"/><title>קטלוג מכירה</title>'
+    +'<style>body{font-family:Georgia,serif;background:#fbf7ee;padding:40px;max-width:800px;margin:0 auto}'
+    +'h1{text-align:center;border-bottom:2px solid #5b4a2f;padding-bottom:16px;margin-bottom:32px}'
+    +'.lot{display:flex;gap:24px;margin-bottom:32px;border-bottom:1px solid #d8cdb4;padding-bottom:28px}'
+    +'.li{width:160px;height:160px;object-fit:cover;border:1px solid #d8cdb4;flex-shrink:0}'
+    +'.lb{flex:1}.m{color:#8a7d68;font-size:14px;margin:4px 0}.d{font-size:14px;line-height:1.6}.c{font-size:13px;color:#7a3b3b}'
+    +'</style></head><body><h1>קטלוג מכירה</h1>'+rows+'</body></html>';
+  var a=document.createElement("a");
+  a.href=URL.createObjectURL(new Blob([html],{type:"text/html"}));
+  a.download="קטלוג-מכירה.html"; a.click();
 }
 
-window.addEventListener("load",function(){
+// ═══════════════════════════════════════════════
+// BACKUP
+// ═══════════════════════════════════════════════
+function doExportBackup(){
+  var data={version:1,exportedAt:new Date().toISOString(),items:items,topics:topics};
+  var a=document.createElement("a");
+  a.href=URL.createObjectURL(new Blob([JSON.stringify(data,null,2)],{type:"application/json"}));
+  a.download="גיבוי-קטלוג-"+new Date().toISOString().slice(0,10)+".json";
+  a.click();
+}
+function doImportBackup(file){
+  var reader=new FileReader();
+  reader.onload=function(){
+    try{
+      var data=JSON.parse(reader.result);
+      if(!Array.isArray(data.items)) throw new Error("invalid");
+      items=data.items;
+      if(data.topics&&data.topics.length) topics=data.topics;
+      save("items",items); save("topics",topics);
+      renderList();
+      var msg=$("import-msg");
+      msg.style.display="block"; msg.className="msg-ok";
+      msg.textContent="✓ הייבוא הצליח — "+items.length+" פריטים נטענו.";
+    }catch(e){
+      var msg=$("import-msg");
+      msg.style.display="block"; msg.className="msg-err";
+      msg.textContent="שגיאה: הקובץ אינו קובץ גיבוי תקין.";
+    }
+  };
+  reader.readAsText(file);
+}
+
+// ═══════════════════════════════════════════════
+// PWA MANIFEST (inline)
+// ═══════════════════════════════════════════════
+function initPWA(){
+  var manifest={
+    name:"קטלוג האוסף",short_name:"קטלוג",
+    start_url:".",display:"standalone",
+    background_color:"#fbf7ee",theme_color:"#2b2418",
+    icons:[{
+      src:"data:image/svg+xml,"+encodeURIComponent(
+        '<svg xmlns="http://www.w3.org/2000/svg" width="512" height="512">'
+        +'<rect width="512" height="512" rx="80" fill="#2b2418"/>'
+        +'<text x="256" y="360" font-size="300" text-anchor="middle" fill="#c9a961" font-family="Georgia,serif">א</text>'
+        +'</svg>'
+      ),sizes:"512x512",type:"image/svg+xml"
+    }]
+  };
+  var blob=new Blob([JSON.stringify(manifest)],{type:"application/manifest+json"});
+  var link=document.createElement("link");
+  link.rel="manifest"; link.href=URL.createObjectURL(blob);
+  document.head.appendChild(link);
+  // Apple icon
+  var ai=document.createElement("link");
+  ai.rel="apple-touch-icon";
+  ai.href="data:image/svg+xml,"+encodeURIComponent(
+    '<svg xmlns="http://www.w3.org/2000/svg" width="180" height="180">'
+    +'<rect width="180" height="180" rx="40" fill="#2b2418"/>'
+    +'<text x="90" y="130" font-size="110" text-anchor="middle" fill="#c9a961" font-family="Georgia,serif">א</text>'
+    +'</svg>'
+  );
+  document.head.appendChild(ai);
+}
+
+// ═══════════════════════════════════════════════
+// INIT
+// ═══════════════════════════════════════════════
+window.addEventListener("load", function(){
+  // Load data
   items=load("items",[]);
   topics=load("topics",["חסידות","ש\"ס","סידורים","קבלה","תנ\"ך ומפרשים","הלכה","דרשות","מוסר","כתבי יד","תשמישי קדושה","מפות","אמנות יהודית"]);
+  initPWA();
   renderList();
   show("screen-list");
 
-  // List
-  document.getElementById("btn-new").addEventListener("click",function(){ showForm(null); });
-  document.getElementById("btn-catalog").addEventListener("click",doExport);
-  document.getElementById("btn-count").addEventListener("click",function(){ show("screen-backup"); });
-  document.getElementById("search").addEventListener("input",renderList);
+  // ── LIST ──
+  $("btn-new").addEventListener("click",function(){showForm(null);});
+  $("btn-catalog").addEventListener("click",showCatalog);
+  $("btn-count").addEventListener("click",function(){show("screen-backup");});
+  $("search").addEventListener("input",renderList);
 
-  // Form
-  document.getElementById("btn-form-back").addEventListener("click",function(){ if(currentId) showDetail(currentId); else show("screen-list"); });
-  document.getElementById("btn-save").addEventListener("click",saveItem);
-  document.getElementById("f-title").addEventListener("input",updateSaveBtn);
-  document.getElementById("f-minprice").addEventListener("input",updatePriceInfo);
-  document.getElementById("f-acq-price").addEventListener("input",updatePriceInfo);
-  document.getElementById("f-sold").addEventListener("input",checkSoldWarn);
-  document.getElementById("btn-add-sale").addEventListener("click",function(){
-    formSales.push({id:uid(),date:"",venue:"",offeredPrice:"",outcome:"לא נמכר",notes:""}); renderSales();
+  // ── FORM ──
+  $("btn-form-back").addEventListener("click",function(){
+    if(currentId) showDetail(currentId); else show("screen-list");
+  });
+  $("btn-save").addEventListener("click",saveItem);
+  $("f-title").addEventListener("input",updateSaveBtn);
+  $("f-minprice").addEventListener("input",updatePriceInfo);
+  $("f-acq-price").addEventListener("input",updatePriceInfo);
+  $("f-sold").addEventListener("input",checkSoldWarn);
+  $("btn-add-sale").addEventListener("click",function(){
+    formSales.push({id:uid(),date:"",venue:"",offeredPrice:"",outcome:"לא נמכר",notes:""});
+    renderSales();
   });
   ["cat","type","status"].forEach(function(seg){
-    document.getElementById("seg-"+seg).querySelectorAll(".segb").forEach(function(b){
-      b.addEventListener("click",function(){ segVals[seg]=this.dataset.val; renderSeg(seg); if(seg==="status") toggleSoldWrap(); });
+    $("seg-"+seg).querySelectorAll(".seg-btn").forEach(function(b){
+      b.addEventListener("click",function(){
+        segVals[seg]=this.dataset.val;
+        renderSeg(seg);
+        if(seg==="status") toggleSoldWrap();
+      });
     });
   });
 
-  // Photo picker
-  document.getElementById("picker-cam").addEventListener("click",function(){
-    var key=pickerKey; closePicker();
-    var inp=document.getElementById("inp-camera");
-    inp.dataset.pendingKey=key;
-    inp.click();
+  // ── PICKER ──
+  $("picker-cam").addEventListener("click",function(){
+    var k=pickerKey; closePicker();
+    $("inp-cam").dataset.pendingKey=k; $("inp-cam").click();
   });
-  document.getElementById("picker-gal").addEventListener("click",function(){
-    var key=pickerKey; closePicker();
-    var inp=document.getElementById("inp-gallery");
-    inp.dataset.pendingKey=key;
-    inp.click();
+  $("picker-gal").addEventListener("click",function(){
+    var k=pickerKey; closePicker();
+    $("inp-gal").dataset.pendingKey=k; $("inp-gal").click();
   });
-  document.getElementById("picker-cancel").addEventListener("click",closePicker);
-  document.getElementById("photo-picker").addEventListener("click",function(e){ if(e.target===this) closePicker(); });
-  document.getElementById("inp-camera").addEventListener("change",function(){
-    var f=this.files[0], key=this.dataset.pendingKey; 
-    if(!f||!key) return;
+  $("picker-cancel").addEventListener("click",closePicker);
+  $("picker").addEventListener("click",function(e){if(e.target===this)closePicker();});
+  $("inp-cam").addEventListener("change",function(){
+    var f=this.files[0],k=this.dataset.pendingKey; if(!f||!k) return;
     this.value=""; this.dataset.pendingKey="";
-    compressFile(f,function(d){ formPhotos[key]=d; renderPhotoGrid(); });
+    compressFile(f,function(d){formPhotos[k]=d;renderPhotoGrid();});
   });
-  document.getElementById("inp-gallery").addEventListener("change",function(){
-    var f=this.files[0], key=this.dataset.pendingKey;
-    if(!f||!key) return;
+  $("inp-gal").addEventListener("change",function(){
+    var f=this.files[0],k=this.dataset.pendingKey; if(!f||!k) return;
     this.value=""; this.dataset.pendingKey="";
-    compressFile(f,function(d){ formPhotos[key]=d; renderPhotoGrid(); });
+    compressFile(f,function(d){formPhotos[k]=d;renderPhotoGrid();});
   });
 
-  // Lightbox
-  document.getElementById("lb-cl").addEventListener("click",closeLightbox);
-  document.getElementById("lightbox").addEventListener("click",function(e){ if(e.target===this) closeLightbox(); });
-  document.getElementById("lb-dl").addEventListener("click",function(){
-    if(!lbSrc) return; var a=document.createElement("a"); a.href=lbSrc; a.download="תמונה.jpg"; a.click();
+  // ── LIGHTBOX ──
+  $("lb-cl").addEventListener("click",closeLightbox);
+  $("lb-dl").addEventListener("click",function(){
+    if(!lbSrc) return;
+    var a=document.createElement("a"); a.href=lbSrc; a.download="תמונה.jpg"; a.click();
   });
+  $("lightbox").addEventListener("click",function(e){if(e.target===this)closeLightbox();});
 
-  // Editor
-  document.getElementById("ied-cancel").addEventListener("click",function(){ document.getElementById("img-editor").classList.add("hidden"); });
-  document.getElementById("ied-save").addEventListener("click",saveIed);
-  document.getElementById("ied-rot").addEventListener("click",function(){ iedRot=(iedRot+90)%360; iedCrop=null; drawIed(); });
-  document.getElementById("ied-clr").addEventListener("click",function(){ iedCrop=null; drawIed(); });
-  document.getElementById("ied-bright").addEventListener("input",function(){ iedBright=parseInt(this.value); document.getElementById("ied-bright-val").textContent=iedBright+"%"; drawIed(); });
-  document.getElementById("ied-contrast").addEventListener("input",function(){ iedContrast=parseInt(this.value); document.getElementById("ied-contrast-val").textContent=iedContrast+"%"; drawIed(); });
-  var ic=document.getElementById("ied-canvas");
-  function onS(e){
-    e.preventDefault();
-    var p=iedPos(e); iedDrag=p; iedCrop={x:p.x,y:p.y,w:0,h:0};
-  }
-  function onM(e){
-    e.preventDefault();
-    if(!iedDrag)return;
-    var p=iedPos(e);
-    iedCrop={x:Math.min(iedDrag.x,p.x),y:Math.min(iedDrag.y,p.y),w:Math.abs(p.x-iedDrag.x),h:Math.abs(p.y-iedDrag.y)};
+  // ── IMAGE EDITOR ──
+  $("ied-cancel").addEventListener("click",function(){$("img-editor").classList.add("hidden");});
+  $("ied-save").addEventListener("click",saveIed);
+  $("ied-rot").addEventListener("click",function(){ied.rot=(ied.rot+90)%360;ied.crop=null;drawIed();});
+  $("ied-clr-crop").addEventListener("click",function(){ied.crop=null;drawIed();});
+  $("ied-reset").addEventListener("click",function(){
+    ied.rot=0;ied.bright=100;ied.contrast=100;ied.crop=null;
+    $("sl-bright").value=100;$("sl-bright-val").textContent="100%";
+    $("sl-contrast").value=100;$("sl-contrast-val").textContent="100%";
     drawIed();
-  }
-  function onE(e){ e.preventDefault(); iedDrag=null; }
-  ic.addEventListener("mousedown",onS); ic.addEventListener("mousemove",onM); ic.addEventListener("mouseup",onE);
-  ic.addEventListener("touchstart",onS,{passive:false});
-  ic.addEventListener("touchmove",onM,{passive:false});
-  ic.addEventListener("touchend",onE,{passive:false});
-
-  // Backup screen
-  document.getElementById("btn-backup-back").addEventListener("click",function(){ show("screen-list"); });
-  document.getElementById("btn-do-export").addEventListener("click",function(){
-    var blob=new Blob([JSON.stringify({version:1,exportedAt:new Date().toISOString(),items:items,topics:topics},null,2)],{type:"application/json"});
-    var a=document.createElement("a"); a.href=URL.createObjectURL(blob); a.download="גיבוי-קטלוג-"+new Date().toISOString().slice(0,10)+".json"; a.click();
-    this.textContent="✓ הגיבוי הורד!";
-    var btn=this; setTimeout(function(){ btn.textContent="⬇ ייצא קובץ גיבוי"; },3000);
   });
-  document.getElementById("btn-do-import").addEventListener("click",function(){ document.getElementById("inp-backup").click(); });
-  document.getElementById("inp-backup").addEventListener("change",function(){
-    var file=this.files[0]; if(!file) return;
-    var reader=new FileReader();
-    reader.onload=function(){
-      try{
-        var data=JSON.parse(reader.result);
-        if(!Array.isArray(data.items)) throw new Error("invalid");
-        items=data.items;
-        if(data.topics&&data.topics.length) topics=data.topics;
-        save("items",items); save("topics",topics);
-        renderList();
-        var msg=document.getElementById("import-msg");
-        msg.style.display="block"; msg.style.color="#5b6b4f";
-        msg.textContent="✓ הייבוא הצליח — "+items.length+" פריטים נטענו.";
-      }catch(e){
-        var msg=document.getElementById("import-msg");
-        msg.style.display="block"; msg.style.color="#7a3b3b";
-        msg.textContent="שגיאה: הקובץ אינו קובץ גיבוי תקין.";
-      }
-    };
-    reader.readAsText(file);
-    this.value="";
+  $("sl-bright").addEventListener("input",function(){
+    ied.bright=parseInt(this.value);
+    $("sl-bright-val").textContent=ied.bright+"%"; drawIed();
   });
+  $("sl-contrast").addEventListener("input",function(){
+    ied.contrast=parseInt(this.value);
+    $("sl-contrast-val").textContent=ied.contrast+"%"; drawIed();
+  });
+  var ic=$("ied-canvas");
+  ic.addEventListener("mousedown",iedStart);
+  ic.addEventListener("mousemove",iedMove);
+  ic.addEventListener("mouseup",iedEnd);
+  ic.addEventListener("touchstart",iedStart,{passive:false});
+  ic.addEventListener("touchmove",iedMove,{passive:false});
+  ic.addEventListener("touchend",iedEnd,{passive:false});
 
-  // Detail
-  document.getElementById("btn-detail-back").addEventListener("click",function(){ show("screen-list"); currentId=null; });
-  document.getElementById("btn-edit").addEventListener("click",function(){ var it=items.find(function(i){return i.id===currentId;}); if(it) showForm(it); });
-  document.getElementById("btn-delete").addEventListener("click",function(){
+  // ── DETAIL ──
+  $("btn-detail-back").addEventListener("click",function(){show("screen-list");currentId=null;});
+  $("btn-edit").addEventListener("click",function(){
+    var it=items.find(function(i){return i.id===currentId;}); if(it) showForm(it);
+  });
+  $("btn-delete").addEventListener("click",function(){
     if(!currentId||!confirm("למחוק את הפריט?")) return;
-    items=items.filter(function(i){return i.id!==currentId;}); save("items",items); currentId=null; renderList(); show("screen-list");
+    items=items.filter(function(i){return i.id!==currentId;});
+    save("items",items); currentId=null; renderList(); show("screen-list");
   });
+
+  // ── BACKUP ──
+  $("btn-backup-back").addEventListener("click",function(){show("screen-list");});
+  $("btn-do-export").addEventListener("click",function(){
+    doExportBackup();
+    var btn=this; btn.textContent="✓ הגיבוי הורד!";
+    setTimeout(function(){btn.textContent="⬇ ייצא קובץ גיבוי";},3000);
+  });
+  $("btn-do-import").addEventListener("click",function(){$("inp-backup").click();});
+  $("inp-backup").addEventListener("change",function(){
+    var f=this.files[0]; if(!f) return;
+    doImportBackup(f); this.value="";
+  });
+
+  // ── CATALOG ──
+  $("btn-catalog-back").addEventListener("click",function(){show("screen-list");});
+  $("catalog-topic").addEventListener("change",renderCatalogList);
+  $("cat-sel-all").addEventListener("click",function(){
+    var topic=$("catalog-topic").value;
+    items.filter(function(it){return !topic||(it.topics||[]).indexOf(topic)>=0;})
+      .forEach(function(it){catSelected.add(it.id);});
+    renderCatalogList();
+  });
+  $("cat-clr-all").addEventListener("click",function(){catSelected=new Set();renderCatalogList();});
+  $("btn-do-catalog").addEventListener("click",doExportCatalog);
 });
 </script>
 </body>
