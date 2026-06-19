@@ -233,6 +233,25 @@ input,select,textarea{font-family:inherit;font-size:14px}
   <div class="dbody" id="detail-body"></div>
 </div>
 
+<!-- BACKUP SCREEN -->
+<div id="screen-backup" class="hidden">
+  <div class="topbar">
+    <button class="tbback" id="btn-backup-back">‹</button>
+    <div class="tbtitle">גיבוי ושחזור</div>
+    <div style="width:44px"></div>
+  </div>
+  <div style="padding:20px 16px;display:flex;flex-direction:column;gap:20px">
+    <p style="font-size:14px;color:#5a4f3e;line-height:1.7">המידע שלך נשמר בדפדפן של המכשיר הזה. מומלץ לייצא גיבוי מדי פעם ולשמור ב-Google Drive, כדי לא לאבד מידע אם תחליף מכשיר.</p>
+    <button class="bbtn bbtn-pri" id="btn-do-export" style="padding:14px 0;border-radius:8px;font-size:14px;font-weight:600">⬇ ייצא קובץ גיבוי</button>
+    <div style="border-top:1px solid #d8cdb4;padding-top:20px">
+      <p style="font-size:14px;color:#5a4f3e;line-height:1.7;margin-bottom:12px">שחזור מקובץ גיבוי <strong>ימחק ויחליף</strong> את כל הנתונים הקיימים.</p>
+      <button class="bbtn bbtn-sec" id="btn-do-import" style="padding:14px 0;border-radius:8px;font-size:14px;font-weight:600;width:100%">⬆ ייבא קובץ גיבוי</button>
+      <input type="file" id="inp-backup" accept="application/json" style="display:none"/>
+      <div id="import-msg" style="font-size:13px;margin-top:10px;display:none"></div>
+    </div>
+  </div>
+</div>
+
 <!-- PHOTO SOURCE PICKER -->
 <div id="photo-picker" class="hidden">
   <div class="picker-box">
@@ -306,7 +325,7 @@ function save(k,v){ try{ localStorage.setItem(k,JSON.stringify(v)); }catch(e){} 
 function load(k,d){ try{ var v=localStorage.getItem(k); return v?JSON.parse(v):d; }catch(e){ return d; } }
 
 function show(id){
-  ["screen-list","screen-form","screen-detail"].forEach(function(s){
+  ["screen-list","screen-form","screen-detail","screen-backup"].forEach(function(s){
     document.getElementById(s).classList.toggle("hidden",s!==id);
   });
   window.scrollTo(0,0);
@@ -613,7 +632,7 @@ window.addEventListener("load",function(){
   // List
   document.getElementById("btn-new").addEventListener("click",function(){ showForm(null); });
   document.getElementById("btn-catalog").addEventListener("click",doExport);
-  document.getElementById("btn-count").addEventListener("click",function(){ if(confirm("ייצוא קובץ גיבוי?")) doBackup(); });
+  document.getElementById("btn-count").addEventListener("click",function(){ show("screen-backup"); });
   document.getElementById("search").addEventListener("input",renderList);
 
   // Form
@@ -691,6 +710,39 @@ window.addEventListener("load",function(){
   ic.addEventListener("touchstart",onS,{passive:false});
   ic.addEventListener("touchmove",onM,{passive:false});
   ic.addEventListener("touchend",onE,{passive:false});
+
+  // Backup screen
+  document.getElementById("btn-backup-back").addEventListener("click",function(){ show("screen-list"); });
+  document.getElementById("btn-do-export").addEventListener("click",function(){
+    var blob=new Blob([JSON.stringify({version:1,exportedAt:new Date().toISOString(),items:items,topics:topics},null,2)],{type:"application/json"});
+    var a=document.createElement("a"); a.href=URL.createObjectURL(blob); a.download="גיבוי-קטלוג-"+new Date().toISOString().slice(0,10)+".json"; a.click();
+    this.textContent="✓ הגיבוי הורד!";
+    var btn=this; setTimeout(function(){ btn.textContent="⬇ ייצא קובץ גיבוי"; },3000);
+  });
+  document.getElementById("btn-do-import").addEventListener("click",function(){ document.getElementById("inp-backup").click(); });
+  document.getElementById("inp-backup").addEventListener("change",function(){
+    var file=this.files[0]; if(!file) return;
+    var reader=new FileReader();
+    reader.onload=function(){
+      try{
+        var data=JSON.parse(reader.result);
+        if(!Array.isArray(data.items)) throw new Error("invalid");
+        items=data.items;
+        if(data.topics&&data.topics.length) topics=data.topics;
+        save("items",items); save("topics",topics);
+        renderList();
+        var msg=document.getElementById("import-msg");
+        msg.style.display="block"; msg.style.color="#5b6b4f";
+        msg.textContent="✓ הייבוא הצליח — "+items.length+" פריטים נטענו.";
+      }catch(e){
+        var msg=document.getElementById("import-msg");
+        msg.style.display="block"; msg.style.color="#7a3b3b";
+        msg.textContent="שגיאה: הקובץ אינו קובץ גיבוי תקין.";
+      }
+    };
+    reader.readAsText(file);
+    this.value="";
+  });
 
   // Detail
   document.getElementById("btn-detail-back").addEventListener("click",function(){ show("screen-list"); currentId=null; });
