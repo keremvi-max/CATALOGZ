@@ -10,16 +10,14 @@ body{font-family:-apple-system,Arial,sans-serif;background:#fbf7ee;color:#2b2418
 button{font-family:inherit;cursor:pointer;border:none;background:none}
 input,select,textarea{font-family:inherit;font-size:14px}
 .hidden{display:none!important}
-#screen-list,#screen-form,#screen-detail{min-height:100vh}
 
-/* LIST */
 .header{padding:20px 16px 12px;border-bottom:1px solid #d8cdb4;background:#fbf7ee;position:sticky;top:0;z-index:5}
 .hrow{display:flex;align-items:center;justify-content:space-between;margin-bottom:12px}
 .htitle{font-size:22px;font-family:Georgia,serif}
-.hcount{font-size:12px;color:#8a7d68;background:none;border:none;cursor:pointer;padding:4px 8px;border-radius:4px;border:1px solid #d8cdb4}
+.hcount{font-size:12px;color:#8a7d68;padding:4px 8px;border-radius:4px;border:1px solid #d8cdb4;cursor:pointer}
 .sbox{width:100%;padding:10px 12px;border:1px solid #d8cdb4;border-radius:8px;background:white;font-size:14px}
 .items{padding:12px 16px;display:flex;flex-direction:column;gap:8px;padding-bottom:100px}
-.icard{display:flex;align-items:center;gap:12px;padding:12px;border-radius:8px;border:1px solid #d8cdb4;background:white;width:100%;text-align:right;cursor:pointer;-webkit-appearance:none}
+.icard{display:flex;align-items:center;gap:12px;padding:12px;border-radius:8px;border:1px solid #d8cdb4;background:white;width:100%;text-align:right;cursor:pointer}
 .icard:active{background:#f0e9d8}
 .ithumb{width:56px;height:56px;border-radius:4px;border:1px solid #d8cdb4;object-fit:cover;flex-shrink:0}
 .ithumb-empty{width:56px;height:56px;border-radius:4px;border:1px solid #d8cdb4;background:#f0e9d8;display:flex;align-items:center;justify-content:center;flex-shrink:0;font-size:24px}
@@ -27,7 +25,7 @@ input,select,textarea{font-family:inherit;font-size:14px}
 .ititle{font-size:14px;font-weight:600;color:#2b2418;white-space:nowrap;overflow:hidden;text-overflow:ellipsis}
 .isub{font-size:12px;color:#8a7d68;margin-top:2px}
 .ibadge{font-size:10px;padding:4px 8px;border-radius:999px;color:white;flex-shrink:0}
-.empty{text-align:center;padding:60px 0;color:#8a7d68}
+.empty{text-align:center;padding:60px 0;color:#8a7d68;font-size:14px}
 .botbar{position:fixed;bottom:0;left:0;right:0;display:flex;gap:8px;padding:16px;background:#fbf7ee;border-top:1px solid #d8cdb4;z-index:5}
 .bbtn{flex:1;padding:14px 0;border-radius:8px;font-size:14px;font-weight:600;cursor:pointer}
 .bbtn-pri{background:#5b4a2f;color:#fbf7ee;border:none}
@@ -35,10 +33,8 @@ input,select,textarea{font-family:inherit;font-size:14px}
 .bbtn-pri:active{background:#4a3a22}
 .bbtn-sec:active{background:#f0e9d8}
 
-/* FORM */
 .topbar{display:flex;align-items:center;justify-content:space-between;padding:12px 16px;border-bottom:1px solid #d8cdb4;background:#fbf7ee;position:sticky;top:0;z-index:5}
 .tbback{font-size:26px;color:#5a4f3e;padding:4px 8px;cursor:pointer;line-height:1}
-.tbback:active{opacity:.6}
 .tbtitle{font-size:16px;font-family:Georgia,serif}
 .tbsave{font-size:13px;font-weight:600;padding:8px 16px;border-radius:6px;background:#5b4a2f;color:#fbf7ee;border:none;cursor:pointer}
 .tbsave:active{background:#4a3a22}
@@ -46,35 +42,32 @@ input,select,textarea{font-family:inherit;font-size:14px}
 .fbody{padding:16px;display:flex;flex-direction:column;gap:20px;padding-bottom:40px}
 .flabel{font-size:12px;color:#8a7d68;display:block;margin-bottom:5px}
 .finput{width:100%;border:1px solid #d8cdb4;border-radius:6px;background:white;color:#2b2418;padding:10px 12px;font-size:14px}
-.finput:focus{outline:2px solid #c9a961;border-color:#c9a961}
+.finput:focus{outline:2px solid #c9a961}
 .fta{width:100%;border:1px solid #d8cdb4;border-radius:6px;background:white;color:#2b2418;padding:10px 12px;font-size:14px;resize:none}
 .g2{display:grid;grid-template-columns:1fr 1fr;gap:10px}
 .g3{display:grid;grid-template-columns:1fr 1fr 1fr;gap:8px}
 .g4{display:grid;grid-template-columns:1fr 1fr 1fr 1fr;gap:8px}
 .seg{display:flex;border-radius:6px;border:1px solid #d8cdb4;overflow:hidden}
 .segb{flex:1;padding:9px 0;font-size:13px;background:white;color:#5a4f3e;border:none;cursor:pointer}
-.segb:active,.segb.on{background:#5b4a2f;color:#fbf7ee}
+.segb.on{background:#5b4a2f;color:#fbf7ee}
 .chips{display:flex;flex-wrap:wrap;gap:8px}
 .chip{font-size:12px;padding:6px 10px;border-radius:999px;border:1px solid #d8cdb4;background:white;color:#5a4f3e;cursor:pointer}
 .chip.on{background:#5b4a2f;color:#fbf7ee;border-color:#5b4a2f}
-.chip:active{opacity:.7}
 .addchip{font-size:12px;padding:6px 10px;border-radius:999px;border:1px dashed #a89a7d;color:#8a7d68;background:none;cursor:pointer}
 .pslot{position:relative;aspect-ratio:1}
-.pslot img{width:100%;height:100%;object-fit:cover;border-radius:6px;border:1px solid #d8cdb4;display:block}
+.pslot img{width:100%;height:100%;object-fit:cover;border-radius:6px;border:1px solid #d8cdb4;display:block;cursor:pointer}
 .pempty{width:100%;aspect-ratio:1;border-radius:6px;border:2px dashed #5a4f3e;background:#1c1812;display:flex;flex-direction:column;align-items:center;justify-content:center;gap:4px;color:#8a7d68;font-size:10px;cursor:pointer}
-.pov{position:absolute;inset:0;display:flex;align-items:flex-end;justify-content:space-between;padding:5px;border-radius:6px}
-.povb{background:rgba(0,0,0,.7);border-radius:4px;padding:5px 7px;font-size:12px;color:white;border:none;cursor:pointer}
+.pov{position:absolute;inset:0;display:flex;align-items:flex-end;justify-content:space-between;padding:5px;border-radius:6px;pointer-events:none}
+.povb{background:rgba(0,0,0,.75);border-radius:4px;padding:5px 7px;font-size:12px;color:white;border:none;cursor:pointer;pointer-events:all}
 .povb:active{opacity:.7}
 .salec{border:1px solid #d8cdb4;border-radius:6px;padding:10px;background:white;display:flex;flex-direction:column;gap:8px;margin-bottom:8px}
 .warn{font-size:12px;margin-top:6px;color:#7a3b3b;font-weight:500}
 .info{font-size:12px;margin-top:6px;color:#8a7d68}
 .secttitle{font-size:12px;color:#8a7d68;margin-bottom:8px}
-.drow{display:flex;align-items:center;justify-content:space-between}
 
-/* DETAIL */
 .dbody{padding:16px;display:flex;flex-direction:column;gap:16px;padding-bottom:40px}
 .dphotos{display:grid;grid-template-columns:1fr 1fr;gap:8px}
-.dphotos img{width:100%;aspect-ratio:1;object-fit:cover;border-radius:6px;border:1px solid #d8cdb4}
+.dphotos img{width:100%;aspect-ratio:1;object-fit:cover;border-radius:6px;border:1px solid #d8cdb4;cursor:pointer}
 .dname{font-size:20px;font-family:Georgia,serif;margin-top:4px}
 .dsub{font-size:14px;color:#8a7d68;margin-top:2px}
 .dsect{border-top:1px solid #d8cdb4;padding-top:12px}
@@ -83,6 +76,41 @@ input,select,textarea{font-family:inherit;font-size:14px}
 .dtags{display:flex;flex-wrap:wrap;gap:6px}
 .dtag{font-size:12px;padding:4px 8px;border-radius:999px;background:#f0e9d8;color:#5b4a2f}
 .shist{background:#f0e9d8;border-radius:6px;padding:10px;margin-bottom:8px}
+
+/* PHOTO SOURCE PICKER */
+#photo-picker{position:fixed;inset:0;z-index:200;background:rgba(0,0,0,.6);display:flex;align-items:flex-end;justify-content:center}
+#photo-picker.hidden{display:none!important}
+.picker-box{background:#fbf7ee;border-radius:16px 16px 0 0;padding:20px 16px 32px;width:100%;max-width:480px}
+.picker-title{font-size:14px;color:#8a7d68;text-align:center;margin-bottom:16px}
+.picker-btns{display:flex;gap:12px}
+.picker-btn{flex:1;padding:16px 0;border-radius:10px;font-size:15px;font-weight:600;cursor:pointer;border:none;display:flex;flex-direction:column;align-items:center;gap:6px}
+.picker-btn span{font-size:28px}
+.picker-cam{background:#5b4a2f;color:#fbf7ee}
+.picker-gal{background:#f0e9d8;color:#5b4a2f}
+.picker-cancel{width:100%;padding:14px 0;border-radius:10px;font-size:14px;font-weight:600;cursor:pointer;border:1px solid #d8cdb4;background:white;color:#8a7d68;margin-top:10px}
+
+/* LIGHTBOX */
+#lightbox{position:fixed;inset:0;z-index:300;background:rgba(0,0,0,.95);display:flex;flex-direction:column;align-items:center;justify-content:center}
+#lightbox.hidden{display:none!important}
+#lb-img{max-width:100%;max-height:78vh;object-fit:contain;display:block}
+.lbbar{display:flex;gap:12px;padding:16px;justify-content:center}
+.lbbtn{padding:10px 22px;border-radius:8px;font-size:14px;font-weight:600;cursor:pointer;border:none}
+.lbbtn-dl{background:#c9a961;color:#1c1812}
+.lbbtn-cl{background:#3a3226;color:#d9cdb8}
+
+/* IMAGE EDITOR */
+#img-editor{position:fixed;inset:0;z-index:400;background:#1c1812;display:flex;flex-direction:column}
+#img-editor.hidden{display:none!important}
+.ied-top{display:flex;align-items:center;justify-content:space-between;padding:12px 16px;border-bottom:1px solid #3a3226;flex-shrink:0}
+.ied-lbl{color:#d9cdb8;font-size:14px;font-weight:500}
+.ied-cancel{color:#d9cdb8;font-size:14px;cursor:pointer;padding:6px 12px;border-radius:6px;background:none;border:none}
+.ied-save{color:#1c1812;background:#c9a961;font-size:14px;font-weight:600;cursor:pointer;padding:8px 16px;border-radius:6px;border:none}
+.ied-wrap{flex:1;display:flex;align-items:center;justify-content:center;padding:12px;overflow:hidden;touch-action:none}
+#ied-canvas{touch-action:none;max-width:100%;max-height:100%}
+.ied-tools{display:flex;justify-content:center;gap:32px;padding:14px;border-top:1px solid #3a3226;flex-shrink:0}
+.ied-tool{display:flex;flex-direction:column;align-items:center;gap:4px;color:#d9cdb8;font-size:11px;background:none;border:none;cursor:pointer;padding:8px 16px}
+.ied-tool .ti{font-size:24px}
+.ied-hint{text-align:center;color:#8a7d68;font-size:11px;padding-bottom:10px;flex-shrink:0}
 </style>
 </head>
 <body>
@@ -128,12 +156,10 @@ input,select,textarea{font-family:inherit;font-size:14px}
         </div>
       </div>
     </div>
-
     <div>
       <div class="flabel">תמונות</div>
       <div class="g4" id="photo-grid"></div>
     </div>
-
     <div><label class="flabel">כותרת *</label><input class="finput" id="f-title" type="text" placeholder="שם הספר / החפץ"/></div>
     <div class="g2">
       <div><label class="flabel">מחבר/יוצר</label><input class="finput" id="f-author" type="text"/></div>
@@ -142,12 +168,10 @@ input,select,textarea{font-family:inherit;font-size:14px}
     <div><label class="flabel">מקום הדפסה/ייצור</label><input class="finput" id="f-place" type="text"/></div>
     <div><label class="flabel">תיאור / הערות</label><textarea class="fta" id="f-desc" rows="3"></textarea></div>
     <div><label class="flabel">מצב הפריט</label><input class="finput" id="f-condition" type="text" placeholder="שלם, כריכה רעועה..."/></div>
-
     <div>
       <div class="secttitle">🏷 נושאים</div>
       <div class="chips" id="chips-wrap"></div>
     </div>
-
     <div>
       <div class="secttitle">📍 מיקום פיזי</div>
       <div class="g3">
@@ -156,7 +180,6 @@ input,select,textarea{font-family:inherit;font-size:14px}
         <input class="finput" id="f-loc-shelf" type="text" placeholder="מדף"/>
       </div>
     </div>
-
     <div>
       <div class="secttitle">מקור רכישה</div>
       <input class="finput" id="f-acq-src" type="text" placeholder="ממי / היכן נרכש" style="margin-bottom:8px"/>
@@ -165,13 +188,11 @@ input,select,textarea{font-family:inherit;font-size:14px}
         <input class="finput" id="f-acq-price" type="number" placeholder="מחיר רכישה (₪)"/>
       </div>
     </div>
-
     <div>
       <div class="secttitle">📈 מחיר מינימום למכירה</div>
       <input class="finput" id="f-minprice" type="number" placeholder="₪"/>
       <div class="info" id="price-info"></div>
     </div>
-
     <div>
       <div class="secttitle">סטטוס</div>
       <div class="seg" id="seg-status">
@@ -184,9 +205,8 @@ input,select,textarea{font-family:inherit;font-size:14px}
         <div class="warn hidden" id="sold-warn"></div>
       </div>
     </div>
-
     <div>
-      <div class="drow" style="margin-bottom:8px">
+      <div style="display:flex;align-items:center;justify-content:space-between;margin-bottom:8px">
         <div class="secttitle" style="margin:0">📦 היסטוריית מכירות</div>
         <button id="btn-add-sale" style="font-size:12px;color:#5b4a2f;font-weight:600;padding:4px 8px;cursor:pointer">+ הוסף</button>
       </div>
@@ -208,8 +228,49 @@ input,select,textarea{font-family:inherit;font-size:14px}
   <div class="dbody" id="detail-body"></div>
 </div>
 
+<!-- PHOTO SOURCE PICKER -->
+<div id="photo-picker" class="hidden">
+  <div class="picker-box">
+    <div class="picker-title">בחר מקור תמונה</div>
+    <div class="picker-btns">
+      <button class="picker-btn picker-cam" id="picker-cam"><span>📷</span>מצלמה</button>
+      <button class="picker-btn picker-gal" id="picker-gal"><span>🖼</span>גלריה</button>
+    </div>
+    <button class="picker-cancel" id="picker-cancel">ביטול</button>
+  </div>
+</div>
+
+<!-- LIGHTBOX -->
+<div id="lightbox" class="hidden">
+  <img id="lb-img" src="" alt=""/>
+  <div class="lbbar">
+    <button class="lbbtn lbbtn-dl" id="lb-dl">⬇ הורד</button>
+    <button class="lbbtn lbbtn-cl" id="lb-cl">✕ סגור</button>
+  </div>
+</div>
+
+<!-- IMAGE EDITOR -->
+<div id="img-editor" class="hidden">
+  <div class="ied-top">
+    <button class="ied-cancel" id="ied-cancel">ביטול</button>
+    <span class="ied-lbl">ערוך תמונה</span>
+    <button class="ied-save" id="ied-save">✓ שמור</button>
+  </div>
+  <div class="ied-wrap" id="ied-wrap">
+    <canvas id="ied-canvas"></canvas>
+  </div>
+  <div class="ied-tools">
+    <button class="ied-tool" id="ied-rot"><span class="ti">↻</span>סבב</button>
+    <button class="ied-tool" id="ied-clr"><span class="ti">⊡</span>נקה חיתוך</button>
+  </div>
+  <div class="ied-hint">גרור על התמונה כדי לסמן חיתוך</div>
+</div>
+
+<!-- hidden file inputs -->
+<input type="file" id="inp-camera" accept="image/*" capture="environment" style="display:none"/>
+<input type="file" id="inp-gallery" accept="image/*" style="display:none"/>
+
 <script>
-// ===== DATA =====
 var items = [];
 var topics = ["חסידות","ש\"ס","סידורים","קבלה","תנ\"ך ומפרשים","הלכה","דרשות","מוסר","כתבי יד","תשמישי קדושה","מפות","אמנות יהודית"];
 var currentId = null;
@@ -217,63 +278,57 @@ var formPhotos = {};
 var formSales = [];
 var formTopics = [];
 var segVals = {cat:"קודש", type:"ספר", status:"באוסף"};
+var pickerKey = null;
+var lbSrc = "";
+var iedImg = null, iedKey = null, iedRot = 0, iedCrop = null, iedDrag = null, iedDW = 0;
 
 function uid(){ return Date.now().toString(36)+Math.random().toString(36).slice(2,7); }
 function sc(s){ return s==="באוסף"?"#5b6b4f":s==="הוצע למכירה"?"#9c6b2e":"#7a3b3b"; }
 function esc(s){ return String(s||"").replace(/&/g,"&amp;").replace(/</g,"&lt;").replace(/>/g,"&gt;"); }
-
-// ===== STORAGE =====
 function save(k,v){ try{ localStorage.setItem(k,JSON.stringify(v)); }catch(e){} }
-function load(k,def){ try{ var v=localStorage.getItem(k); return v?JSON.parse(v):def; }catch(e){ return def; } }
+function load(k,d){ try{ var v=localStorage.getItem(k); return v?JSON.parse(v):d; }catch(e){ return d; } }
 
-// ===== SCREENS =====
 function show(id){
   ["screen-list","screen-form","screen-detail"].forEach(function(s){
-    document.getElementById(s).classList.toggle("hidden", s!==id);
+    document.getElementById(s).classList.toggle("hidden",s!==id);
   });
   window.scrollTo(0,0);
 }
 
-// ===== LIST =====
 function renderList(){
   var q=(document.getElementById("search").value||"").toLowerCase().trim();
   var list=items.filter(function(it){
     if(!q) return true;
     return [it.title,it.author,it.place,it.description,it.location.area,it.location.box].concat(it.topics||[]).join(" ").toLowerCase().indexOf(q)>=0;
   }).sort(function(a,b){ return new Date(b.createdAt)-new Date(a.createdAt); });
-  
   document.getElementById("btn-count").textContent=items.length+" פריטים · גיבוי";
-  
   var el=document.getElementById("items-list");
   if(!list.length){
-    el.innerHTML='<div class="empty"><div style="font-size:40px;margin-bottom:12px">📚</div>'+(items.length?"לא נמצאו פריטים":"עדיין לא הוספת פריטים")+'</div>';
+    el.innerHTML='<div class="empty"><div style="font-size:40px;margin-bottom:12px">📚</div>'+(items.length?"לא נמצאו":"עדיין לא הוספת פריטים")+'</div>';
     return;
   }
   el.innerHTML=list.map(function(it){
-    var photo=it.photos.cover||it.photos.titlePage||Object.values(it.photos||{})[0];
+    var p=it.photos.cover||it.photos.titlePage||Object.values(it.photos||{})[0];
     var loc=[it.location.area,it.location.box?"ארגז "+it.location.box:""].filter(Boolean).join(" · ");
     return '<button class="icard" data-id="'+it.id+'">'
-      +(photo?'<img class="ithumb" src="'+photo+'"/>':"<div class='ithumb-empty'>📄</div>")
+      +(p?'<img class="ithumb" src="'+p+'"/>':"<div class='ithumb-empty'>📄</div>")
       +'<div class="iinfo"><div class="ititle">'+esc(it.title)+'</div>'
       +'<div class="isub">'+esc([it.category,it.itemType,it.place].filter(Boolean).join(" · "))+'</div>'
       +(loc?'<div class="isub" style="font-size:11px;color:#a89a7d">📍 '+esc(loc)+'</div>':"")
       +'</div><span class="ibadge" style="background:'+sc(it.status)+'">'+it.status+'</span></button>';
   }).join("");
-  
   el.querySelectorAll(".icard").forEach(function(b){
-    b.addEventListener("click", function(){ showDetail(this.dataset.id); });
+    b.addEventListener("click",function(){ showDetail(this.dataset.id); });
   });
 }
 
-// ===== FORM =====
 var SLOTS=[{k:"cover",l:"שער"},{k:"titlePage",l:"עמוד שער"},{k:"colophon",l:"קולופון"},{k:"condition",l:"מצב/פגם"}];
 
 function showForm(item){
   currentId=item?item.id:null;
   document.getElementById("form-title-el").textContent=item?"ערוך פריט":"פריט חדש";
-  segVals={cat:item?item.category:"קודש", type:item?item.itemType:"ספר", status:item?item.status:"באוסף"};
+  segVals={cat:item?item.category:"קודש",type:item?item.itemType:"ספר",status:item?item.status:"באוסף"};
   ["cat","type","status"].forEach(renderSeg);
-  
   document.getElementById("f-title").value=item?item.title:"";
   document.getElementById("f-author").value=item?item.author:"";
   document.getElementById("f-year").value=item?item.year:"";
@@ -288,11 +343,9 @@ function showForm(item){
   document.getElementById("f-acq-price").value=item?item.acquisition.price:"";
   document.getElementById("f-minprice").value=item?item.minPrice:"";
   document.getElementById("f-sold").value=item?item.soldPrice:"";
-  
   formPhotos=item?Object.assign({},item.photos):{};
   formSales=item?JSON.parse(JSON.stringify(item.saleHistory||[])):[];
   formTopics=item?[].concat(item.topics||[]):[];
-  
   renderPhotoGrid();
   renderChips();
   renderSales();
@@ -303,27 +356,18 @@ function showForm(item){
 }
 
 function renderSeg(seg){
-  var wrap=document.getElementById("seg-"+seg);
-  wrap.querySelectorAll(".segb").forEach(function(b){
-    b.classList.toggle("on", b.dataset.val===segVals[seg]);
+  document.getElementById("seg-"+seg).querySelectorAll(".segb").forEach(function(b){
+    b.classList.toggle("on",b.dataset.val===segVals[seg]);
   });
 }
-
-function updateSaveBtn(){
-  document.getElementById("btn-save").disabled=!document.getElementById("f-title").value.trim();
-}
+function updateSaveBtn(){ document.getElementById("btn-save").disabled=!document.getElementById("f-title").value.trim(); }
 function updatePriceInfo(){
-  var min=document.getElementById("f-minprice").value;
-  var cost=document.getElementById("f-acq-price").value;
+  var min=document.getElementById("f-minprice").value, cost=document.getElementById("f-acq-price").value;
   document.getElementById("price-info").textContent=(min&&cost)?"עלות: ₪"+cost+" · מינימום: ₪"+min:"";
 }
-function toggleSoldWrap(){
-  document.getElementById("sold-wrap").classList.toggle("hidden", segVals.status!=="נמכר");
-}
+function toggleSoldWrap(){ document.getElementById("sold-wrap").classList.toggle("hidden",segVals.status!=="נמכר"); }
 function checkSoldWarn(){
-  var min=parseFloat(document.getElementById("f-minprice").value);
-  var sold=parseFloat(document.getElementById("f-sold").value);
-  var w=document.getElementById("sold-warn");
+  var min=parseFloat(document.getElementById("f-minprice").value), sold=parseFloat(document.getElementById("f-sold").value), w=document.getElementById("sold-warn");
   if(min&&sold&&sold<min){ w.textContent="⚠ מחיר נמוך מהמינימום (₪"+min+")"; w.classList.remove("hidden"); }
   else w.classList.add("hidden");
 }
@@ -333,22 +377,24 @@ function renderPhotoGrid(){
   wrap.innerHTML=SLOTS.map(function(s){
     var p=formPhotos[s.k];
     return p
-      ?'<div class="pslot"><img src="'+p+'"/><div class="pov"><button class="povb" data-key="'+s.k+'" data-action="remove">🗑</button></div></div>'
-      :'<label class="pslot"><div class="pempty">📷<span>'+s.l+'</span><input type="file" accept="image/*" capture="environment" data-key="'+s.k+'" style="display:none"/></div></label>';
+      ?'<div class="pslot"><img src="'+p+'" data-key="'+s.k+'"/><div class="pov"><button class="povb" data-key="'+s.k+'" data-act="edit">✏</button><button class="povb" data-key="'+s.k+'" data-act="del">🗑</button></div></div>'
+      :'<div class="pslot"><div class="pempty" data-key="'+s.k+'"><span style="font-size:22px">📷</span><span>'+s.l+'</span></div></div>';
   }).join("");
-  
-  wrap.querySelectorAll('input[type="file"]').forEach(function(inp){
-    inp.addEventListener("change", function(){
-      var key=this.dataset.key, file=this.files[0]; if(!file) return;
-      compressFile(file, function(dataUrl){ formPhotos[key]=dataUrl; renderPhotoGrid(); });
-    });
+  wrap.querySelectorAll("img").forEach(function(img){
+    img.addEventListener("click",function(){ openLightbox(formPhotos[this.dataset.key]); });
   });
-  wrap.querySelectorAll('[data-action="remove"]').forEach(function(b){
-    b.addEventListener("click", function(e){ e.preventDefault(); delete formPhotos[this.dataset.key]; renderPhotoGrid(); });
+  wrap.querySelectorAll(".pempty").forEach(function(d){
+    d.addEventListener("click",function(){ openPicker(this.dataset.key); });
+  });
+  wrap.querySelectorAll("[data-act='edit']").forEach(function(b){
+    b.addEventListener("click",function(e){ e.stopPropagation(); openEditor(this.dataset.key); });
+  });
+  wrap.querySelectorAll("[data-act='del']").forEach(function(b){
+    b.addEventListener("click",function(e){ e.stopPropagation(); delete formPhotos[this.dataset.key]; renderPhotoGrid(); });
   });
 }
 
-function compressFile(file, cb){
+function compressFile(file,cb){
   var reader=new FileReader();
   reader.onload=function(){
     var img=new Image();
@@ -364,20 +410,78 @@ function compressFile(file, cb){
   reader.readAsDataURL(file);
 }
 
+function openPicker(key){
+  pickerKey=key;
+  document.getElementById("photo-picker").classList.remove("hidden");
+}
+function closePicker(){ document.getElementById("photo-picker").classList.add("hidden"); pickerKey=null; }
+
+function openLightbox(src){
+  lbSrc=src;
+  document.getElementById("lb-img").src=src;
+  document.getElementById("lightbox").classList.remove("hidden");
+}
+function closeLightbox(){ document.getElementById("lightbox").classList.add("hidden"); lbSrc=""; }
+
+function openEditor(key){
+  var src=formPhotos[key]; if(!src) return;
+  iedKey=key; iedRot=0; iedCrop=null; iedDrag=null;
+  var img=new Image();
+  img.onload=function(){ iedImg=img; document.getElementById("img-editor").classList.remove("hidden"); drawIed(); };
+  img.src=src;
+}
+function drawIed(){
+  if(!iedImg) return;
+  var c=document.getElementById("ied-canvas"), wrap=document.getElementById("ied-wrap");
+  var rad=iedRot*Math.PI/180, sw=iedRot%180!==0;
+  var w=sw?iedImg.height:iedImg.width, h=sw?iedImg.width:iedImg.height;
+  var s=Math.min(1,(wrap.clientWidth||360)/w,(wrap.clientHeight||400)/h);
+  c.width=w*s; c.height=h*s; iedDW=c.width;
+  var ctx=c.getContext("2d");
+  ctx.save(); ctx.translate(c.width/2,c.height/2); ctx.rotate(rad); ctx.scale(s,s);
+  ctx.drawImage(iedImg,-iedImg.width/2,-iedImg.height/2); ctx.restore();
+  if(iedCrop&&iedCrop.w>4&&iedCrop.h>4){
+    ctx.fillStyle="rgba(0,0,0,.55)"; ctx.fillRect(0,0,c.width,c.height);
+    ctx.save(); ctx.beginPath(); ctx.rect(iedCrop.x,iedCrop.y,iedCrop.w,iedCrop.h); ctx.clip();
+    ctx.translate(c.width/2,c.height/2); ctx.rotate(rad); ctx.scale(s,s);
+    ctx.drawImage(iedImg,-iedImg.width/2,-iedImg.height/2); ctx.restore();
+    ctx.strokeStyle="#c9a961"; ctx.lineWidth=2; ctx.strokeRect(iedCrop.x,iedCrop.y,iedCrop.w,iedCrop.h);
+  }
+}
+function iedPos(e){
+  var r=document.getElementById("ied-canvas").getBoundingClientRect(), t=e.touches?e.touches[0]:e;
+  return {x:t.clientX-r.left,y:t.clientY-r.top};
+}
+function saveIed(){
+  var rad=iedRot*Math.PI/180, sw=iedRot%180!==0;
+  var w=sw?iedImg.height:iedImg.width, h=sw?iedImg.width:iedImg.height;
+  var full=document.createElement("canvas"); full.width=w; full.height=h;
+  var fctx=full.getContext("2d"); fctx.translate(w/2,h/2); fctx.rotate(rad); fctx.drawImage(iedImg,-iedImg.width/2,-iedImg.height/2);
+  var final=full;
+  if(iedCrop&&iedCrop.w>4&&iedCrop.h>4){
+    var sc2=iedDW/w, cr=document.createElement("canvas");
+    cr.width=iedCrop.w/sc2; cr.height=iedCrop.h/sc2;
+    cr.getContext("2d").drawImage(full,iedCrop.x/sc2,iedCrop.y/sc2,iedCrop.w/sc2,iedCrop.h/sc2,0,0,cr.width,cr.height);
+    final=cr;
+  }
+  formPhotos[iedKey]=final.toDataURL("image/jpeg",0.85);
+  document.getElementById("img-editor").classList.add("hidden");
+  renderPhotoGrid();
+}
+
 function renderChips(){
   var wrap=document.getElementById("chips-wrap");
   wrap.innerHTML=topics.map(function(t){
     return '<button class="chip'+(formTopics.indexOf(t)>=0?" on":"")+'" data-topic="'+esc(t)+'">'+esc(t)+'</button>';
   }).join("")+'<button class="addchip" id="btn-add-topic">+ נושא</button>';
-  
   wrap.querySelectorAll(".chip").forEach(function(b){
-    b.addEventListener("click", function(){
-      var t=this.dataset.topic, idx=formTopics.indexOf(t);
-      if(idx>=0) formTopics.splice(idx,1); else formTopics.push(t);
+    b.addEventListener("click",function(){
+      var t=this.dataset.topic, i=formTopics.indexOf(t);
+      if(i>=0) formTopics.splice(i,1); else formTopics.push(t);
       renderChips();
     });
   });
-  document.getElementById("btn-add-topic").addEventListener("click", function(){
+  document.getElementById("btn-add-topic").addEventListener("click",function(){
     var t=prompt("שם הנושא החדש:");
     if(t&&t.trim()){ t=t.trim(); if(topics.indexOf(t)<0) topics.push(t); if(formTopics.indexOf(t)<0) formTopics.push(t); renderChips(); }
   });
@@ -392,56 +496,43 @@ function renderSales(){
       +'<input class="finput" type="text" placeholder="מקום" value="'+esc(s.venue)+'" data-i="'+i+'" data-f="venue"/></div>'
       +'<div class="g2"><input class="finput" type="number" placeholder="מחיר (₪)" value="'+esc(s.offeredPrice)+'" data-i="'+i+'" data-f="offeredPrice"/>'
       +'<select class="finput" data-i="'+i+'" data-f="outcome"><option'+(s.outcome==="לא נמכר"?" selected":"")+'>לא נמכר</option><option'+(s.outcome==="נמכר"?" selected":"")+'>נמכר</option><option'+(s.outcome==="הוסר מהמכירה"?" selected":"")+'>הוסר מהמכירה</option></select></div>'
-      +'<div style="display:flex;gap:8px;align-items:center"><input class="finput" style="flex:1" type="text" placeholder="הערות" value="'+esc(s.notes||"")+'" data-i="'+i+'" data-f="notes"/>'
-      +'<button data-del="'+i+'" style="color:#c98a8a;font-size:18px;padding:4px;cursor:pointer">✕</button></div>'
-      +'</div>';
+      +'<div style="display:flex;gap:8px"><input class="finput" style="flex:1" type="text" placeholder="הערות" value="'+esc(s.notes||"")+'" data-i="'+i+'" data-f="notes"/>'
+      +'<button data-del="'+i+'" style="color:#c98a8a;font-size:18px;padding:4px;cursor:pointer">✕</button></div></div>';
   }).join("");
-  
   wrap.querySelectorAll("input,select").forEach(function(el){
-    el.addEventListener("change", function(){ formSales[this.dataset.i][this.dataset.f]=this.value; });
+    el.addEventListener("change",function(){ formSales[this.dataset.i][this.dataset.f]=this.value; });
   });
   wrap.querySelectorAll("[data-del]").forEach(function(b){
-    b.addEventListener("click", function(){ formSales.splice(parseInt(this.dataset.del),1); renderSales(); });
+    b.addEventListener("click",function(){ formSales.splice(parseInt(this.dataset.del),1); renderSales(); });
   });
 }
 
 function saveItem(){
   var title=document.getElementById("f-title").value.trim(); if(!title) return;
   var item={
-    id:currentId||uid(),
-    category:segVals.cat, itemType:segVals.type, title:title,
-    author:document.getElementById("f-author").value,
-    year:document.getElementById("f-year").value,
-    place:document.getElementById("f-place").value,
-    description:document.getElementById("f-desc").value,
-    condition:document.getElementById("f-condition").value,
-    topics:[].concat(formTopics),
+    id:currentId||uid(), category:segVals.cat, itemType:segVals.type, title:title,
+    author:document.getElementById("f-author").value, year:document.getElementById("f-year").value,
+    place:document.getElementById("f-place").value, description:document.getElementById("f-desc").value,
+    condition:document.getElementById("f-condition").value, topics:[].concat(formTopics),
     location:{area:document.getElementById("f-loc-area").value,box:document.getElementById("f-loc-box").value,shelf:document.getElementById("f-loc-shelf").value},
     acquisition:{source:document.getElementById("f-acq-src").value,date:document.getElementById("f-acq-date").value,price:document.getElementById("f-acq-price").value},
-    minPrice:document.getElementById("f-minprice").value,
-    status:segVals.status,
-    soldPrice:document.getElementById("f-sold").value,
-    saleHistory:JSON.parse(JSON.stringify(formSales)),
+    minPrice:document.getElementById("f-minprice").value, status:segVals.status,
+    soldPrice:document.getElementById("f-sold").value, saleHistory:JSON.parse(JSON.stringify(formSales)),
     photos:Object.assign({},formPhotos),
     createdAt:currentId?(items.find(function(i){return i.id===currentId;})||{createdAt:new Date().toISOString()}).createdAt:new Date().toISOString()
   };
-  if(currentId){ items=items.map(function(i){return i.id===item.id?item:i;}); }
-  else items.push(item);
-  save("items",items);
-  renderList();
-  showDetail(item.id);
+  if(currentId){ items=items.map(function(i){return i.id===item.id?item:i;}); } else items.push(item);
+  save("items",items); renderList(); showDetail(item.id);
 }
 
-// ===== DETAIL =====
 function showDetail(id){
   var item=items.find(function(i){return i.id===id;}); if(!item) return;
   currentId=id;
   var badge=document.getElementById("detail-badge");
   badge.textContent=item.status; badge.style.background=sc(item.status);
-  
   var photos=Object.values(item.photos||{});
   var h="";
-  if(photos.length) h+='<div class="dphotos">'+photos.map(function(p){return'<img src="'+p+'"/>';}).join("")+'</div>';
+  if(photos.length) h+='<div class="dphotos">'+photos.map(function(p){return'<img src="'+p+'" data-src="'+p+'"/>';}).join("")+'</div>';
   h+='<div><div style="font-size:12px;color:#8a7d68">'+esc(item.category)+' · '+esc(item.itemType)+'</div>'
     +'<div class="dname">'+esc(item.title)+'</div>'
     +(item.author?'<div class="dsub">'+esc(item.author)+'</div>':"")
@@ -449,104 +540,119 @@ function showDetail(id){
   if(item.description) h+='<div style="font-size:14px;line-height:1.6">'+esc(item.description)+'</div>';
   if(item.condition) h+='<div class="dsect"><div class="dlbl">מצב</div><div class="dval">'+esc(item.condition)+'</div></div>';
   if(item.topics&&item.topics.length) h+='<div class="dtags">'+item.topics.map(function(t){return'<span class="dtag">'+esc(t)+'</span>';}).join("")+'</div>';
-  
   var loc=[item.location.area,item.location.box?"ארגז "+item.location.box:"",item.location.shelf?"מדף "+item.location.shelf:""].filter(Boolean).join(" · ");
   h+='<div class="dsect"><div class="dlbl">📍 מיקום פיזי</div><div class="dval">'+(loc||"לא צוין")+'</div></div>';
-  
   if(item.acquisition.source||item.acquisition.price)
     h+='<div class="dsect"><div class="dlbl">מקור רכישה</div><div class="dval">'+esc(item.acquisition.source)+'</div>'
       +'<div style="font-size:12px;color:#8a7d68">'+esc([item.acquisition.date,item.acquisition.price?"₪"+item.acquisition.price:""].filter(Boolean).join(" · "))+'</div></div>';
-  
   if(item.minPrice) h+='<div class="dsect"><div class="dlbl">📈 מחיר מינימום</div><div class="dval" style="font-weight:600">₪'+esc(item.minPrice)+'</div></div>';
   if(item.status==="נמכר"&&item.soldPrice) h+='<div class="dsect"><div class="dlbl">נמכר עבור</div><div class="dval" style="font-weight:600">₪'+esc(item.soldPrice)+'</div></div>';
-  
   if(item.saleHistory&&item.saleHistory.length){
     h+='<div class="dsect"><div class="dlbl">📦 היסטוריית מכירות</div>'
       +item.saleHistory.map(function(s){
         return '<div class="shist"><div style="display:flex;justify-content:space-between;font-size:14px"><span>'+esc(s.venue||"—")+'</span><span style="color:#8a7d68">'+esc(s.date)+'</span></div>'
           +'<div style="display:flex;justify-content:space-between;font-size:12px;margin-top:4px"><span>'+esc(s.outcome)+'</span>'+(s.offeredPrice?'<span>₪'+esc(s.offeredPrice)+'</span>':"")+'</div>'
-          +(s.notes?'<div style="font-size:12px;color:#8a7d68;margin-top:4px">'+esc(s.notes)+'</div>':"")
-          +'</div>';
+          +(s.notes?'<div style="font-size:12px;color:#8a7d68;margin-top:4px">'+esc(s.notes)+'</div>':"")+'</div>';
       }).join("")+'</div>';
   }
-  
   document.getElementById("detail-body").innerHTML=h;
+  document.getElementById("detail-body").querySelectorAll("img[data-src]").forEach(function(img){
+    img.addEventListener("click",function(){ openLightbox(this.dataset.src); });
+  });
   show("screen-detail");
 }
 
-// ===== EXPORT SIMPLE =====
 function doExport(){
   if(!items.length){ alert("אין פריטים לייצא"); return; }
   var rows=items.map(function(it){
-    var photo=it.photos.cover||it.photos.titlePage||Object.values(it.photos||{})[0];
-    return '<div class="lot">'+(photo?'<img src="'+photo+'" class="lot-img"/>':"")
-      +'<div class="lot-body"><h3>'+esc(it.title)+(it.author?" / "+esc(it.author):"")+'</h3>'
-      +'<p class="meta">'+esc([it.place,it.year].filter(Boolean).join(" · "))+'</p>'
+    var p=it.photos.cover||it.photos.titlePage||Object.values(it.photos||{})[0];
+    return '<div class="lot">'+(p?'<img src="'+p+'" class="li"/>':"")
+      +'<div class="lb"><h3>'+esc(it.title)+(it.author?" / "+esc(it.author):"")+'</h3>'
+      +'<p class="m">'+esc([it.place,it.year].filter(Boolean).join(" · "))+'</p>'
       +'<p>'+esc(it.description||"")+'</p>'
       +(it.condition?'<p style="color:#7a3b3b;font-size:13px">מצב: '+esc(it.condition)+'</p>':"")
       +'</div></div>';
   }).join("");
-  var html='<!DOCTYPE html><html dir="rtl"><head><meta charset="UTF-8"/><title>קטלוג</title><style>body{font-family:Georgia,serif;background:#fbf7ee;padding:40px;max-width:800px;margin:0 auto}.lot{display:flex;gap:20px;margin-bottom:32px;border-bottom:1px solid #d8cdb4;padding-bottom:24px}.lot-img{width:150px;height:150px;object-fit:cover}.meta{color:#8a7d68;font-size:14px}</style></head><body><h1>קטלוג מכירה</h1>'+rows+'</body></html>';
-  var blob=new Blob([html],{type:"text/html"});
-  var a=document.createElement("a"); a.href=URL.createObjectURL(blob); a.download="קטלוג.html"; a.click();
+  var html='<!DOCTYPE html><html dir="rtl"><head><meta charset="UTF-8"/><title>קטלוג</title><style>body{font-family:Georgia,serif;background:#fbf7ee;padding:40px;max-width:800px;margin:0 auto}.lot{display:flex;gap:20px;margin-bottom:32px;border-bottom:1px solid #d8cdb4;padding-bottom:24px}.li{width:150px;height:150px;object-fit:cover}.m{color:#8a7d68;font-size:14px}</style></head><body><h1>קטלוג מכירה</h1>'+rows+'</body></html>';
+  var a=document.createElement("a"); a.href=URL.createObjectURL(new Blob([html],{type:"text/html"})); a.download="קטלוג.html"; a.click();
 }
-
 function doBackup(){
-  var blob=new Blob([JSON.stringify({items:items,topics:topics},null,2)],{type:"application/json"});
-  var a=document.createElement("a"); a.href=URL.createObjectURL(blob); a.download="גיבוי-קטלוג.json"; a.click();
+  var a=document.createElement("a"); a.href=URL.createObjectURL(new Blob([JSON.stringify({items:items,topics:topics},null,2)],{type:"application/json"})); a.download="גיבוי-קטלוג.json"; a.click();
 }
 
-// ===== INIT & EVENTS =====
-window.addEventListener("load", function(){
-  // Load data
+window.addEventListener("load",function(){
   items=load("items",[]);
   topics=load("topics",["חסידות","ש\"ס","סידורים","קבלה","תנ\"ך ומפרשים","הלכה","דרשות","מוסר","כתבי יד","תשמישי קדושה","מפות","אמנות יהודית"]);
-  
   renderList();
   show("screen-list");
-  
-  // List events
-  document.getElementById("btn-new").addEventListener("click", function(){ showForm(null); });
-  document.getElementById("btn-catalog").addEventListener("click", function(){ doExport(); });
-  document.getElementById("btn-count").addEventListener("click", function(){
-    if(confirm("מה תרצה לעשות?\nאישור = ייצוא גיבוי\nביטול = המשך")){ doBackup(); }
+
+  // List
+  document.getElementById("btn-new").addEventListener("click",function(){ showForm(null); });
+  document.getElementById("btn-catalog").addEventListener("click",doExport);
+  document.getElementById("btn-count").addEventListener("click",function(){ if(confirm("ייצוא קובץ גיבוי?")) doBackup(); });
+  document.getElementById("search").addEventListener("input",renderList);
+
+  // Form
+  document.getElementById("btn-form-back").addEventListener("click",function(){ if(currentId) showDetail(currentId); else show("screen-list"); });
+  document.getElementById("btn-save").addEventListener("click",saveItem);
+  document.getElementById("f-title").addEventListener("input",updateSaveBtn);
+  document.getElementById("f-minprice").addEventListener("input",updatePriceInfo);
+  document.getElementById("f-acq-price").addEventListener("input",updatePriceInfo);
+  document.getElementById("f-sold").addEventListener("input",checkSoldWarn);
+  document.getElementById("btn-add-sale").addEventListener("click",function(){
+    formSales.push({id:uid(),date:"",venue:"",offeredPrice:"",outcome:"לא נמכר",notes:""}); renderSales();
   });
-  document.getElementById("search").addEventListener("input", function(){ renderList(); });
-  
-  // Form events
-  document.getElementById("btn-form-back").addEventListener("click", function(){
-    if(currentId) showDetail(currentId); else show("screen-list");
-  });
-  document.getElementById("btn-save").addEventListener("click", function(){ saveItem(); });
-  document.getElementById("f-title").addEventListener("input", function(){ updateSaveBtn(); });
-  document.getElementById("f-minprice").addEventListener("input", function(){ updatePriceInfo(); });
-  document.getElementById("f-acq-price").addEventListener("input", function(){ updatePriceInfo(); });
-  document.getElementById("f-sold").addEventListener("input", function(){ checkSoldWarn(); });
-  document.getElementById("btn-add-sale").addEventListener("click", function(){
-    formSales.push({id:uid(),date:"",venue:"",offeredPrice:"",outcome:"לא נמכר",notes:""});
-    renderSales();
-  });
-  
-  // Segments
   ["cat","type","status"].forEach(function(seg){
     document.getElementById("seg-"+seg).querySelectorAll(".segb").forEach(function(b){
-      b.addEventListener("click", function(){
-        segVals[seg]=this.dataset.val;
-        renderSeg(seg);
-        if(seg==="status") toggleSoldWrap();
-      });
+      b.addEventListener("click",function(){ segVals[seg]=this.dataset.val; renderSeg(seg); if(seg==="status") toggleSoldWrap(); });
     });
   });
-  
-  // Detail events
-  document.getElementById("btn-detail-back").addEventListener("click", function(){ show("screen-list"); currentId=null; });
-  document.getElementById("btn-edit").addEventListener("click", function(){
-    var item=items.find(function(i){return i.id===currentId;}); if(item) showForm(item);
+
+  // Photo picker
+  document.getElementById("picker-cam").addEventListener("click",function(){
+    closePicker(); document.getElementById("inp-camera").click();
   });
-  document.getElementById("btn-delete").addEventListener("click", function(){
+  document.getElementById("picker-gal").addEventListener("click",function(){
+    closePicker(); document.getElementById("inp-gallery").click();
+  });
+  document.getElementById("picker-cancel").addEventListener("click",closePicker);
+  document.getElementById("photo-picker").addEventListener("click",function(e){ if(e.target===this) closePicker(); });
+  document.getElementById("inp-camera").addEventListener("change",function(){
+    var f=this.files[0]; if(!f||!pickerKey) return;
+    compressFile(f,function(d){ formPhotos[pickerKey]=d; renderPhotoGrid(); }); this.value="";
+  });
+  document.getElementById("inp-gallery").addEventListener("change",function(){
+    var f=this.files[0]; if(!f||!pickerKey) return;
+    compressFile(f,function(d){ formPhotos[pickerKey]=d; renderPhotoGrid(); }); this.value="";
+  });
+
+  // Lightbox
+  document.getElementById("lb-cl").addEventListener("click",closeLightbox);
+  document.getElementById("lightbox").addEventListener("click",function(e){ if(e.target===this) closeLightbox(); });
+  document.getElementById("lb-dl").addEventListener("click",function(){
+    if(!lbSrc) return; var a=document.createElement("a"); a.href=lbSrc; a.download="תמונה.jpg"; a.click();
+  });
+
+  // Editor
+  document.getElementById("ied-cancel").addEventListener("click",function(){ document.getElementById("img-editor").classList.add("hidden"); });
+  document.getElementById("ied-save").addEventListener("click",saveIed);
+  document.getElementById("ied-rot").addEventListener("click",function(){ iedRot=(iedRot+90)%360; iedCrop=null; drawIed(); });
+  document.getElementById("ied-clr").addEventListener("click",function(){ iedCrop=null; drawIed(); });
+  var ic=document.getElementById("ied-canvas");
+  function onS(e){ var p=iedPos(e); iedDrag=p; iedCrop={x:p.x,y:p.y,w:0,h:0}; }
+  function onM(e){ if(!iedDrag)return; var p=iedPos(e); iedCrop={x:Math.min(iedDrag.x,p.x),y:Math.min(iedDrag.y,p.y),w:Math.abs(p.x-iedDrag.x),h:Math.abs(p.y-iedDrag.y)}; drawIed(); }
+  function onE(){ iedDrag=null; }
+  ic.addEventListener("mousedown",onS); ic.addEventListener("mousemove",onM); ic.addEventListener("mouseup",onE);
+  ic.addEventListener("touchstart",function(e){e.preventDefault();onS(e);},{passive:false});
+  ic.addEventListener("touchmove",function(e){e.preventDefault();onM(e);},{passive:false});
+  ic.addEventListener("touchend",onE);
+
+  // Detail
+  document.getElementById("btn-detail-back").addEventListener("click",function(){ show("screen-list"); currentId=null; });
+  document.getElementById("btn-edit").addEventListener("click",function(){ var it=items.find(function(i){return i.id===currentId;}); if(it) showForm(it); });
+  document.getElementById("btn-delete").addEventListener("click",function(){
     if(!currentId||!confirm("למחוק את הפריט?")) return;
-    items=items.filter(function(i){return i.id!==currentId;});
-    save("items",items); currentId=null; renderList(); show("screen-list");
+    items=items.filter(function(i){return i.id!==currentId;}); save("items",items); currentId=null; renderList(); show("screen-list");
   });
 });
 </script>
